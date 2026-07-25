@@ -1,0 +1,48 @@
+﻿cat << 'EOF' > docker-compose.yml
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: gbr_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+
+  web:
+    build: .
+    container_name: gbr_web
+    restart: unless-stopped
+    expose:
+      - "5000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - db
+    volumes:
+      - ./baseline_clips:/app/baseline_clips
+      - ./vision_snapshots:/app/vision_snapshots
+      - ./birdnet_config.json:/app/birdnet_config.json
+      - ./image_database.db:/app/image_database.db
+
+  db:
+    image: postgres:15-alpine
+    container_name: gbr_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: birdsong_db
+      POSTGRES_USER: birdsong_user
+      POSTGRES_PASSWORD: YOUR_DB_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+EOF

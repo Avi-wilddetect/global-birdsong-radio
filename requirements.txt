@@ -1,0 +1,6 @@
+Flask
+Flask-Bcrypt
+Flask-JWT-Extended
+gunicorn
+psycopg2-binary
+requests

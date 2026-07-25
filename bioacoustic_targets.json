@@ -1,0 +1,99 @@
+{
+  "_version": 2,
+  "global_defaults": {
+    "cooldown_target_minutes": 120,
+    "cooldown_stream_minutes": 1,
+    "cooldown_species_minutes": 0,
+    "enable_adaptive_snr": false
+  },
+  "stream_rules": {},
+  "species_rules": {
+    "Cape Fur Seal": {
+      "cooldown_minutes": 5
+    }
+  },
+  "assignments": {
+    "https://www.youtube.com/watch?v=4ElanH9Gzjw": [
+      {
+        "profile": "SEA_LION",
+        "display": "Steller Sea Lion"
+      }
+    ],
+    "https://www.youtube.com/watch?v=vLscZvIFiLg": [
+      {
+        "profile": "CRICKET",
+        "display": "Rainforest Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Tink Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=2FdvAk95PSk": [
+      {
+        "profile": "CRICKET",
+        "display": "Rainforest Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Tink Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=yuIm1V7Ne7I": [
+      {
+        "profile": "CRICKET",
+        "display": "African Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Painted Reed Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=QJe1tGI1EZc": [
+      {
+        "profile": "CRICKET",
+        "display": "African Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Painted Reed Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=gdrNUUf-cQw": [
+      {
+        "profile": "CRICKET",
+        "display": "African Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Painted Reed Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=8J9USywkGmw": [
+      {
+        "profile": "CRICKET",
+        "display": "African Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Painted Reed Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=ietpaFoB_Nc": [
+      {
+        "profile": "CRICKET",
+        "display": "Rainforest Cicada"
+      },
+      {
+        "profile": "FROG",
+        "display": "Tink Frog"
+      }
+    ],
+    "https://www.youtube.com/watch?v=M9WDNUVHuv0": [
+      {
+        "profile": "FROG",
+        "display": "Common Frog"
+      }
+    ]
+  }
+}

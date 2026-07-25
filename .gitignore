@@ -1,0 +1,51 @@
+# Environments
+venv/
+env/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database & Media Vaults
+*.db
+*.sqlite3
+*.db-shm
+*.db-wal
+baseline_clips/
+vision_snapshots/
+ml_exports/
+
+# Logs & Temp
+*.log
+monitor_debug.txt
+vision_debug.txt
+proxy_debug.txt
+*tracebacks.txt
+*.tmp
+*.bak
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Project Specific Secrets & Hardware State
+chrome_profiles/
+*_cookies*.txt
+deployment_secret.key
+api_pacing.json
+banned_ips.json
+network_counters.json
+cooldown_state.json
+dashboard_state.json
+dashboard_settings.json
+gui_settings.json
+curation_studio_settings.json
+intelligence_hub_settings.json
+log_analyzer_settings.json
+sync_proposals.json
+youtube_metadata_cache.json
+hydra_heat_state.json

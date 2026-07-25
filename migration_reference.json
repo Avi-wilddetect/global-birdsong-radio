@@ -1,0 +1,326 @@
+{
+  "species": {
+    "Yellow-rumped Warbler": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Pine Warbler": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Palm Warbler": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Blackpoll Warbler": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        -10.0,
+        -60.0
+      ]
+    },
+    "Common Yellowthroat": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        20.0,
+        -100.0
+      ]
+    },
+    "White-throated Sparrow": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Dark-eyed Junco": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "House Finch": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        40.0,
+        -75.0
+      ]
+    },
+    "American Goldfinch": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "European Robin": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        20.0,
+        10.0
+      ]
+    },
+    "Eurasian Blackcap": {
+      "breed": [
+        60.0,
+        15.0
+      ],
+      "winter": [
+        20.0,
+        10.0
+      ]
+    },
+    "Common Chiffchaff": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        20.0,
+        10.0
+      ]
+    },
+    "Barn Swallow": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        0.0,
+        20.0
+      ]
+    },
+    "Common Swift": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        0.0,
+        20.0
+      ]
+    },
+    "Canada Goose": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Mallard": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Wood Duck": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Eurasian Thick-knee": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        20.0,
+        10.0
+      ]
+    },
+    "Red-shouldered Hawk": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        40.0,
+        -75.0
+      ]
+    },
+    "Osprey": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        -10.0,
+        -60.0
+      ]
+    },
+    "Bald Eagle": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        40.0,
+        -115.0
+      ]
+    },
+    "Blue Jay": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        40.0,
+        -75.0
+      ]
+    },
+    "American Crow": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        40.0,
+        -75.0
+      ]
+    },
+    "Eurasian Magpie": {
+      "breed": [
+        50.0,
+        10.0
+      ],
+      "winter": [
+        50.0,
+        10.0
+      ]
+    }
+  },
+  "families": {
+    "Parulidae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        20.0,
+        -100.0
+      ]
+    },
+    "Turdidae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Fringillidae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Anatidae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Accipitridae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        20.0,
+        -100.0
+      ]
+    },
+    "Hirundinidae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        -10.0,
+        -60.0
+      ]
+    },
+    "Laridae": {
+      "breed": [
+        55.0,
+        -100.0
+      ],
+      "winter": [
+        32.0,
+        -85.0
+      ]
+    },
+    "Corvidae": {
+      "breed": [
+        40.0,
+        -75.0
+      ],
+      "winter": [
+        40.0,
+        -75.0
+      ]
+    }
+  }
+}

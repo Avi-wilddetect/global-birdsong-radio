@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Global Nervous System v40.6.2 </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { margin: 0; background: #1a1a1a; overflow: hidden; font-family: 'Inter', sans-serif; color: #e0e0e0; }
+        #map { width: 100vw; height: 100vh; background: #1a1a1a; z-index: 1; }
+        
+        .leaflet-tile-pane { filter: brightness(0.9) contrast(1.1) saturate(1.1); }
+        
+        /* Tooltip Styling - WIDENED TO FIT THUMBNAIL */
+        .leaflet-tooltip { 
+            background: rgba(0,0,0,0.95) !important; 
+            border: 1px solid #555 !important; 
+            color: #fff !important; 
+            font-family: 'Inter'; 
+            font-size: 12px; 
+            border-radius: 4px; 
+            box-shadow: 0 4px 25px rgba(0,0,0,0.8); 
+            padding: 10px 14px; 
+            pointer-events: none; 
+            white-space: normal !important; 
+			width: max-content !important; 
+            max-width: 350px !important;   
+            word-wrap: break-word;
+            text-align: left; 
+        }
+        /* Handle all 4 tooltip arrow directions for dark mode */
+        .leaflet-tooltip-top:before { border-top-color: #333; }
+        .leaflet-tooltip-bottom:before { border-bottom-color: #333; }
+        .leaflet-tooltip-left:before { border-left-color: #333; }
+        .leaflet-tooltip-right:before { border-right-color: #333; }
+        
+        /* Tooltip Flex Layout for Thumbnail */
+        .tt-layout { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; }
+        .tt-info { flex: 1; padding-right: 12px; }
+        .tt-thumb { width: 55px; height: 55px; object-fit: cover; border-radius: 4px; border: 1px solid #444; background-color: #000; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        
+        .tt-title { 
+            font-weight: 900; 
+            color: #fff; 
+            font-size: 13px; 
+            text-transform: uppercase; 
+            margin-bottom: 6px; 
+            line-height: 1.3; 
+            white-space: normal !important; 
+            border-bottom: 1px solid #333;
+            padding-bottom: 4px;
+        }
+        
+        #error-banner {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            background: rgba(255, 61, 0, 0.9);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            z-index: 99999;
+            pointer-events: none;
+        }
+
+        /* NEW MAINTENANCE BANNER */
+        #maintenance-banner {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 152, 0, 0.95);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            z-index: 99998;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border: 2px solid #FFb74D;
+            pointer-events: none; /* Allows clicking through to the map underneath */
+            text-align: center;
+            max-width: 60%;
+            letter-spacing: 0.5px;
+        }
+
+        #hud-right { position: absolute; top: 20px; right: 20px; width: 360px; bottom: 80px; background: rgba(15, 15, 15, 0.95); border: 1px solid #333; border-radius: 8px; z-index: 1000; display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,0.8); }
+        .search-container { padding: 12px; border-bottom: 1px solid #333; position: relative; display: flex; align-items: center; }
+        #search-input { flex: 1; box-sizing: border-box; background: #111; border: 1px solid #444; color: #fff; padding: 10px 30px 10px 10px; border-radius: 4px; font-family: 'Inter'; font-size: 13px; }
+        #search-input:focus { border-color: #00E5FF; outline: none; }
+        #clear-search { position: absolute; right: 45px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; font-size: 18px; display: none; }
+        
+        #submit-trigger { margin-left: 8px; font-size: 20px; color: #00E5FF; opacity: 0.3; cursor: pointer; transition: all 0.3s; }
+        #submit-trigger:hover { opacity: 1; text-shadow: 0 0 8px #00E5FF; }
+        
+        .feed-list { flex: 1; overflow-y: auto; }
+        .feed-item { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: flex-start; transition: all 0.2s; border-left: 4px solid transparent; }
+        .feed-item:hover { background: #222; }
+        .feed-item.active-item { border-left: 4px solid #00E5FF !important; background: linear-gradient(90deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%); box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.05); }
+        .feed-item.active-item .f-sp { color: #00E5FF; text-shadow: 0 0 8px rgba(0,229,255,0.6); }
+        .feed-item.active-item .f-meta { color: #fff; }
+        .urgency-red { border-left-color: #FF3D00; background: rgba(255, 61, 0, 0.05); }
+        .urgency-orange { border-left-color: #FFC107; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; margin-right: 10px; flex-shrink: 0; }
+        .bg-red { background: #FF3D00; box-shadow: 0 0 8px #FF3D00; }
+        .bg-orange { background: #FFC107; }
+        .bg-grey { background: #555; }
+        .f-meta { font-family: 'Roboto Mono'; font-size: 11px; color: #888; }
+        .f-sp { font-weight: 700; font-size: 14px; display: block; color: #eee; margin-bottom: 2px;}
+        .f-loc { font-size: 11px; color: #666; display: block; margin-top: 4px; margin-bottom: 4px;}
+        .type-icon { font-size: 14px; margin-right: 5px; }
+        .mig-icon { font-size: 12px; margin-left: 5px; color: #00E5FF; }
+        #intel-panel { position: absolute; top: 0; left: -400px; width: 390px; height: 100vh; background: #0a0a0a; border-right: 1px solid #333; z-index: 2000; transition: left 0.3s cubic-bezier(0.2, 1, 0.3, 1); display: flex; flex-direction: column; }
+        #intel-panel.open { left: 0; }
+        .vid-box { position: relative; width: 100%; height: 240px; background: #000; border-bottom: 1px solid #333; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .intel-body { padding: 10px 20px 20px 20px; overflow-y: auto; overflow-x: hidden; flex: 1; }
+        .intel-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+        .i-h1 { font-size: 24px; font-weight: 900; text-transform: uppercase; line-height: 1; margin: 0; flex: 1; padding-right: 10px; overflow-wrap: break-word; }
+        .control-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; min-width: 80px; }
+        .btn-launch-header { padding: 4px 8px; font-size: 10px; font-weight: bold; border-radius: 3px; cursor: pointer; white-space: nowrap; transition: all 0.2s; background: #111; width: 100%; text-align: center; }
+        .btn-launch { border: 1px solid #FF3D00; color: #FF3D00; }
+        .btn-launch:hover { background: #FF3D00; color: white; }
+        .btn-clip { border: 1px solid #00E5FF; color: #00E5FF; }
+        .btn-clip:hover { background: #00E5FF; color: #000; }
+        .btn-clip.playing { background: #00E5FF; color: #000; border-color: #00E5FF; }
+        .i-meta { font-family: 'Roboto Mono'; color: #00e676; font-size: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+        .i-img { width: 100%; height: auto; max-height: 220px; object-fit: contain; background-color: #000; border-radius: 4px; border: 1px solid #333; margin-bottom: 15px; }
+        .btn { display: block; padding: 10px; background: #1a1a1a; color: #aaa; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px; border: 1px solid #333; border-radius: 4px; margin-top: 8px; transition: 0.2s; cursor: pointer; }
+        .btn:hover { background: #333; color: white; border-color: #00e676; }
+        .close-x { position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; z-index: 2005; }
+        .visible-anchor { position: relative; width: 0px !important; height: 0px !important; overflow: visible !important; }
+        
+        /* AURA REDUCTION APPLIED HERE */
+        .pulse-core { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; background-size: cover; background-position: center 20%; transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s; box-sizing: border-box; cursor: pointer; }
+        .pulse-core.shape-circle { border-radius: 50%; }
+        .pulse-core.shape-square { border-radius: 20%; }
+        .pulse-core.status-live { width: 40px; height: 40px; border: 2px solid #FF3D00; box-shadow: 0 0 8px rgba(255, 61, 0, 0.6); z-index: 300; animation: heartbeat 1.5s infinite; }
+        .pulse-core.status-recent { width: 34px; height: 34px; border: 2px solid #FFC107; box-shadow: 0 0 5px rgba(255, 193, 7, 0.4); z-index: 200; animation: breath 3s infinite ease-in-out; }
+        .pulse-core.status-dormant { width: 26px; height: 26px; border: 1px solid #90A4AE; box-shadow: 0 0 3px rgba(144, 164, 174, 0.3); z-index: 100; animation: breath-dormant 5s infinite ease-in-out; }
+        .pulse-core.status-listening { width: 14px; height: 14px; background-color: #00E5FF; border: 1px solid #fff; box-shadow: 0 0 10px #00E5FF; z-index: 50; animation: radar-ping 2.5s infinite; }
+        
+        .visible-anchor.target-active { z-index: 9999 !important; }
+        .visible-anchor.target-active::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border: 1px dashed #00E5FF; border-radius: 50%; box-shadow: 0 0 8px #00E5FF, inset 0 0 4px #00E5FF; animation: target-spin 6s linear infinite; pointer-events: none; z-index: -1; }
+        .visible-anchor.target-active::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; animation: target-pulse 2s ease-out infinite; pointer-events: none; z-index: -2; }
+        @keyframes target-spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes target-pulse { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; } }
+        @keyframes radar-ping { 0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); } }
+        .zoom-controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; gap: 15px; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 30px; border: 1px solid #333; }
+        .z-btn { width: 50px; height: 50px; background: #111; border: 2px solid #444; color: #fff; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.8); user-select: none; transition: all 0.2s; }
+        .z-btn:hover { background: #333; border-color: #00E5FF; color: #00E5FF; transform: scale(1.1); }
+        .version-tag { position: fixed; bottom: 5px; right: 5px; color: #fff; font-size: 12px; font-family: monospace; z-index: 99999; pointer-events: none; background: rgba(0,0,0,0.5); padding: 2px 5px; border-radius: 3px; }
+        
+        /* Modal CSS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; align-items: center; justify-content: center; }
+        .modal-box { background: #151515; border: 1px solid #333; border-radius: 8px; width: 400px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,1); position: relative; }
+        .modal-h1 { margin: 0 0 15px 0; color: #fff; font-size: 18px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .modal-input { width: 100%; background: #0a0a0a; border: 1px solid #444; color: #fff; padding: 10px; border-radius: 4px; font-family: 'Inter'; margin-bottom: 15px; box-sizing: border-box; }
+        .modal-input:focus { border-color: #00E5FF; outline: none; }
+        .modal-btn { width: 100%; padding: 12px; background: #0078d7; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .modal-btn:hover { background: #0099ff; }
+        .modal-close { position: absolute; top: 15px; right: 15px; color: #666; cursor: pointer; font-size: 20px; }
+        .modal-close:hover { color: #fff; }
+        .modal-note { font-size: 11px; color: #666; margin-top: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="error-banner"></div>
+    <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
+    <div class="version-tag">v40.6.2</div>
+    <div id="hud-right">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
+            <span id="clear-search" onclick="clearSearch()">×</span>
+            <span id="submit-trigger" title="Suggest a Stream" onclick="openModal()">+</span>
+        </div>
+        <div class="feed-list" id="feed-container"></div>
+    </div>
+    
+    <div id="submit-modal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-close" onclick="closeModal()">×</span>
+            <h1 class="modal-h1">Suggest a Stream</h1>
+            <label style="color:#aaa; font-size:12px;">YOUTUBE / AUDIO URL</label>
+            <input type="text" id="stream-url" class="modal-input" placeholder="https://www.youtube.com/watch?v=...">
+            <label style="color:#aaa; font-size:12px;">COMMENT (OPTIONAL)</label>
+            <input type="text" id="stream-comment" class="modal-input" placeholder="Any details...">
+            <button id="btn-submit" class="modal-btn" onclick="submitStream()">SUBMIT FOR REVIEW</button>
+            <div class="modal-note">🔒 Sends directly to admin@wilddetection.net</div>
+        </div>
+    </div>
+
+    <div id="intel-panel">
+        <button class="close-x" onclick="closePanel()">&times;</button>
+        <div class="vid-box" id="vid-frame"></div>
+        <div class="intel-body">
+            <div class="intel-header">
+                <h1 class="i-h1" id="i-species">TARGET</h1>
+                <div id="header-controls"></div>
+            </div>
+            <div class="i-meta" id="i-status">LOADING DATA...</div>
+            <div id="i-badges" style="margin-bottom: 15px;"></div>
+            <img id="i-img" class="i-img" src="" style="display:none;">
+            <div style="font-size:12px; color:#777; font-weight:bold; margin-bottom:5px;">SECTOR LOCATION</div>
+            <div id="i-loc" style="font-size:14px; color:#ccc; margin-bottom:20px;"></div>
+            <a id="lnk-wiki" href="#" target="_blank" class="btn">ACCESS WIKI DATABASE</a>
+            <a id="lnk-secondary" href="#" target="_blank" class="btn">ALL ABOUT BIRDS</a>
+        </div>
+    </div>
+    <div class="zoom-controls">
+        <div class="z-btn" onclick="map.zoomIn()" title="Zoom In">+</div>
+        <div class="z-btn" onclick="map.zoomOut()" title="Zoom Out">-</div>
+    </div>
+    <script>
+        const map = L.map('map', { zoomControl: false, minZoom: 2.5, attributionControl: false, worldCopyJump: true }).setView([20, 0], 3);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18 }).addTo(map);
+        let terminator = null;
+        function refreshShadow() { try { if (terminator) { map.removeLayer(terminator); } terminator = L.terminator({ fillOpacity: 0.30, color: '#000', weight: 0, time: new Date() }); terminator.addTo(map).bringToBack(); } catch(e) { console.warn("Shadow update failed", e); } }
+        refreshShadow(); setInterval(refreshShadow, 60000); 
+        
+        map.on('click', () => { 
+            clearSpotlight(); 
+            closePanel(); 
+            map.eachLayer(function(layer) {
+                if (layer.getTooltip && layer.isTooltipOpen()) {
+                    layer.closeTooltip();
+                }
+            });
+        });
+        
+        const markers = {}; let currentData = { nodes: [], feed:[] };
+        let activeFocusId = null, currentExternalLink = null, activeAudio = null, activeHls = null; 
+        let activeFeedDomId = null; 
+        let currentOpenStreamId = null;
+        let lockedCustomNode = null;
+        let connectionLostTime = null;
+
+        function getBadgesHtml(method, dist, frameSize) {
+            let m = method || 'audio';
+            let d = dist || 'Unknown';
+            let f = frameSize || 'N/A';
+            
+            let modIcon = '🐦'; let modText = 'AUDIO'; let modColor = '#4CAF50';
+            if (m === 'vision') { modIcon = '📷'; modText = 'VISION'; modColor = '#00E676'; }
+            else if (m === 'multimodal') { modIcon = '🔥'; modText = 'MULTIMODAL'; modColor = '#FF9800'; }
+            else if (d === 'Bio-Match') { modIcon = '🐘'; modText = 'DSP'; modColor = '#AB47BC'; }
+            
+            let html = `<div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size:10px; color:${modColor}; border:1px solid ${modColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;">${modIcon} ${modText}</span>`;
+            
+            // Depth / Distance Badge
+            if (d !== 'Bio-Match' && d !== 'Unknown' && !d.includes('Multimodal') && !d.includes('Visual')) {
+                let ctxColor = '#aaa';
+                let dUp = d.toUpperCase();
+                if (dUp.includes('VERY NEAR') || dUp.includes('POINT BLANK') || dUp.includes('LARGE')) ctxColor = '#FF3D00';
+                else if (dUp.includes('NEAR') || dUp.includes('MID-GROUND') || dUp.includes('MEDIUM')) ctxColor = '#FFB74D';
+                else if (dUp.includes('BACKGROUND') || dUp.includes('HORIZON') || dUp.includes('SMALL')) ctxColor = '#FFF59D';
+                
+                let distLabel = (m === 'vision' || m === 'multimodal') ? `DEPTH: ${dUp}` : dUp;
+                html += `<span style="font-size:10px; color:${ctxColor}; border:1px solid ${ctxColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="3D Physical Depth">${distLabel}</span>`;
+            }
+
+            // Frame Size Badge
+            if (f !== 'N/A' && f !== 'NONE' && f !== 'Unknown' && f) {
+                let fUp = f.toUpperCase();
+                html += `<span style="font-size:10px; color:#00E5FF; border:1px solid #00E5FF; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="2D Pixel Footprint">FRAME: ${fUp}</span>`;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+
+        function openModal() { document.getElementById('submit-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('submit-modal').style.display = 'none'; document.getElementById('btn-submit').innerHTML = "SUBMIT FOR REVIEW"; document.getElementById('btn-submit').style.background = "#0078d7"; document.getElementById('stream-url').value = ""; document.getElementById('stream-comment').value = ""; }
+        function submitStream() { const url = document.getElementById('stream-url').value.trim(); const comment = document.getElementById('stream-comment').value.trim(); if (!url) { alert("Please enter a URL."); return; } const btn = document.getElementById('btn-submit'); btn.innerHTML = "PREPARING EMAIL..."; btn.style.background = "#555"; const subject = encodeURIComponent("New Stream Suggestion for Global Birdsong Radio"); const bodyText = `I would like to suggest a new stream for the map:\n\nURL: ${url}\n\nComment: ${comment}\n\nThanks!`; const body = encodeURIComponent(bodyText); window.location.href = `mailto:admin@wilddetection.net?subject=${subject}&body=${body}`; setTimeout(() => { btn.innerHTML = "✔ EMAIL APP OPENED"; btn.style.background = "#00e676"; setTimeout(closeModal, 2000); }, 500); }
+
+        async function updateSystem() { 
+            try { 
+                const response = await fetch('/data', { cache: 'no-store' }); 
+                const data = await response.json(); 
+                
+                connectionLostTime = null; // Reset error tracker on success
+
+                // 1. Handle Maintenance Banner
+                const maintBanner = document.getElementById('maintenance-banner');
+                if (data.maintenance_mode === true) {
+                    maintBanner.style.display = 'block';
+                } else {
+                    maintBanner.style.display = 'none';
+                }
+
+                // 2. Handle Error Banner
+                const banner = document.getElementById('error-banner'); 
+                if (data.error) { 
+                    banner.innerHTML = "⚠ SYSTEM ERROR: " + data.error; banner.style.display = 'block'; 
+                } else if (data.nodes.length === 0) { 
+                    banner.innerHTML = "⚠ NO ACTIVE STREAMS DETECTED<br><span style='font-size:11px; font-weight:normal'>Check Control GUI configuration.</span>"; banner.style.display = 'block'; 
+                } else { 
+                    banner.style.display = 'none'; 
+                } 
+                
+                currentData = data; 
+                renderMap(data.nodes); 
+                if (document.getElementById('search-input').value === '') { 
+                    renderFeed(data.feed); 
+                } 
+            } catch (e) { 
+                console.error("Link Failure", e); 
+                if (!connectionLostTime) { 
+                    connectionLostTime = Date.now(); 
+                }
+                if (Date.now() - connectionLostTime > 30000) {
+                    document.getElementById('error-banner').innerHTML = "⚠ CONNECTION LOST<br><span style='font-size:11px; font-weight:normal'>Attempting to reconnect...</span>"; 
+                    document.getElementById('error-banner').style.display = 'block'; 
+                }
+            } 
+        }
+        
+        function getZIndex(status) { if (status === 'live') return 1000; if (status === 'recent') return 500; if (status === 'dormant') return 100; return 50; }
+        
+        function renderMap(nodes) {
+            const locMap = {};
+            nodes.forEach(node => {
+                const k = node.lat.toFixed(4) + ',' + node.lon.toFixed(4);
+                if (locMap[k] === undefined) locMap[k] = 0;
+                else locMap[k]++;
+                if (locMap[k] > 0) {
+                    const offset = 0.0004 * locMap[k]; 
+                    node.lat += offset;
+                    node.lon += offset;
+                }
+            });
+            nodes.forEach(node => { if (markers[node.id]) { updateMarker(markers[node.id], node); } else { createMarker(node); } }); 
+        }
+
+        function createMarker(node) { 
+            const htmlContent = buildIconHtml(node);
+            const classContent = 'visible-anchor';
+            const icon = L.divIcon({ className: classContent, html: htmlContent, iconSize:[0, 0], iconAnchor:[0, 0] }); 
+            const m = L.marker([node.lat, node.lon], { icon: icon, zIndexOffset: getZIndex(node.status) }).addTo(map); 
+            
+            const badgesHtml = getBadgesHtml(node.detection_method, node.dist, node.frame_size);
+            const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${node.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${node.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${node.time_ago_str}</div></div></div>${node.image ? `<img class="tt-thumb" src="${node.image}" />` : ''}</div>`; 
+            
+            m.bindTooltip(tooltipContent, { direction: 'auto', sticky: false, opacity: 1, offset:[0, -25] }); 
+            m.on('click', (e) => { 
+                L.DomEvent.stopPropagation(e); 
+                lockedCustomNode = null; // Clicking map marker resets to live tracking
+                engageSpotlight(markers[node.id].data); 
+            }); 
+            
+            markers[node.id] = { marker: m, data: node, lastHtml: htmlContent, lastClass: classContent, lastTooltip: tooltipContent }; 
+        }
+        
+        function updateMarker(ref, newNode) { 
+            const isTarget = activeFocusId === newNode.id; 
+            const newLatLng = L.latLng(newNode.lat, newNode.lon);
+            if (ref.marker.getLatLng().lat !== newLatLng.lat || ref.marker.getLatLng().lng !== newLatLng.lng) {
+                ref.marker.setLatLng(newLatLng);
+            }
+            
+            ref.data = newNode; 
+            const newHtml = buildIconHtml(newNode);
+            const newClass = 'visible-anchor ' + (isTarget ? 'target-active' : '');
+            
+            if (ref.lastHtml !== newHtml || ref.lastClass !== newClass) {
+                const newIcon = L.divIcon({ className: newClass, html: newHtml, iconSize:[0, 0], iconAnchor:[0, 0] }); 
+                ref.marker.setIcon(newIcon); 
+                ref.lastHtml = newHtml;
+                ref.lastClass = newClass;
+            }
+            
+            ref.marker.setZIndexOffset(isTarget ? 9999 : getZIndex(newNode.status)); 
+            
+            const badgesHtml = getBadgesHtml(newNode.detection_method, newNode.dist, newNode.frame_size);
+            const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${newNode.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${newNode.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${newNode.time_ago_str}</div></div></div>${newNode.image ? `<img class="tt-thumb" src="${newNode.image}" />` : ''}</div>`; 
+            
+            if (ref.lastTooltip !== tooltipContent) {
+                if (ref.marker.getTooltip()) {
+                    ref.marker.getTooltip().setContent(tooltipContent); 
+                } else {
+                    ref.marker.bindTooltip(tooltipContent, { direction: 'auto', sticky: false, opacity: 1, offset:[0, -25] });
+                }
+                ref.lastTooltip = tooltipContent;
+            }
+
+            if (isTarget && !lockedCustomNode) {
+                updateIntelMetadata(newNode);
+            }
+        }
+        
+        function buildIconHtml(node) { const bgStyle = node.image ? `background-image: url('${node.image}');` : ''; const noImgClass = node.image ? '' : 'no-img'; const focusClass = (activeFocusId === node.id) ? 'target-focus' : ''; let shapeClass = 'shape-circle'; if (node.stream_type === 'hls' || node.stream_type === 'direct_stream' || node.stream_type === 'mjpeg') { shapeClass = 'shape-square'; } return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass}" style="${bgStyle}"></div>`; }
+        
+        function engageSpotlight(node, specificFeedId = null) { 
+            activeFocusId = node.id; 
+            
+            if (specificFeedId) {
+                activeFeedDomId = specificFeedId;
+            } else {
+                const firstMatch = document.querySelector(`.feed-item[data-target-id="${node.id}"]`);
+                activeFeedDomId = firstMatch ? firstMatch.id : null;
+            }
+            
+            L.DomUtil.addClass(map.getContainer(), 'map-spotlight-active'); 
+            Object.values(markers).forEach(ref => updateMarker(ref, ref.data)); 
+            openIntel(node); 
+            
+            document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item')); 
+            
+            if(activeFeedDomId) { 
+                const feedItem = document.getElementById(activeFeedDomId);
+                if (feedItem) {
+                    feedItem.classList.add('active-item'); 
+                    feedItem.scrollIntoView({behavior: "smooth", block: "center"}); 
+                }
+            } 
+        }
+        
+        function clearSpotlight() { 
+            activeFocusId = null; 
+            activeFeedDomId = null;
+            lockedCustomNode = null;
+            L.DomUtil.removeClass(map.getContainer(), 'map-spotlight-active'); 
+            document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item')); 
+            Object.values(markers).forEach(ref => updateMarker(ref, ref.data)); 
+            if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
+        }
+        
+        function fallbackToWebView(vidContainer, externalUrl) {
+            if (!externalUrl) { vidContainer.innerHTML = `<div style="color:#555;">PLAYBACK ERROR<br><span style="font-size:10px">No Fallback URL Available</span></div>`; return; }
+            let hostname = "External Source";
+            try { hostname = new URL(externalUrl).hostname; } catch(e){}
+            vidContainer.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:20px; text-align:center;">
+                    <div style="font-size:40px; margin-bottom:10px;">🛡️</div>
+                    <div style="color:#ffa726; font-weight:bold; margin-bottom:5px;">EXTERNAL SOURCE BLOCKED</div>
+                    <div style="color:#aaa; font-size:11px; margin-bottom:15px;">The provider (${hostname}) does not allow embedded playback.</div>
+                    <button onclick="window.open('${externalUrl}', '_blank')" style="background:#00E5FF; color:black; border:none; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer;">OPEN IN NEW WINDOW ↗</button>
+                </div>
+            `;
+        }
+
+        function openIntel(node) {
+            const p = document.getElementById('intel-panel');
+            updateIntelMetadata(node);
+            if (currentOpenStreamId !== node.id) {
+                currentOpenStreamId = node.id;
+                loadIntelVideo(node);
+            }
+            p.classList.add('open');
+            map.flyTo([node.lat, node.lon], 6, { duration: 1.5 });
+        }
+
+        function updateIntelMetadata(node) {
+            document.getElementById('i-species').innerText = node.species;
+            
+            let typeLabel = "YOUTUBE"; 
+            if (node.stream_type === 'hls' || node.stream_type === 'direct_stream') typeLabel = "IP CAM"; 
+            else if (node.stream_type === 'audio') typeLabel = "AUDIO";
+            
+            document.getElementById('i-status').innerText = `${node.time_ago_str} • ${node.status.toUpperCase()} • ${typeLabel}`;
+            
+            document.getElementById('i-badges').innerHTML = getBadgesHtml(node.detection_method, node.dist, node.frame_size);
+            
+            document.getElementById('i-loc').innerText = node.name;
+            
+            document.getElementById('lnk-wiki').href = node.links.wiki;
+            const lnkSecondary = document.getElementById('lnk-secondary');
+            lnkSecondary.href = node.links.secondary || '#'; 
+            lnkSecondary.innerText = node.links.secondary_name || 'ALL ABOUT BIRDS';
+            
+            currentExternalLink = node.external_url || node.page_url; 
+            
+            const img = document.getElementById('i-img'); 
+            if (node.image) { img.src = node.image; img.style.display = 'block'; } 
+            else { img.style.display = 'none'; }
+            
+            const controls = document.getElementById('header-controls');
+            let buttons = `<div class="control-stack"><button class="btn-launch-header btn-launch" onclick="openExternal()">LAUNCH ↗</button>`;
+            
+            if (node.detection_method === 'vision' || node.detection_method === 'multimodal') {
+                if (node.audio_id) {
+                    buttons += `<button id="btn-audio" class="btn-launch-header btn-clip" onclick="toggleAudio(${node.audio_id}, this)">▶ SOUND</button>`;
+                }
+            } else {
+                if (node.audio_id) { 
+                    buttons += `<button id="btn-audio" class="btn-launch-header btn-clip" onclick="toggleAudio(${node.audio_id}, this)">▶ CLIP</button>`; 
+                } else { 
+                    buttons += `<button class="btn-launch-header btn-clip" style="opacity:0.5; cursor:default;">NO CLIP</button>`; 
+                }
+            }
+            
+            buttons += `</div>`; 
+            controls.innerHTML = buttons;
+        }
+
+        function loadIntelVideo(node) {
+            const vid = document.getElementById('vid-frame');
+            if (activeHls) { activeHls.destroy(); activeHls = null; }
+            if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
+            
+            vid.innerHTML = ''; 
+            vid.className = 'vid-box';
+
+            if (node.stream_type === 'audio') {
+                vid.className = 'vid-box audio-mode'; 
+                vid.innerHTML = `<div style="color:#00E5FF; font-size:48px;">📻</div><div style="color:#aaa; margin-top:10px; font-weight:bold;">LIVE AUDIO FEED</div><audio controls autoplay><source src="${node.audio_url}" type="audio/mpeg"><source src="${node.audio_url}" type="audio/ogg"></audio>`;
+            } else if (node.stream_type === 'youtube' || node.stream_type === 'video') {
+                if (node.yt_id) { 
+                    vid.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${node.yt_id}?autoplay=1&mute=0&origin=${window.location.origin}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`; 
+                } else { 
+                    vid.innerHTML = `<div style="color:#555;">NO YOUTUBE ID<br><span style="font-size:10px">Check Config</span></div>`; 
+                }
+            } else if (node.stream_type === 'hls' || node.stream_type === 'direct_stream') {
+                const video = document.createElement('video'); 
+                video.id = 'hls-video'; 
+                video.style.width = '100%'; 
+                video.style.height = '100%'; 
+                video.style.objectFit = 'cover'; 
+                video.controls = true; 
+                video.autoplay = true; 
+                video.muted = true;
+                vid.appendChild(video);
+                
+                const proxyUrl = `/proxy?url=${encodeURIComponent(node.page_url)}`;
+                
+                if (Hls.isSupported()) {
+                    activeHls = new Hls(); activeHls.loadSource(proxyUrl); activeHls.attachMedia(video);
+                    activeHls.on(Hls.Events.MANIFEST_PARSED, function() { video.play().catch(e => console.log("Autoplay blocked:", e)); });
+                    activeHls.on(Hls.Events.ERROR, function (event, data) { if (data.fatal) { fallbackToWebView(vid, node.external_url); activeHls.destroy(); } });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = proxyUrl; video.addEventListener('loadedmetadata', function() { video.play(); }); video.addEventListener('error', function() { fallbackToWebView(vid, node.external_url); });
+                } else { fallbackToWebView(vid, node.external_url); }
+            } else { 
+                vid.innerHTML = `<div style="color:#555;">NO SIGNAL<br><span style="font-size:10px">Unknown Source Type</span></div>`; 
+            }
+        }
+        
+        function toggleAudio(id, btn) { 
+            if (activeAudio) { activeAudio.pause(); activeAudio = null; btn.innerText = "▶ PLAY"; btn.classList.remove("playing"); return; } 
+            const url = `/audio/detection_${id}.mp3`; 
+            activeAudio = new Audio(url); 
+            activeAudio.onplay = () => { btn.innerText = "■ STOP"; btn.classList.add("playing"); }; 
+            activeAudio.onended = () => { activeAudio = null; btn.innerText = "▶ PLAY"; btn.classList.remove("playing"); }; 
+            activeAudio.onerror = () => { alert("Audio file not found or corrupted."); activeAudio = null; btn.innerText = "ERROR"; }; 
+            activeAudio.play(); 
+        }
+        
+        function openExternal() { if(currentExternalLink) window.open(currentExternalLink, '_blank'); }
+        
+        function closePanel() { 
+            document.getElementById('intel-panel').classList.remove('open'); 
+            currentOpenStreamId = null;
+            lockedCustomNode = null;
+            if (activeHls) { activeHls.destroy(); activeHls = null; } 
+            document.getElementById('vid-frame').innerHTML = ''; 
+            if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
+        }
+        
+        function renderFeed(items) { 
+            const con = document.getElementById('feed-container'); 
+            const currentScroll = con.scrollTop; 
+            if (items.length === 0) { con.innerHTML = '<div style="padding:20px;color:#666;text-align:center;">NO RECENT SIGNALS</div>'; return; } 
+            let html = ''; 
+            items.forEach(item => { 
+                const urgencyClass = item.is_close ? `urgency-${item.urgency}` : ''; 
+                let typeIcon = '❓'; 
+                if (item.stream_type === 'video' || item.stream_type === 'youtube') typeIcon = '📺'; 
+                else if (item.stream_type === 'audio') typeIcon = '📻'; 
+                else if (item.stream_type === 'hls' || item.stream_type === 'direct_stream') typeIcon = '🌐'; 
+                
+                let localTimeStr = item.time; 
+                if (item.timestamp) {
+                    const dateObj = new Date(item.timestamp * 1000);
+                    localTimeStr = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }).format(dateObj);
+                }
+                
+                const timeArgStr = item.timestamp ? item.timestamp : '0';
+                
+                // THE SPECIES JUMP PATCH: Added safeIdSpecies to guarantee mathematical uniqueness
+                const safeIdSpecies = item.species.replace(/[^a-zA-Z0-9]/g, '_');
+                const uniqueFeedId = `feed-item-${item.target_id}-${timeArgStr}-${safeIdSpecies}`;
+                
+                const activeClass = (uniqueFeedId === activeFeedDomId) ? 'active-item' : ''; 
+                
+                const safeSpecies = item.species.replace(/'/g, "\\'");
+                const audioIdArg = item.audio_id ? item.audio_id : 'null';
+                const timeArg = item.timestamp ? item.timestamp : 'null';
+                const methodArg = item.detection_method ? `'${item.detection_method}'` : `'audio'`;
+                const distArg = item.dist ? `'${item.dist}'` : `'Unknown'`;
+                const frameArg = item.frame_size ? `'${item.frame_size}'` : `'N/A'`;
+                
+                const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size);
+                
+                html += `<div class="feed-item ${urgencyClass} ${activeClass}" id="${uniqueFeedId}" data-target-id="${item.target_id}" onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, ${methodArg}, ${distArg}, ${frameArg}, '${uniqueFeedId}')">
+                            <div class="dot bg-${item.urgency}"></div>
+                            <div style="flex:1">
+                                <div style="display:flex; justify-content:space-between">
+                                    <span class="f-sp">${item.species}</span>
+                                    <span class="f-meta">${localTimeStr}</span>
+                                </div>
+                                <div style="margin-bottom: 6px;">${badgesHtml}</div>
+                                <span class="f-loc"><span class="type-icon">${typeIcon}</span>${item.stream}</span>
+                            </div>
+                        </div>`;
+            }); 
+            con.innerHTML = html; 
+            con.scrollTop = currentScroll; 
+        }
+        
+        function focusFeedTarget(id, feedSpecies, feedAudioId, feedTimestamp, feedMethod, feedDist, feedFrame, feedDomId) { 
+            if (markers[id]) { 
+                let customNode = JSON.parse(JSON.stringify(markers[id].data));
+                customNode.species = feedSpecies;
+                customNode.audio_id = feedAudioId;
+                customNode.detection_method = feedMethod;
+                customNode.dist = feedDist;
+                customNode.frame_size = feedFrame;
+                
+                if (feedTimestamp) {
+                    const diff = (new Date().getTime() / 1000) - feedTimestamp;
+                    if (diff < 180) { customNode.time_ago_str = 'LIVE NOW'; customNode.status = 'live'; }
+                    else if (diff < 3600) { customNode.time_ago_str = Math.floor(diff/60) + 'm ago'; customNode.status = 'recent'; }
+                    else { customNode.time_ago_str = Math.floor(diff/3600) + 'h ago'; customNode.status = 'dormant'; }
+                }
+                
+                customNode.image = '/api/image/' + encodeURIComponent(feedSpecies);
+                
+                const bioKw =["elephant", "rhinoceros", "hippopotamus", "wolf", "coyote", "hyena", "fox", "bear", "lion", "tiger", "leopard", "jaguar", "panther", "panda", "monkey", "gorilla", "ape", "chimpanzee", "gibbon", "baboon", "macaque", "lemur", "cow", "cattle", "sheep", "goat", "yak", "camel", "bovid", "zebra", "horse", "pig", "boar", "elk", "deer", "moose", "caribou", "antelope", "squirrel", "chipmunk", "bat", "mouse", "rat", "hare", "rabbit", "sea lion", "seal", "otter", "walrus", "whale", "dolphin", "porpoise", "frog", "toad", "peeper", "amphibian", "reptile", "snake", "alligator", "crocodile", "cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"];
+                const birdExc =["heron", "frogmouth", "cowbird", "egret", "finch", "dove", "tyrant", "woodpecker", "duck", "goose", "swan", "sparrow", "weaver", "bunting", "warbler", "thrush", "hawk", "eagle", "falcon", "owl", "gull", "tern", "wren", "bird"];
+                
+                let isBird = true;
+                let lowerSp = feedSpecies.toLowerCase();
+                if (birdExc.some(e => lowerSp.includes(e))) {
+                    isBird = true;
+                } else if (bioKw.some(e => lowerSp.includes(e))) {
+                    isBird = false;
+                }
+                
+                let secUrl = isBird ? 'https://www.allaboutbirds.org/guide/' + encodeURIComponent(feedSpecies) : 'https://www.inaturalist.org/search?q=' + encodeURIComponent(feedSpecies);
+                let secName = isBird ? 'ALL ABOUT BIRDS' : 'INATURALIST DATABASE';
+                
+                customNode.links = {
+                    wiki: 'https://en.wikipedia.org/wiki/' + feedSpecies.replace(/ /g, "_"),
+                    secondary: secUrl,
+                    secondary_name: secName
+                };
+                
+                lockedCustomNode = customNode;
+                engageSpotlight(customNode, feedDomId); 
+            } 
+        }
+        
+        function handleSearch() { const input = document.getElementById('search-input'); const clearBtn = document.getElementById('clear-search'); const term = input.value.toLowerCase(); clearBtn.style.display = term ? 'block' : 'none'; const items = document.querySelectorAll('.feed-item'); items.forEach(item => { const text = item.innerText.toLowerCase(); item.style.display = text.includes(term) ? 'flex' : 'none'; }); }
+        function clearSearch() { const input = document.getElementById('search-input'); input.value = ''; handleSearch(); renderFeed(currentData.feed); clearSpotlight(); }
+        setInterval(updateSystem, 10000); updateSystem();
+    </script>
+</body>
+</html>
