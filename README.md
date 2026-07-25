@@ -2,9 +2,9 @@
 
 > **An Asynchronous Presence Engine & Distributed Biological Sensor Network**
 
-Global Birdsong Radio (GBR) is a highly sophisticated, distributed monitoring platform that actively listens to and watches ~400 curated live nature streams (YouTube, HLS, IP Cams) across the globe. By utilizing a multi-layered AI pipeline, GBR filters out chaotic background noise and dynamically triggers alerts when it detects specific biological events—ranging from a rare bird singing to a Lion roaring on the African savanna.
+Global Birdsong Radio (GBR) is a distributed monitoring platform that actively listens to and watches ~400 curated live nature streams (YouTube, HLS, IP Cams) across the globe. By utilizing a multi-layered AI pipeline, GBR filters out chaotic background noise and dynamically triggers alerts when it detects specific biological events—ranging from a rare bird singing to a Lion roaring on the African savanna.
 
-Detections are plotted in real-time onto a live, public Web Map.
+Detections are plotted in real-time onto a live, public Web Map: https://wilddetection.net/
 
 ---
 
