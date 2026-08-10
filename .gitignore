@@ -34,6 +34,7 @@ Thumbs.db
 
 # Project Specific Secrets & Hardware State
 chrome_profiles/
+chromedriver.exe
 *_cookies*.txt
 deployment_secret.key
 api_pacing.json
@@ -48,4 +49,9 @@ intelligence_hub_settings.json
 log_analyzer_settings.json
 sync_proposals.json
 youtube_metadata_cache.json
+youtube_manifest_cache.json
+youtube_vision_cache.json
 hydra_heat_state.json
+
+# Exclude local tool sets
+GitHub_Prep_Tools/

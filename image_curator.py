@@ -1,7 +1,7 @@
 # FILE: image_curator.py
-# VERSION: 15.10 - "The False Ban Patch"
+# VERSION: 16.12 - "The Lazy BLOB Loading Patch"
 # RESPONSIBILITY: Instant Local UI load, background scraping, Cloud sync, and AI Content/License Moderation.
-# UPDATED: Fixed a massive flaw where Google's generic 15 RPM Speed Limit error was triggering the 24-hour Daily Quota ban. The script now ONLY bans a key if the error explicitly says "per day" or "daily".
+# UPDATED: Completely removed the 88MB RAM bottleneck. Switched from infinite scrolling to explicit Next/Prev pagination and implemented lazy BLOB loading to only fetch images for the current 100 rows.
 
 import sys
 import json
@@ -10,6 +10,7 @@ import requests
 import webbrowser
 import random
 import threading
+import math
 from pathlib import Path
 from urllib.parse import quote_plus
 from io import BytesIO
@@ -247,7 +248,6 @@ def run_ai_moderation(image_bytes, species_name):
             break
         except Exception as e:
             err_str = str(e).lower()
-            # --- THE FALSE BAN PATCH ---
             if "429" in err_str or "quota" in err_str or "exhausted" in err_str or "too many" in err_str:
                 if "per day" in err_str or "daily" in err_str:
                     mark_key_exhausted(api_key)
@@ -280,7 +280,6 @@ class NumericTableWidgetItem(QTableWidgetItem):
         try: return int(self.text()) < int(other.text())
         except: return super().__lt__(other)
 
-# --- THE C++ SEGFAULT / SORTING PATCH ---
 class DateTimeTableWidgetItem(QTableWidgetItem):
     def __lt__(self, other): 
         try:
@@ -433,7 +432,6 @@ def store_image_in_db(species_name, image_data, source_url, status, license_info
             cur.execute("INSERT OR REPLACE INTO species_images (species_name, image_data, source_url, last_updated, status, license_info, ai_notes) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                        (species_name, image_data, source_url, time.strftime('%Y-%m-%d %H:%M:%S'), status, license_info, ai_notes))
         except sqlite3.OperationalError:
-            # --- THE SCHEMA AGNOSTIC FALLBACK PATCH ---
             cur.execute("INSERT OR REPLACE INTO species_images (species_name, image_data, source_url, last_updated, status) VALUES (?, ?, ?, ?, ?)", 
                        (species_name, image_data, source_url, time.strftime('%Y-%m-%d %H:%M:%S'), status))
         con.commit()
@@ -552,7 +550,6 @@ class SyncThread(QThread):
                 title = result["title"]
                 if "List of" in title or "disambiguation" in title.lower(): continue
                 
-                # Extended API call to get Licensing Data
                 prop_url = f"https://en.wikipedia.org/w/api.php?action=query&titles={quote_plus(title)}&prop=pageimages|imageinfo&iiprop=extmetadata&format=json&pithumbsize=800"
                 r2 = requests.get(prop_url, headers=headers, timeout=10)
                 pages = r2.json().get("query", {}).get("pages", {})
@@ -563,7 +560,6 @@ class SyncThread(QThread):
                         lower_url = img_url.lower()
                         if any(bad in lower_url for bad in['map', 'range', 'distribution', '.svg', 'icon', 'logo', 'symbol']): continue
                         
-                        # Extract License Info
                         license_info = "Unknown License"
                         try:
                             if "imageinfo" in page_data:
@@ -574,10 +570,8 @@ class SyncThread(QThread):
                         img_bytes, final_url = self.download_and_process(img_url)
                         if not img_bytes: continue
                         
-                        # --- MODERATION FIREWALL ---
                         ai_status, ai_notes = run_ai_moderation(img_bytes, original_species_name)
                         
-                        # Check Legal Status
                         if ai_status == 'OK':
                             bad_licenses =["all rights reserved", "fair use", "non-free"]
                             if any(b in license_info.lower() for b in bad_licenses):
@@ -587,7 +581,6 @@ class SyncThread(QThread):
                         if ai_status == 'OK':
                             return img_bytes, final_url, ai_status, license_info, ai_notes
                         
-                        # If flagged content, quality, or legal, just continue to the next Wikipedia result!
                         continue
                         
             return None, None, None, None, None
@@ -612,6 +605,11 @@ class ImageCurator(QWidget):
         patch_database_encoding()
         self.is_syncing = False
         self._db_cache = {}
+        
+        self._all_sorted_species = []
+        self.current_page = 0
+        self.page_size = 100
+        
         self.init_ui()
         self.load_settings()
         QTimer.singleShot(500, self.refresh_table)
@@ -674,10 +672,24 @@ class ImageCurator(QWidget):
         self.table.verticalHeader().setDefaultSectionSize(120)
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_context_menu)
-        self.table.verticalScrollBar().valueChanged.connect(self.check_scroll_bottom)
+        
+        # --- PAGINATION LAYOUT ---
+        page_layout = QHBoxLayout()
+        self.btn_prev = QPushButton("< Prev Page")
+        self.btn_prev.clicked.connect(self.prev_page)
+        self.lbl_page = QLabel("Page 1 / 1")
+        self.lbl_page.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lbl_page.setStyleSheet("font-weight: bold; font-size: 14px;")
+        self.btn_next = QPushButton("Next Page >")
+        self.btn_next.clicked.connect(self.next_page)
+        
+        page_layout.addStretch()
+        page_layout.addWidget(self.btn_prev)
+        page_layout.addWidget(self.lbl_page)
+        page_layout.addWidget(self.btn_next)
+        page_layout.addStretch()
         
         bottom_layout = QHBoxLayout()
-        
         self.chk_failed_only = QCheckBox("Show Failed & Flagged Only")
         self.chk_failed_only.setStyleSheet("font-weight: bold;")
         self.chk_failed_only.toggled.connect(self.apply_filters)
@@ -696,6 +708,7 @@ class ImageCurator(QWidget):
 
         layout.addLayout(search_layout)
         layout.addWidget(self.table)
+        layout.addLayout(page_layout)
         layout.addLayout(bottom_layout)
         self.setLayout(layout)
 
@@ -721,6 +734,74 @@ class ImageCurator(QWidget):
             self.secondary_filter_combo.setStyleSheet("font-weight: bold; background-color: #555555; color: #aaaaaa;")
             self.secondary_filter_combo.setCurrentIndex(0)
         self.apply_filters()
+
+    def fetch_blobs(self, species_list):
+        if not species_list or not IMAGE_DB_PATH.exists(): return {}
+        blobs = {}
+        con = None
+        try:
+            con = sqlite3.connect(str(IMAGE_DB_PATH), timeout=15)
+            cur = con.cursor()
+            placeholders = ','.join(['?'] * len(species_list))
+            cur.execute(f"SELECT species_name, image_data FROM species_images WHERE species_name IN ({placeholders})", tuple(species_list))
+            for row in cur.fetchall():
+                blobs[row[0]] = row[1]
+        except Exception as e:
+            logging.error(f"Failed to fetch BLOBs: {e}")
+        finally:
+            if con: con.close()
+        return blobs
+
+    def prev_page(self):
+        if self.current_page > 0:
+            self.current_page -= 1
+            self.update_page_display()
+
+    def next_page(self):
+        max_pages = max(1, math.ceil(len(self._all_sorted_species) / self.page_size))
+        if self.current_page < max_pages - 1:
+            self.current_page += 1
+            self.update_page_display()
+
+    def update_page_display(self):
+        if not hasattr(self, '_all_sorted_species') or not self._all_sorted_species:
+            self.table.setRowCount(0)
+            self.lbl_page.setText("Page 1 / 1")
+            self.btn_prev.setEnabled(False)
+            self.btn_next.setEnabled(False)
+            self.status_label.setText("Status: Showing 0 species.")
+            return
+
+        start = self.current_page * self.page_size
+        end = start + self.page_size
+        page_data = self._all_sorted_species[start:end]
+        
+        max_pages = max(1, math.ceil(len(self._all_sorted_species) / self.page_size))
+        self.lbl_page.setText(f"Page {self.current_page + 1} / {max_pages}")
+        
+        self.btn_prev.setEnabled(self.current_page > 0)
+        self.btn_next.setEnabled(self.current_page < max_pages - 1)
+        
+        # Lazy BLOB loading for the current page ONLY
+        species_names = [sp for sp, count in page_data]
+        blobs = self.fetch_blobs(species_names)
+        
+        self.table.setSortingEnabled(False)
+        self.table.setRowCount(len(page_data))
+        self.table.setVerticalHeaderLabels([str(start + i + 1) for i in range(len(page_data))])
+        
+        img_info = self._db_cache.get('image_info', {})
+        last_alarm = self._db_cache.get('last_alarm', {})
+        last_det = self._db_cache.get('last_det', {})
+        
+        for i, (species, count) in enumerate(page_data):
+            # Inject the fetched blob into a local tuple specifically for this row
+            status, lic, notes = img_info.get(species, (None, 'PENDING', 'Unknown', ''))[1:]
+            row_img_info = {species: (blobs.get(species), status, lic, notes)}
+            self._populate_row(i, species, count, row_img_info, last_alarm, last_det)
+            
+        self.table.setSortingEnabled(True)
+        self.status_label.setText(f"Showing {start+1}-{min(end, len(self._all_sorted_species))} of {len(self._all_sorted_species)} species.")
 
     def _populate_row(self, i, species, count, image_info, last_alarm, last_det):
         """Populates a single row in the species image table."""
@@ -775,41 +856,6 @@ class ImageCurator(QWidget):
         cell_widget.setLayout(btn_lay)
         self.table.setCellWidget(i, 6, cell_widget)
 
-    def check_scroll_bottom(self, value):
-        # If user scrolls near the bottom, silently load the next batch
-        if value >= self.table.verticalScrollBar().maximum() - 2:
-            self._load_more_rows()
-
-    def _load_more_rows(self):
-        """Appends the next batch of rows silently when scrolling."""
-        if not hasattr(self, '_all_sorted_species') or not self._all_sorted_species:
-            return
-        PAGE_SIZE = 200
-        start = self._loaded_rows
-        total_species = len(self._all_sorted_species)
-        
-        if start >= total_species: 
-            return # Nothing left to load
-            
-        end = min(start + PAGE_SIZE, total_species)
-        self._loaded_rows = end
-        self.table.setRowCount(end)
-        
-        img_info = self._db_cache.get('image_info', {})
-        last_alarm = self._db_cache.get('last_alarm', {})
-        last_det = self._db_cache.get('last_det', {})
-        
-        self.table.setSortingEnabled(False)
-        for i, (species, count) in enumerate(self._all_sorted_species[start:end]):
-            self._populate_row(start + i, species, count, img_info, last_alarm, last_det)
-        self.table.setSortingEnabled(True)
-            
-        remaining = total_species - end
-        if remaining > 0:
-            self.status_label.setText(f"Showing {end} of {total_species} species. (Scroll down to load more)")
-        else:
-            self.status_label.setText(f"Status: Showing all {total_species} species.")
-
     def apply_filters(self):
         if not hasattr(self, '_db_cache'): return
         
@@ -850,30 +896,12 @@ class ImageCurator(QWidget):
                 
             filtered_data[sp] = count
 
-        # Sort and Paginate
-        PAGE_SIZE = 200
+        # Sort
         sorted_species = sorted(filtered_data.items(), key=lambda item: item[1], reverse=True)
-        total_species = len(sorted_species)
-
+        
         self._all_sorted_species = sorted_species
-        self._loaded_rows = min(PAGE_SIZE, total_species)
-        page = sorted_species[:self._loaded_rows]
-
-        self.table.setSortingEnabled(False)
-        self.table.setRowCount(len(page))
-
-        last_alarm = self._db_cache.get('last_alarm', {})
-        last_det = self._db_cache.get('last_det', {})
-
-        for i, (species, count) in enumerate(page):
-            self._populate_row(i, species, count, img_info, last_alarm, last_det)
-
-        self.table.setSortingEnabled(True)
-
-        if total_species > PAGE_SIZE:
-            self.status_label.setText(f"Showing {self._loaded_rows} of {total_species} species. (Scroll down to load more)")
-        else:
-            self.status_label.setText(f"Status: Showing all {total_species} species.")
+        self.current_page = 0
+        self.update_page_display()
 
     def retry_failed(self):
         if QMessageBox.question(self, "Confirm Retry", "Reset 'Failed' and 'Flagged' statuses to allow the AI to search Wikipedia again?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
@@ -931,18 +959,20 @@ class ImageCurator(QWidget):
                     img_con = sqlite3.connect(str(IMAGE_DB_PATH), timeout=15)
                     img_cur = img_con.cursor()
                     try:
-                        # --- THE SCHEMA AGNOSTIC FALLBACK PATCH ---
-                        img_cur.execute("SELECT species_name, image_data, status, license_info, ai_notes FROM species_images")
-                        image_info = {row[0]: (row[1], row[2], row[3], row[4]) for row in img_cur.fetchall()}
+                        # --- THE LAZY BLOB PATCH ---
+                        # We NO LONGER load the 88MB image_data column for every single row. 
+                        # We only load text metadata so the cache stays tiny and fast.
+                        img_cur.execute("SELECT species_name, status, license_info, ai_notes FROM species_images")
+                        image_info = {row[0]: (None, row[1], row[2], row[3]) for row in img_cur.fetchall()}
                     except sqlite3.OperationalError:
-                        img_cur.execute("SELECT species_name, image_data, status FROM species_images")
-                        image_info = {row[0]: (row[1], row[2], 'Unknown', '') for row in img_cur.fetchall()}
+                        img_cur.execute("SELECT species_name, status FROM species_images")
+                        image_info = {row[0]: (None, row[1], 'Unknown', '') for row in img_cur.fetchall()}
                 except Exception as e:
                     logging.error(f"Failed to connect to image DB for UI refresh: {e}")
                 finally:
                     if img_con: img_con.close()
             
-            # Store everything in memory cache
+            # Store everything in memory cache (Note: NO blobs are in this cache anymore!)
             self._db_cache = {
                 'detection_counts': detection_counts,
                 'visual_species': visual_species,

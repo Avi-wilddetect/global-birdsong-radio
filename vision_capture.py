@@ -1,6 +1,6 @@
 # FILE: vision_capture.py
-# VERSION: 16.11 - "The Clean Silence & Directory Patch"
-# UPDATED: Removed destructive monkeypatches. Fixed mkdtemp typo causing Chrome crashes. Used os.name == 'nt' to cleanly silence Windows command prompts.
+# VERSION: 16.12 - "The Bulletproof Format & Crash Fix Patch"
+# UPDATED: Removed the crash-inducing -err_detect ignore_err FFmpeg flag to mirror the audio engine patch. Fixed mkdtemp typo causing Chrome crashes. Used os.name == 'nt' to cleanly silence Windows command prompts.
 
 import sys
 import os
@@ -154,13 +154,12 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
 
     if "youtube.com" not in target_url and "youtu.be" not in target_url:
         try:
-            # --- FFmpeg Resiliency Patch: Add reconnect and error-ignore flags ---
+            # --- FFmpeg Resiliency Patch: Crash Fix (Removed -err_detect ignore_err) ---
             ff_cmd =[
                 str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe"), "-y", "-hide_banner", "-loglevel", "error",
                 "-reconnect", "1", 
                 "-reconnect_streamed", "1", 
-                "-reconnect_delay_max", "5",
-                "-err_detect", "ignore_err"
+                "-reconnect_delay_max", "5"
             ]
             if proxy_url and proxy_url != "None": ff_cmd.extend(["-http_proxy", proxy_url])
             ff_cmd.extend(["-i", target_url, "-vframes", "1", "-q:v", frame_quality, "-t", "5", str(output_path)])

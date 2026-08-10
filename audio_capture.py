@@ -1,6 +1,6 @@
 # FILE: audio_capture.py
-# VERSION: 8.0 - "The FFmpeg Native Routing Patch"
-# UPDATED: Completely removed the fragile Python chunk downloader. ALL media URLs (including YouTube) are now routed directly into FFmpeg to prevent 403 Forbidden chunk drops. Expanded YOUTUBE_BLOCK traps to catch "Requested format" errors and trigger the Auto-Healer.
+# VERSION: 8.1 - "The Bulletproof Format & Crash Fix Patch"
+# UPDATED: Removed the crash-inducing -err_detect ignore_err FFmpeg flag. Relaxed the yt-dlp format filter to grab ANY available audio/video stream to prevent 'requested format is not available' blocks.
 
 import os
 import time
@@ -146,7 +146,7 @@ class AudioCaptureEngine:
 
         if is_youtube:
             ydl_opts = {
-                'format': 'bestaudio[protocol^=m3u8]/best[protocol^=m3u8]/bestaudio/best/ba/b',
+                'format': 'bestaudio/best/bv*+ba/b',
                 'quiet': True,
                 'nocheckcertificate': True,
                 'compat_opts':['allow-un-sandboxed-javascript'],
@@ -328,13 +328,12 @@ class AudioCaptureEngine:
     def _execute_ffmpeg(self, url, capture_seconds, headers_list, stream_type, use_proxy, proxy_url, interface_name):
         ffmpeg_exe = str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe")
         
-        # --- FFmpeg Resiliency Patch: Add reconnect and error-ignore flags ---
+        # --- FFmpeg Resiliency Patch: Crash Fix (Removed -err_detect ignore_err) ---
         ff_cmd =[
             ffmpeg_exe, "-y", "-hide_banner", "-loglevel", "error",
             "-reconnect", "1", 
             "-reconnect_streamed", "1", 
-            "-reconnect_delay_max", "5",
-            "-err_detect", "ignore_err"
+            "-reconnect_delay_max", "5"
         ]
 
         if use_proxy and proxy_url and proxy_url != "None":
