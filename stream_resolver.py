@@ -1,7 +1,7 @@
 # FILE: stream_resolver.py
-# VERSION: 4.77 - "The Clean Silence & Sys Patch"
+# VERSION: 4.79 - "The Web Client Restoration Patch"
 # PURPOSE: Resolves streams using HTTP Headers, yt-dlp, Static Regex, and Headless Browser Network Sniffing.
-# UPDATED: Removed destructive monkeypatches. Properly imported sys and os to securely silence Windows command prompts for Node and Selenium.
+# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
 
 import sys
 import os
@@ -14,7 +14,7 @@ import time
 import subprocess
 from pathlib import Path
 
-print("DEBUG: Stream Resolver v4.77 (Clean Silence & Sys Patch) Loaded")
+print("DEBUG: Stream Resolver v4.79 (Web Client Restoration Patch) Loaded")
 
 # --- GLOBAL NODE.JS PATH INJECTION ---
 def ensure_node_in_path():

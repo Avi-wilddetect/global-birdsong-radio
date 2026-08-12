@@ -60,16 +60,19 @@ except ImportError:
 from config_editor_utils import ChromeMaintenance, haversine_distance
 from config_editor_threads import StreamCheckThread
 from config_editor_dialogs import (
-    StreamAuditDialog,
     AdvancedSettingsDialog,
     SaveConfirmDialog,
     TieredCooldownDialog,
     ResetConfirmDialog,
+    EngineConfigDialog
+)
+
+from config_editor_sys_dialogs import (
+    StreamAuditDialog,
     HousekeepingManagerDialog,
     LogParserWorker,
     NetworkTelemetryDialog,
-    ScrollStealFilter,
-    EngineConfigDialog
+    ScrollStealFilter
 )
 
 import db_connector

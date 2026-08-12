@@ -1,6 +1,6 @@
 # FILE: audio_capture.py
-# VERSION: 8.1 - "The Bulletproof Format & Crash Fix Patch"
-# UPDATED: Removed the crash-inducing -err_detect ignore_err FFmpeg flag. Relaxed the yt-dlp format filter to grab ANY available audio/video stream to prevent 'requested format is not available' blocks.
+# VERSION: 8.4 - "The Web Client Restoration Patch"
+# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
 
 import os
 import time
@@ -142,7 +142,7 @@ class AudioCaptureEngine:
 
         ext_strat = self.g_cfg.get('extraction_strategy', {})
         clients =[c.strip() for c in ext_strat.get('player_client', 'web').split(',') if c.strip()]
-        if not clients: clients =['web']
+        if not clients: clients = ['web']
 
         if is_youtube:
             ydl_opts = {
@@ -215,8 +215,6 @@ class AudioCaptureEngine:
                 if "vod_rejected" in e_str.lower() or "is not available" in e_str.lower() or "private video" in e_str.lower():
                     raise e 
                 
-                # --- THE EXPANDED YOUTUBE BLOCK TRAP ---
-                # Now catches "Requested format" errors caused by client mismatch, instantly triggering the Auto-Healer Sniffer.
                 block_markers = ["no video formats found", "sign in to confirm you", "bot", "requested format is not available", "only images are available"]
                 if any(x in e_str.lower() for x in block_markers):
                     raise RuntimeError(f"YOUTUBE_BLOCK: {e_str}")
@@ -232,12 +230,8 @@ class AudioCaptureEngine:
         if not m3u8_url:
             raise RuntimeError("Extraction failed: No media URL resolved. YouTube proxy IP blocked or stream offline.")
 
-        # --- THE FFMPEG NATIVE ROUTING PATCH (v8.0) ---
-        # Instead of manually downloading .ts chunks with python requests (which triggers 403 Forbidden errors),
-        # we now pass ALL links (including YouTube HLS) directly into FFmpeg.
         logging.info(f"[{self.lid}] Routing extracted media URL directly to FFmpeg...")
         
-        # Ensure Referer is set if we bypassed yt-dlp
         if original_url and "Referer" not in headers_dict:
             headers_dict["Referer"] = original_url
             
@@ -266,7 +260,6 @@ class AudioCaptureEngine:
         is_yt_origin = original_url and ("youtube.com" in original_url or "youtu.be" in original_url)
         is_cached_manifest = "manifest.googlevideo.com" in clean_url or "googlevideo.com" in clean_url
 
-        # All YouTube-origin streams are routed through the extraction engine
         if stream_type == 'youtube' or is_cached_manifest or is_yt_origin:
             if is_cached_manifest:
                 target = clean_url
@@ -307,7 +300,6 @@ class AudioCaptureEngine:
                         raise RuntimeError(f"Selenium Sniffer failed to find stream: {msg}")
                 raise e
 
-        # Pure Non-YouTube HLS / Direct streams
         try:
             headers_list =[]
             if original_url: headers_list.append(f"Referer: {original_url}")
@@ -328,7 +320,6 @@ class AudioCaptureEngine:
     def _execute_ffmpeg(self, url, capture_seconds, headers_list, stream_type, use_proxy, proxy_url, interface_name):
         ffmpeg_exe = str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe")
         
-        # --- FFmpeg Resiliency Patch: Crash Fix (Removed -err_detect ignore_err) ---
         ff_cmd =[
             ffmpeg_exe, "-y", "-hide_banner", "-loglevel", "error",
             "-reconnect", "1", 
@@ -343,9 +334,14 @@ class AudioCaptureEngine:
         ua = ext_strat.get('ffmpeg_user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
         
         header_str = f"User-Agent: {ua}\r\n"
+        
+        if "youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url:
+            header_str += "Cookie: CONSENT=YES+cb; SOCS=CAI;\r\n"
+        
         if headers_list:
             for h in headers_list:
-                if not h.lower().startswith("user-agent:"): header_str += f"{h}\r\n"
+                if not h.lower().startswith("user-agent:") and not h.lower().startswith("cookie:"): 
+                    header_str += f"{h}\r\n"
 
         ff_cmd.extend(["-headers", header_str])
         ff_cmd.extend(["-i", url])
@@ -377,7 +373,6 @@ class AudioCaptureEngine:
 
             if interface_name and interface_name != "Default / OS":
                 try: 
-                    # 128KB/sec is a realistic estimate for audio streaming bandwidth
                     network_manager.log_app_usage(interface_name, 'audio', int(capture_seconds * 128 * 1024))
                 except Exception: pass
 

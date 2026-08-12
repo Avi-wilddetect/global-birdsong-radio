@@ -1,6 +1,6 @@
 # FILE: vision_capture.py
-# VERSION: 16.12 - "The Bulletproof Format & Crash Fix Patch"
-# UPDATED: Removed the crash-inducing -err_detect ignore_err FFmpeg flag to mirror the audio engine patch. Fixed mkdtemp typo causing Chrome crashes. Used os.name == 'nt' to cleanly silence Windows command prompts.
+# VERSION: 16.16 - "The Web Client Restoration Patch"
+# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
 
 import sys
 import os
@@ -93,7 +93,7 @@ def extract_stream_url(raw_url, cookies_path=None, proxy_url=None, resolution="7
         
         # --- THE SNIFFER FALLBACK PATCH ---
         # Intercept YouTube Blocks - gracefully skip to Selenium Fallback instead of crashing
-        if "no video formats found" in e1_str or "sign in to confirm you" in e1_str or "bot" in e1_str:
+        if "no video formats found" in e1_str or "sign in to confirm you" in e1_str or "bot" in e1_str or "requested format is not available" in e1_str:
             v_logger.warning(f"YOUTUBE_BLOCK: yt-dlp hit a wall. Forcing direct Selenium capture...")
             return clean_url, True, []
             
@@ -154,7 +154,6 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
 
     if "youtube.com" not in target_url and "youtu.be" not in target_url:
         try:
-            # --- FFmpeg Resiliency Patch: Crash Fix (Removed -err_detect ignore_err) ---
             ff_cmd =[
                 str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe"), "-y", "-hide_banner", "-loglevel", "error",
                 "-reconnect", "1", 
@@ -162,6 +161,13 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
                 "-reconnect_delay_max", "5"
             ]
             if proxy_url and proxy_url != "None": ff_cmd.extend(["-http_proxy", proxy_url])
+            
+            header_str = f"User-Agent: {ua}\r\n"
+            if headers_list:
+                for h in headers_list:
+                    if not h.lower().startswith("user-agent:"): header_str += f"{h}\r\n"
+            ff_cmd.extend(["-headers", header_str])
+            
             ff_cmd.extend(["-i", target_url, "-vframes", "1", "-q:v", frame_quality, "-t", "5", str(output_path)])
             creation_flags = subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
             ff_proc = subprocess.Popen(ff_cmd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, creationflags=creation_flags)
@@ -212,6 +218,14 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
             service.creation_flags = subprocess.CREATE_NO_WINDOW
         driver = webdriver.Chrome(service=service, options=opts)
         
+        # --- THE COOKIE WALL BYPASS PATCH ---
+        try:
+            driver.execute_cdp_cmd('Network.enable', {})
+            driver.execute_cdp_cmd('Network.setCookie', {'domain': '.youtube.com', 'name': 'CONSENT', 'value': 'YES+cb', 'path': '/'})
+            driver.execute_cdp_cmd('Network.setCookie', {'domain': '.youtube.com', 'name': 'SOCS', 'value': 'CAI', 'path': '/'})
+        except Exception as e:
+            v_logger.warning(f"Could not inject CDP bypass cookies: {e}")
+            
         # INCREASED TIMEOUT: From 15s to 30s for slower cellular proxies
         driver.set_page_load_timeout(30)
         try: driver.get(target_url)
@@ -226,6 +240,8 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
         style.textContent = `
             body, html { background: black !important; overflow: hidden !important; }
             .ytp-chrome-top, .ytp-chrome-bottom, .ytp-watermark, .ytp-show-cards-title, .ytp-ce-element, .ytp-ad-module, .ytp-pause-overlay, .ytp-progress-bar-container, .ytp-progress-bar, .ytp-play-progress, .ytp-load-progress, .ytp-scrubber-container, .ytp-chapters-container, .ytp-heat-map-container, .ytp-error { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+            /* Hide modal backdrops and popups entirely */
+            ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop { display: none !important; opacity: 0 !important; pointer-events: none !important; }
             video { 
                 position: fixed !important; 
                 top: 0 !important; 
@@ -243,6 +259,9 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
         document.documentElement.appendChild(style);
 
         setInterval(function() {
+            // Nuke dialogs aggressively from DOM
+            document.querySelectorAll('ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop').forEach(el => el.remove());
+            
             let v = document.querySelector('video');
             if (v && v.paused) {
                 v.muted = true;
