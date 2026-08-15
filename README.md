@@ -32,7 +32,8 @@ Designed to run on a local, high-performance Windows PC, the Edge Node does the 
 ### 2. The Cloud Node ("The Brain")
 Designed for a lightweight Linux VPS (e.g., DigitalOcean) running Docker.
 * **Infrastructure:** Nginx + Gunicorn + Flask API, backed by a PostgreSQL database.
-* **The Web Map:** Serves a dynamic Leaflet.js map (`map_template.html`), managing API routes, dynamically balancing map slots between Audio and Vision detections, and acting as a secure HLS reverse proxy. The Cloud Node *never* scrapes YouTube directly.
+* **The Web Map & Reverse Proxy:** Serves a dynamic Leaflet.js map (`map_template.html`), silently intercepting and rewriting `.m3u8` manifests to defeat YouTube CORS restrictions for native in-browser playback. The Cloud Node *never* scrapes YouTube directly.
+* **Ecological Clustering:** The web interface features dynamic rendering logic that organizes chronological feed data into **Biodiversity Bursts** (spiderifying multiple species detected simultaneously on one camera) and **Regional Swarms** (dynamically drawing Haversine bounding boxes around a single species detected across multiple regional cameras).
 
 ---
 
@@ -63,7 +64,7 @@ GBR doesn't just blindly pass streams to an AI; it uses a highly engineered, cro
 **Cloud Node (Linux/VPS):**
 1. Install Docker and Docker Compose.
 2. Clone the repository and configure your generic placeholders in `birdnet_config.json`.
-3. Run `docker-compose up -d --build`.
+3. Run `docker compose up -d --build`.
 
 **Edge Node (Windows):**
 1. Install Python 3.11+.
