@@ -17875,6 +17875,144 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
+    },
+    "Alligator Lizard": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Leopard Tortoise": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Courser": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Egret Chick": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Small Freshwater Fish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Black Carp": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Passerine Birds": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Soft Coral Nudibranch": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Great Black-Backed Gull": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Anemone": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Yellow Boxfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Brown Snake Eagle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Wolverine": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "North American Badger": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "California Scrub-Jay": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Australian Raven": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Eaglet (Young Bald Eagle)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Prairie Rattlesnake": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
     }
   },
   "assignments": {

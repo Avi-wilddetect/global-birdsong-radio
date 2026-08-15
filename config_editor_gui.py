@@ -1,7 +1,7 @@
 # FILE: config_editor_gui.py
-# VERSION: 12.8 - "The Permanent Title Storage Patch"
+# VERSION: 13.1 - "The Temporal Clustering Patch"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Injected logic to actively capture and store the real YouTube title as "original_yt_title" whenever a stream is tested via "Check URL" or resolved via the "Magic Wand". This data is now permanently saved to birdnet_config.json to insulate the Sync Engine from Cache Wipes.
+# UPDATED: Injected the new 'group_time_gap_mins' default into the map_settings dictionary.
 
 import sys
 import json
@@ -60,12 +60,13 @@ except ImportError:
 from config_editor_utils import ChromeMaintenance, haversine_distance
 from config_editor_threads import StreamCheckThread
 from config_editor_dialogs import (
-    AdvancedSettingsDialog,
     SaveConfirmDialog,
     TieredCooldownDialog,
     ResetConfirmDialog,
     EngineConfigDialog
 )
+
+from config_editor_advanced_gui import AdvancedSettingsDialog
 
 from config_editor_sys_dialogs import (
     StreamAuditDialog,
@@ -136,7 +137,6 @@ def send_and_log_system_alert(bot_token, chat_id, message, event_type):
 # ==============================================================================
 
 class ResolutionThread(QThread):
-    # Added title output string
     result_ready = pyqtSignal(object, object, str, str, str)
 
     def __init__(self, url):
@@ -160,7 +160,6 @@ class ResolutionThread(QThread):
             logging.warning(f"Failed to extract title in resolver thread: {e}")
         
         try:
-            # We enforce fast mode here so the UI check doesn't hang the app for 25s
             links, stype, msg = stream_resolver.resolve_stream_url(self.url, fast_mode=True)
             if links:
                 self.result_ready.emit(True, links, stype, msg, title)
@@ -531,7 +530,7 @@ class ConfigEditor(QWidget):
         self._pending_original_url = ""
         self._pending_stream_type = "youtube"
         self._pending_resolved_url = "" 
-        self._pending_yt_title = "" # Added to safely store YouTube titles between actions
+        self._pending_yt_title = "" 
         
         self.engine_params = {
             'fast_mode_enabled': True,
@@ -596,11 +595,10 @@ class ConfigEditor(QWidget):
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
                 settings = cfg.get("sync_engine_settings", {})
                 hours = settings.get("scan_interval_hours", 24)
-                # Minimum 1 hour to prevent runaway spam loops
                 ms = max(3600000, int(hours * 3600 * 1000))
                 self.auto_sync_timer.start(ms)
         except:
-            self.auto_sync_timer.start(86400000) # 24h default
+            self.auto_sync_timer.start(86400000) 
             
     def run_auto_sync(self):
         if getattr(self, 'auto_sync_worker', None) and self.auto_sync_worker.isRunning():
@@ -622,7 +620,6 @@ class ConfigEditor(QWidget):
             
             for p in proposals:
                 if auto_heal and p.get("auto_heal_eligible"):
-                    # Auto-heal it safely
                     old_url = p.get('old_url')
                     old_name = p.get('friendly_name')
                     
@@ -657,7 +654,6 @@ class ConfigEditor(QWidget):
                 if not self.is_dirty:
                     self.load_config() 
                     
-            # Save remaining proposals for Discovery Hub
             SYNC_PROPOSALS_FILE.write_text(json.dumps(remaining_proposals, indent=2), encoding='utf-8')
             
         except Exception as e:
@@ -1260,7 +1256,6 @@ class ConfigEditor(QWidget):
             self.unsaved_network_map = new_net_map
             self.update_engine_status_label()
             
-            # Save the new interval immediately to update the AutoSync timer
             self.save_config(show_confirmation=False)
             self.update_auto_sync_timer()
             
@@ -1584,7 +1579,13 @@ class ConfigEditor(QWidget):
                 "tiered_cooldowns": TieredCooldownDialog.get_default_tiered_config(), 
                 "distance_estimation": {"enabled": True, "alert_distances":["Very Near", "Near"]}, 
                 
-                "map_settings": {"live_window_seconds": 120, "audio_vision_ratio": 70, "target_map_capacity": 50, "target_sidebar_capacity": 50}, 
+                "map_settings": {
+                    "live_window_seconds": 120, "audio_vision_ratio": 70, 
+                    "target_map_capacity": 50, "target_sidebar_capacity": 50,
+                    "group_feed_history": False, "max_grouping_age_mins": 60, "group_time_gap_mins": 15,
+                    "enable_bursts": True, "spiderify_radius": 0.025, "burst_zoom_level": 13,
+                    "enable_swarms": True, "swarm_max_distance_km": 500, "swarm_bbox_padding": 1.5, "swarm_max_zoom": 6
+                }, 
                 
                 "browser_automation": {"enabled": True, "chrome_profile_path": "", "webdriver_path": ""},
                 
@@ -1672,12 +1673,21 @@ class ConfigEditor(QWidget):
             self.unsaved_channels = copy.deepcopy(disk_cfg.get("channels", {}))
             
             map_cfg = disk_cfg.get("map_settings", {})
-            if "audio_vision_ratio" not in map_cfg:
-                map_cfg["audio_vision_ratio"] = 70
-            if "target_map_capacity" not in map_cfg:
-                map_cfg["target_map_capacity"] = 50
-            if "target_sidebar_capacity" not in map_cfg:
-                map_cfg["target_sidebar_capacity"] = 50
+            if "audio_vision_ratio" not in map_cfg: map_cfg["audio_vision_ratio"] = 70
+            if "target_map_capacity" not in map_cfg: map_cfg["target_map_capacity"] = 50
+            if "target_sidebar_capacity" not in map_cfg: map_cfg["target_sidebar_capacity"] = 50
+            
+            if "group_feed_history" not in map_cfg: map_cfg["group_feed_history"] = False
+            if "max_grouping_age_mins" not in map_cfg: map_cfg["max_grouping_age_mins"] = 60
+            if "group_time_gap_mins" not in map_cfg: map_cfg["group_time_gap_mins"] = 15
+            if "enable_bursts" not in map_cfg: map_cfg["enable_bursts"] = True
+            if "spiderify_radius" not in map_cfg: map_cfg["spiderify_radius"] = 0.025
+            if "burst_zoom_level" not in map_cfg: map_cfg["burst_zoom_level"] = 13
+            if "enable_swarms" not in map_cfg: map_cfg["enable_swarms"] = True
+            if "swarm_max_distance_km" not in map_cfg: map_cfg["swarm_max_distance_km"] = 500
+            if "swarm_bbox_padding" not in map_cfg: map_cfg["swarm_bbox_padding"] = 1.5
+            if "swarm_max_zoom" not in map_cfg: map_cfg["swarm_max_zoom"] = 6
+            
             map_cfg.pop("min_vision_fallback", None)
             self.unsaved_map_config = copy.deepcopy(map_cfg)
             

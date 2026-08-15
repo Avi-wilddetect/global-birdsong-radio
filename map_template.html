@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Global Nervous System v40.6.2 </title>
+    <title>Global Nervous System v41.1 (Temporal Clustering Patch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -16,7 +16,7 @@
         
         .leaflet-tile-pane { filter: brightness(0.9) contrast(1.1) saturate(1.1); }
         
-        /* Tooltip Styling - WIDENED TO FIT THUMBNAIL */
+        /* Tooltip Styling */
         .leaflet-tooltip { 
             background: rgba(0,0,0,0.95) !important; 
             border: 1px solid #555 !important; 
@@ -33,7 +33,6 @@
             word-wrap: break-word;
             text-align: left; 
         }
-        /* Handle all 4 tooltip arrow directions for dark mode */
         .leaflet-tooltip-top:before { border-top-color: #333; }
         .leaflet-tooltip-bottom:before { border-bottom-color: #333; }
         .leaflet-tooltip-left:before { border-left-color: #333; }
@@ -69,7 +68,6 @@
             pointer-events: none;
         }
 
-        /* NEW MAINTENANCE BANNER */
         #maintenance-banner {
             display: none;
             position: absolute;
@@ -86,7 +84,7 @@
             z-index: 99998;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6);
             border: 2px solid #FFb74D;
-            pointer-events: none; /* Allows clicking through to the map underneath */
+            pointer-events: none;
             text-align: center;
             max-width: 60%;
             letter-spacing: 0.5px;
@@ -101,14 +99,49 @@
         #submit-trigger { margin-left: 8px; font-size: 20px; color: #00E5FF; opacity: 0.3; cursor: pointer; transition: all 0.3s; }
         #submit-trigger:hover { opacity: 1; text-shadow: 0 0 8px #00E5FF; }
         
-        .feed-list { flex: 1; overflow-y: auto; }
-        .feed-item { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: flex-start; transition: all 0.2s; border-left: 4px solid transparent; }
+        .feed-list { flex: 1; overflow-y: auto; padding: 8px; }
+        
+        /* NEW GROUPING CSS WITH DISTINCT SELECTION STATES */
+        .feed-group {
+            border: 2px solid #444;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: rgba(30, 30, 30, 0.8);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .feed-group.group-a { border-color: rgba(171, 71, 188, 0.8); background: rgba(171, 71, 188, 0.1); box-shadow: 0 4px 12px rgba(171,71,188,0.15); }
+        .feed-group.group-b { border-color: rgba(0, 229, 255, 0.8); background: rgba(0, 229, 255, 0.1); box-shadow: 0 4px 12px rgba(0,229,255,0.15); }
+        
+        .feed-group.active-group { border-color: #fff !important; box-shadow: 0 0 20px rgba(255,255,255,0.3) !important; background: rgba(255,255,255,0.15) !important; }
+
+        .group-header {
+            padding: 8px 12px;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: background 0.2s;
+        }
+        .group-header:hover { background: rgba(255,255,255,0.1); }
+        .feed-group.group-a .group-header { color: #E1BEE7; border-bottom: 1px solid rgba(171, 71, 188, 0.3); }
+        .feed-group.group-b .group-header { color: #B2EBF2; border-bottom: 1px solid rgba(0, 229, 255, 0.3); }
+        
+        .group-subtext { font-size: 10px; color: #aaa; margin-top: 4px; font-weight: normal; }
+        .group-items { display: flex; flex-direction: column; }
+        
+        /* ADJUSTED INDIVIDUAL FEED ITEM CSS */
+        .feed-item { padding: 10px; border-bottom: 1px solid #222; cursor: pointer; display: flex; align-items: flex-start; transition: all 0.2s; border-left: 3px solid transparent; background: transparent; user-select: none; }
+        .feed-item:last-child { border-bottom: none; }
         .feed-item:hover { background: #222; }
-        .feed-item.active-item { border-left: 4px solid #00E5FF !important; background: linear-gradient(90deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%); box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.05); }
-        .feed-item.active-item .f-sp { color: #00E5FF; text-shadow: 0 0 8px rgba(0,229,255,0.6); }
+        .feed-item.active-item { border-left: 3px solid #fff !important; background: rgba(255,255,255,0.1); box-shadow: inset 0 0 15px rgba(255,255,255,0.05); }
+        .feed-item.active-item .f-sp { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
         .feed-item.active-item .f-meta { color: #fff; }
+        
         .urgency-red { border-left-color: #FF3D00; background: rgba(255, 61, 0, 0.05); }
-        .urgency-orange { border-left-color: #FFC107; }
+        .urgency-orange { border-left-color: #FFC107; background: rgba(255, 193, 7, 0.05); }
         .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; margin-right: 10px; flex-shrink: 0; }
         .bg-red { background: #FF3D00; box-shadow: 0 0 8px #FF3D00; }
         .bg-orange { background: #FFC107; }
@@ -117,7 +150,7 @@
         .f-sp { font-weight: 700; font-size: 14px; display: block; color: #eee; margin-bottom: 2px;}
         .f-loc { font-size: 11px; color: #666; display: block; margin-top: 4px; margin-bottom: 4px;}
         .type-icon { font-size: 14px; margin-right: 5px; }
-        .mig-icon { font-size: 12px; margin-left: 5px; color: #00E5FF; }
+
         #intel-panel { position: absolute; top: 0; left: -400px; width: 390px; height: 100vh; background: #0a0a0a; border-right: 1px solid #333; z-index: 2000; transition: left 0.3s cubic-bezier(0.2, 1, 0.3, 1); display: flex; flex-direction: column; }
         #intel-panel.open { left: 0; }
         .vid-box { position: relative; width: 100%; height: 240px; background: #000; border-bottom: 1px solid #333; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -138,7 +171,6 @@
         .close-x { position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; z-index: 2005; }
         .visible-anchor { position: relative; width: 0px !important; height: 0px !important; overflow: visible !important; }
         
-        /* AURA REDUCTION APPLIED HERE */
         .pulse-core { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; background-size: cover; background-position: center 20%; transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s; box-sizing: border-box; cursor: pointer; }
         .pulse-core.shape-circle { border-radius: 50%; }
         .pulse-core.shape-square { border-radius: 20%; }
@@ -148,8 +180,9 @@
         .pulse-core.status-listening { width: 14px; height: 14px; background-color: #00E5FF; border: 1px solid #fff; box-shadow: 0 0 10px #00E5FF; z-index: 50; animation: radar-ping 2.5s infinite; }
         
         .visible-anchor.target-active { z-index: 9999 !important; }
-        .visible-anchor.target-active::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border: 1px dashed #00E5FF; border-radius: 50%; box-shadow: 0 0 8px #00E5FF, inset 0 0 4px #00E5FF; animation: target-spin 6s linear infinite; pointer-events: none; z-index: -1; }
-        .visible-anchor.target-active::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; animation: target-pulse 2s ease-out infinite; pointer-events: none; z-index: -2; }
+        /* TIGHTER SPOTLIGHT RING */
+        .visible-anchor.target-active::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border: 1px dashed #fff; border-radius: 50%; box-shadow: 0 0 8px #fff, inset 0 0 4px #fff; animation: target-spin 6s linear infinite; pointer-events: none; z-index: -1; }
+        .visible-anchor.target-active::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 54px; height: 54px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; animation: target-pulse 2s ease-out infinite; pointer-events: none; z-index: -2; }
         @keyframes target-spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes target-pulse { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; } }
         @keyframes radar-ping { 0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); } }
@@ -175,7 +208,7 @@
     <div id="map"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v40.6.2</div>
+    <div class="version-tag">v41.1</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -228,20 +261,28 @@
         
         map.on('click', () => { 
             clearSpotlight(); 
-            closePanel(); 
-            map.eachLayer(function(layer) {
-                if (layer.getTooltip && layer.isTooltipOpen()) {
-                    layer.closeTooltip();
-                }
-            });
         });
         
-        const markers = {}; let currentData = { nodes: [], feed:[] };
-        let activeFocusId = null, currentExternalLink = null, activeAudio = null, activeHls = null; 
+        // HAVERSINE DISTANCE MATH (Idea B)
+        function getDistanceKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        const markers = {}; let currentData = { nodes: [], feed:[], map_settings: {} };
+        let activeFocusIds = []; 
+        let currentExternalLink = null, activeAudio = null, activeHls = null; 
         let activeFeedDomId = null; 
         let currentOpenStreamId = null;
         let lockedCustomNode = null;
         let connectionLostTime = null;
+        let activeRegionBox = null; // Polygon for Idea B Swarms
 
         function getBadgesHtml(method, dist, frameSize) {
             let m = method || 'audio';
@@ -255,7 +296,6 @@
             
             let html = `<div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size:10px; color:${modColor}; border:1px solid ${modColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;">${modIcon} ${modText}</span>`;
             
-            // Depth / Distance Badge
             if (d !== 'Bio-Match' && d !== 'Unknown' && !d.includes('Multimodal') && !d.includes('Visual')) {
                 let ctxColor = '#aaa';
                 let dUp = d.toUpperCase();
@@ -267,7 +307,6 @@
                 html += `<span style="font-size:10px; color:${ctxColor}; border:1px solid ${ctxColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="3D Physical Depth">${distLabel}</span>`;
             }
 
-            // Frame Size Badge
             if (f !== 'N/A' && f !== 'NONE' && f !== 'Unknown' && f) {
                 let fUp = f.toUpperCase();
                 html += `<span style="font-size:10px; color:#00E5FF; border:1px solid #00E5FF; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="2D Pixel Footprint">FRAME: ${fUp}</span>`;
@@ -286,9 +325,8 @@
                 const response = await fetch('/data', { cache: 'no-store' }); 
                 const data = await response.json(); 
                 
-                connectionLostTime = null; // Reset error tracker on success
+                connectionLostTime = null;
 
-                // 1. Handle Maintenance Banner
                 const maintBanner = document.getElementById('maintenance-banner');
                 if (data.maintenance_mode === true) {
                     maintBanner.style.display = 'block';
@@ -296,7 +334,6 @@
                     maintBanner.style.display = 'none';
                 }
 
-                // 2. Handle Error Banner
                 const banner = document.getElementById('error-banner'); 
                 if (data.error) { 
                     banner.innerHTML = "⚠ SYSTEM ERROR: " + data.error; banner.style.display = 'block'; 
@@ -307,6 +344,10 @@
                 } 
                 
                 currentData = data; 
+                if (!currentData.map_settings) {
+                    currentData.map_settings = {}; // Failsafe
+                }
+                
                 renderMap(data.nodes); 
                 if (document.getElementById('search-input').value === '') { 
                     renderFeed(data.feed); 
@@ -326,17 +367,32 @@
         function getZIndex(status) { if (status === 'live') return 1000; if (status === 'recent') return 500; if (status === 'dormant') return 100; return 50; }
         
         function renderMap(nodes) {
-            const locMap = {};
-            nodes.forEach(node => {
-                const k = node.lat.toFixed(4) + ',' + node.lon.toFixed(4);
-                if (locMap[k] === undefined) locMap[k] = 0;
-                else locMap[k]++;
-                if (locMap[k] > 0) {
-                    const offset = 0.0004 * locMap[k]; 
-                    node.lat += offset;
-                    node.lon += offset;
+            const mapSettings = currentData.map_settings || {};
+            const enableBursts = mapSettings.enable_bursts !== false;
+            const radius = mapSettings.spiderify_radius !== undefined ? parseFloat(mapSettings.spiderify_radius) : 0.025;
+
+            // SPIDERIFY ALGORITHM (Idea A - Offset live icons that share the same exact coordinate)
+            if (enableBursts) {
+                const locMap = {};
+                nodes.forEach(node => {
+                    const k = node.lat.toFixed(4) + ',' + node.lon.toFixed(4);
+                    if (!locMap[k]) locMap[k] = [];
+                    locMap[k].push(node);
+                });
+
+                for (let k in locMap) {
+                    let items = locMap[k];
+                    if (items.length > 1) {
+                        items.forEach((node, i) => {
+                            let angle = (i / items.length) * 2 * Math.PI;
+                            node.lat += radius * Math.cos(angle);
+                            node.lon += radius * Math.sin(angle);
+                        });
+                    }
                 }
-            });
+            }
+
+            // Standard render loop
             nodes.forEach(node => { if (markers[node.id]) { updateMarker(markers[node.id], node); } else { createMarker(node); } }); 
         }
 
@@ -352,15 +408,15 @@
             m.bindTooltip(tooltipContent, { direction: 'auto', sticky: false, opacity: 1, offset:[0, -25] }); 
             m.on('click', (e) => { 
                 L.DomEvent.stopPropagation(e); 
-                lockedCustomNode = null; // Clicking map marker resets to live tracking
-                engageSpotlight(markers[node.id].data); 
+                lockedCustomNode = null; 
+                engageSpotlight([node.id], null, true); // Map click is always full focus
             }); 
             
             markers[node.id] = { marker: m, data: node, lastHtml: htmlContent, lastClass: classContent, lastTooltip: tooltipContent }; 
         }
         
         function updateMarker(ref, newNode) { 
-            const isTarget = activeFocusId === newNode.id; 
+            const isTarget = activeFocusIds.includes(newNode.id); 
             const newLatLng = L.latLng(newNode.lat, newNode.lon);
             if (ref.marker.getLatLng().lat !== newLatLng.lat || ref.marker.getLatLng().lng !== newLatLng.lng) {
                 ref.marker.setLatLng(newLatLng);
@@ -391,48 +447,313 @@
                 ref.lastTooltip = tooltipContent;
             }
 
-            if (isTarget && !lockedCustomNode) {
+            // Only update Intel Metadata if it's the solitary focus and the panel is currently doing something
+            if (isTarget && !lockedCustomNode && activeFocusIds.length === 1 && document.getElementById('intel-panel').classList.contains('open')) {
                 updateIntelMetadata(newNode);
             }
         }
         
-        function buildIconHtml(node) { const bgStyle = node.image ? `background-image: url('${node.image}');` : ''; const noImgClass = node.image ? '' : 'no-img'; const focusClass = (activeFocusId === node.id) ? 'target-focus' : ''; let shapeClass = 'shape-circle'; if (node.stream_type === 'hls' || node.stream_type === 'direct_stream' || node.stream_type === 'mjpeg') { shapeClass = 'shape-square'; } return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass}" style="${bgStyle}"></div>`; }
+        function buildIconHtml(node) { 
+            const bgStyle = node.image ? `background-image: url('${node.image}');` : ''; 
+            const noImgClass = node.image ? '' : 'no-img'; 
+            const focusClass = activeFocusIds.includes(node.id) ? 'target-focus' : ''; 
+            let shapeClass = 'shape-circle'; 
+            if (node.stream_type === 'hls' || node.stream_type === 'direct_stream' || node.stream_type === 'mjpeg') { shapeClass = 'shape-square'; } 
+            return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass}" style="${bgStyle}"></div>`; 
+        }
+
+        // --- CLEARS ALL HIGHLIGHTS WHEN MAP IS CLICKED ---
+        function clearSpotlight() {
+            activeFocusIds = [];
+            activeFeedDomId = null;
+            if (activeRegionBox) { 
+                map.removeLayer(activeRegionBox); 
+                activeRegionBox = null; 
+            }
+            document.querySelectorAll('.feed-group').forEach(el => el.classList.remove('active-group'));
+            document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item'));
+            
+            Object.values(markers).forEach(ref => updateMarker(ref, ref.data));
+            L.DomUtil.removeClass(map.getContainer(), 'map-spotlight-active');
+            
+            map.eachLayer(function(layer) {
+                if (layer.getTooltip && layer.isTooltipOpen()) {
+                    layer.closeTooltip();
+                }
+            });
+            
+            closePanel();
+        }
         
-        function engageSpotlight(node, specificFeedId = null) { 
-            activeFocusId = node.id; 
+        // --- RESTORED ORIGINAL SINGLE-CLICK BEHAVIOR WITH MEMORY FALLBACK ---
+        function focusFeedTarget(id, feedSpecies, feedAudioId, feedTimestamp, feedMethod, feedDist, feedFrame, feedDomId, fullFocus = true) { 
+            if (window.event) window.event.stopPropagation();
+            
+            let targetMarker = markers[id];
+            
+            // FALLBACK: If the specific species node dropped off the map to save memory, 
+            // find ANY marker belonging to the same camera so we can still zoom to the location.
+            if (!targetMarker) {
+                let feedItem = currentData.feed.find(f => f.target_id === id);
+                if (feedItem) {
+                    for (let mId in markers) {
+                        if (markers[mId].data.camera_id === feedItem.camera_id) {
+                            targetMarker = markers[mId];
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (targetMarker) { 
+                let customNode = JSON.parse(JSON.stringify(targetMarker.data));
+                customNode.species = feedSpecies;
+                customNode.audio_id = feedAudioId;
+                customNode.detection_method = feedMethod;
+                customNode.dist = feedDist;
+                customNode.frame_size = feedFrame;
+                
+                if (feedTimestamp) {
+                    const diff = (new Date().getTime() / 1000) - feedTimestamp;
+                    const liveWindow = currentData.map_settings.live_window_seconds || 120;
+                    if (diff < liveWindow) { customNode.time_ago_str = 'LIVE NOW'; customNode.status = 'live'; }
+                    else if (diff < 3600) { customNode.time_ago_str = Math.floor(diff/60) + 'm ago'; customNode.status = 'recent'; }
+                    else { customNode.time_ago_str = Math.floor(diff/3600) + 'h ago'; customNode.status = 'dormant'; }
+                }
+                
+                customNode.image = '/api/image/' + encodeURIComponent(feedSpecies);
+                
+                const bioKw =["elephant", "rhinoceros", "hippopotamus", "wolf", "coyote", "hyena", "fox", "bear", "lion", "tiger", "leopard", "jaguar", "panther", "panda", "monkey", "gorilla", "ape", "chimpanzee", "gibbon", "baboon", "macaque", "lemur", "cow", "cattle", "sheep", "goat", "yak", "camel", "bovid", "zebra", "horse", "pig", "boar", "elk", "deer", "moose", "caribou", "antelope", "squirrel", "chipmunk", "bat", "mouse", "rat", "hare", "rabbit", "sea lion", "seal", "otter", "walrus", "whale", "dolphin", "porpoise", "frog", "toad", "peeper", "amphibian", "reptile", "snake", "alligator", "crocodile", "cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"];
+                const birdExc =["heron", "frogmouth", "cowbird", "egret", "finch", "dove", "tyrant", "woodpecker", "duck", "goose", "swan", "sparrow", "weaver", "bunting", "warbler", "thrush", "hawk", "eagle", "falcon", "owl", "gull", "tern", "wren", "bird"];
+                
+                let isBird = true;
+                let lowerSp = feedSpecies.toLowerCase();
+                if (birdExc.some(e => lowerSp.includes(e))) {
+                    isBird = true;
+                } else if (bioKw.some(e => lowerSp.includes(e))) {
+                    isBird = false;
+                }
+                
+                let secUrl = isBird ? 'https://www.allaboutbirds.org/guide/' + encodeURIComponent(feedSpecies) : 'https://www.inaturalist.org/search?q=' + encodeURIComponent(feedSpecies);
+                let secName = isBird ? 'ALL ABOUT BIRDS' : 'INATURALIST DATABASE';
+                
+                customNode.links = {
+                    wiki: 'https://en.wikipedia.org/wiki/' + feedSpecies.replace(/ /g, "_"),
+                    secondary: secUrl,
+                    secondary_name: secName
+                };
+                
+                lockedCustomNode = customNode;
+                // Single click = TRUE for full focus (zooms map AND opens side panel)
+                engageSpotlight([targetMarker.data.id], feedDomId, fullFocus); 
+            } 
+        }
+
+        // FOCUS ARRAYS AND SPOTLIGHT
+        function engageSpotlight(nodeIds, specificFeedId = null, fullFocus = true) { 
+            activeFocusIds = nodeIds; 
             
             if (specificFeedId) {
                 activeFeedDomId = specificFeedId;
             } else {
-                const firstMatch = document.querySelector(`.feed-item[data-target-id="${node.id}"]`);
-                activeFeedDomId = firstMatch ? firstMatch.id : null;
+                if(nodeIds.length === 1) {
+                    const firstMatch = document.querySelector(`.feed-item[data-target-id="${nodeIds[0]}"]`);
+                    activeFeedDomId = firstMatch ? firstMatch.id : null;
+                } else {
+                    activeFeedDomId = null;
+                }
+            }
+            
+            if(activeRegionBox) {
+                map.removeLayer(activeRegionBox);
+                activeRegionBox = null;
             }
             
             L.DomUtil.addClass(map.getContainer(), 'map-spotlight-active'); 
             Object.values(markers).forEach(ref => updateMarker(ref, ref.data)); 
-            openIntel(node); 
             
+            if(nodeIds.length === 1 && markers[nodeIds[0]]) {
+                if (fullFocus) {
+                    openIntel(lockedCustomNode || markers[nodeIds[0]].data); 
+                } else {
+                    closePanel(); 
+                }
+            } else {
+                closePanel(); 
+            }
+            
+            document.querySelectorAll('.feed-group').forEach(el => el.classList.remove('active-group')); 
             document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item')); 
             
             if(activeFeedDomId) { 
-                const feedItem = document.getElementById(activeFeedDomId);
-                if (feedItem) {
-                    feedItem.classList.add('active-item'); 
-                    feedItem.scrollIntoView({behavior: "smooth", block: "center"}); 
+                const feedEl = document.getElementById(activeFeedDomId);
+                if (feedEl) {
+                    if (feedEl.classList.contains('feed-group')) {
+                        feedEl.classList.add('active-group');
+                    } else {
+                        feedEl.classList.add('active-item'); 
+                    }
+                    feedEl.scrollIntoView({behavior: "smooth", block: "center"}); 
                 }
             } 
         }
         
-        function clearSpotlight() { 
-            activeFocusId = null; 
-            activeFeedDomId = null;
-            lockedCustomNode = null;
-            L.DomUtil.removeClass(map.getContainer(), 'map-spotlight-active'); 
-            document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item')); 
-            Object.values(markers).forEach(ref => updateMarker(ref, ref.data)); 
-            if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
+        // FOCUS GROUP A (BIODIVERSITY BURST)
+        function focusGroupA(cameraId, domId) {
+            let ids = [];
+            
+            // Re-use grouping criteria
+            const mapSettings = currentData.map_settings || {};
+            const groupHistory = mapSettings.group_feed_history === true;
+            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+            const maxAgeSecs = maxAgeMins * 60;
+            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+            const now = Date.now() / 1000;
+            
+            // We must find the EXACT cluster that was clicked on
+            // This requires scanning the feed chronologically and identifying the gap
+            let eligibleItems = currentData.feed.filter(f => {
+                const diff = now - f.timestamp;
+                return groupHistory || diff <= maxAgeSecs;
+            }).sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+            let clusters = [];
+            eligibleItems.forEach(item => {
+                if (item.camera_id === cameraId) {
+                    let placed = false;
+                    for (let c of clusters) {
+                        let cTs = c.items[c.items.length - 1].timestamp; // Compare to the tail of the cluster
+                        if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs) {
+                            c.items.push(item);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        clusters.push({ items: [item] });
+                    }
+                }
+            });
+
+            // Find the cluster that corresponds to this DOM ID
+            // The DOM ID is encoded with the max timestamp of the cluster
+            for (let c of clusters) {
+                let maxTs = Math.max(...c.items.map(i => i.timestamp));
+                let expectedDomId = `group-a-${cameraId}-${maxTs}`;
+                if (expectedDomId === domId) {
+                    ids = c.items.map(i => i.target_id);
+                    break;
+                }
+            }
+
+            if (ids.length === 0) {
+                // Failsafe: Just grab everything for that camera if the cluster lookup fails
+                currentData.feed.forEach(f => {
+                    const diff = now - f.timestamp;
+                    if (f.camera_id === cameraId && (groupHistory || diff <= maxAgeSecs)) {
+                        ids.push(f.target_id); 
+                    }
+                });
+            }
+            
+            engageSpotlight(ids, domId, false); // Groups don't do full focus panel
+            
+            const zoomLevel = mapSettings.burst_zoom_level || 13;
+            
+            if (ids.length > 0 && markers[ids[0]]) {
+                map.flyTo([markers[ids[0]].data.lat, markers[ids[0]].data.lon], zoomLevel, { duration: 1.5 });
+            }
         }
         
+        // FOCUS GROUP B (REGIONAL SWARM)
+        function focusGroupB(speciesName, domId) {
+            let ids = [];
+            let lats = [];
+            let lons = [];
+            
+            // Re-use grouping criteria
+            const mapSettings = currentData.map_settings || {};
+            const groupHistory = mapSettings.group_feed_history === true;
+            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+            const maxAgeSecs = maxAgeMins * 60;
+            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+            const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
+            const now = Date.now() / 1000;
+            
+            let eligibleItems = currentData.feed.filter(f => {
+                const diff = now - f.timestamp;
+                return groupHistory || diff <= maxAgeSecs;
+            }).sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+            let clusters = [];
+            eligibleItems.forEach(item => {
+                if (item.species === speciesName) {
+                    let placed = false;
+                    for (let c of clusters) {
+                        let cTs = c.items[c.items.length - 1].timestamp; // Compare to the tail of the cluster
+                        let dist = getDistanceKm(item.lat, item.lon, c.items[0].lat, c.items[0].lon); // Compare geo to the head of the cluster
+                        
+                        if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                            c.items.push(item);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        clusters.push({ items: [item] });
+                    }
+                }
+            });
+
+            // Find the cluster that corresponds to this DOM ID
+            for (let c of clusters) {
+                let maxTs = Math.max(...c.items.map(i => i.timestamp));
+                const safeSpId = speciesName.replace(/[^a-zA-Z0-9]/g, '_');
+                let expectedDomId = `group-b-${safeSpId}-${maxTs}`;
+                
+                if (expectedDomId === domId) {
+                    c.items.forEach(i => {
+                        ids.push(i.target_id);
+                        lats.push(i.lat);
+                        lons.push(i.lon);
+                    });
+                    break;
+                }
+            }
+            
+            if (ids.length === 0) {
+                 // Failsafe
+                 currentData.feed.forEach(f => {
+                    const diff = now - f.timestamp;
+                    if (f.species === speciesName && (groupHistory || diff <= maxAgeSecs)) {
+                        ids.push(f.target_id);
+                        lats.push(f.lat);
+                        lons.push(f.lon);
+                    }
+                });
+            }
+            
+            engageSpotlight(ids, domId, false); // Groups don't do full focus panel
+            
+            if (lats.length > 0) {
+                let minLat = Math.min(...lats);
+                let maxLat = Math.max(...lats);
+                let minLon = Math.min(...lons);
+                let maxLon = Math.max(...lons);
+                
+                let padding = mapSettings.swarm_bbox_padding !== undefined ? parseFloat(mapSettings.swarm_bbox_padding) : 1.5; 
+                let bounds = [
+                    [minLat - padding, minLon - padding],
+                    [maxLat + padding, maxLon + padding]
+                ];
+                
+                let maxZoom = mapSettings.swarm_max_zoom || 6;
+                
+                activeRegionBox = L.rectangle(bounds, {color: "#00E5FF", weight: 3, fillOpacity: 0.1, dashArray: "10, 10"}).addTo(map);
+                map.fitBounds(bounds, {padding: [50, 50], maxZoom: maxZoom});
+            }
+        }
+
         function fallbackToWebView(vidContainer, externalUrl) {
             if (!externalUrl) { vidContainer.innerHTML = `<div style="color:#555;">PLAYBACK ERROR<br><span style="font-size:10px">No Fallback URL Available</span></div>`; return; }
             let hostname = "External Source";
@@ -563,102 +884,232 @@
             document.getElementById('vid-frame').innerHTML = ''; 
             if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
         }
+
+        // GENERATE A SINGLE ROW HTML
+        function generateFeedItemHtml(item) {
+            const urgencyClass = item.is_close ? `urgency-${item.urgency}` : ''; 
+            let typeIcon = '❓'; 
+            if (item.stream_type === 'video' || item.stream_type === 'youtube') typeIcon = '📺'; 
+            else if (item.stream_type === 'audio') typeIcon = '📻'; 
+            else if (item.stream_type === 'hls' || item.stream_type === 'direct_stream') typeIcon = '🌐'; 
+            
+            let localTimeStr = item.time; 
+            if (item.timestamp) {
+                const dateObj = new Date(item.timestamp * 1000);
+                localTimeStr = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }).format(dateObj);
+            }
+            
+            const timeArgStr = item.timestamp ? item.timestamp : '0';
+            const safeIdSpecies = item.species.replace(/[^a-zA-Z0-9]/g, '_');
+            const uniqueFeedId = `feed-item-${item.target_id}-${timeArgStr}-${safeIdSpecies}`;
+            const activeClass = (uniqueFeedId === activeFeedDomId) ? 'active-item' : ''; 
+            
+            const safeSpecies = item.species.replace(/'/g, "\\'");
+            const audioIdArg = item.audio_id ? item.audio_id : 'null';
+            const timeArg = item.timestamp ? item.timestamp : 'null';
+            const methodArg = item.detection_method ? `'${item.detection_method}'` : `'audio'`;
+            const distArg = item.dist ? `'${item.dist}'` : `'Unknown'`;
+            const frameArg = item.frame_size ? `'${item.frame_size}'` : `'N/A'`;
+            
+            const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size);
+            
+            return `<div class="feed-item ${urgencyClass} ${activeClass}" id="${uniqueFeedId}" data-target-id="${item.target_id}" 
+                         onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, ${methodArg}, ${distArg}, ${frameArg}, '${uniqueFeedId}', true)">
+                        <div class="dot bg-${item.urgency}"></div>
+                        <div style="flex:1">
+                            <div style="display:flex; justify-content:space-between">
+                                <span class="f-sp">${item.species}</span>
+                                <span class="f-meta">${localTimeStr}</span>
+                            </div>
+                            <div style="margin-bottom: 6px;">${badgesHtml}</div>
+                            <span class="f-loc"><span class="type-icon">${typeIcon}</span>${item.stream}</span>
+                        </div>
+                    </div>`;
+        }
         
+        // ECOLOGICAL GROUPING RENDERER (Idea A & B)
         function renderFeed(items) { 
             const con = document.getElementById('feed-container'); 
             const currentScroll = con.scrollTop; 
             if (items.length === 0) { con.innerHTML = '<div style="padding:20px;color:#666;text-align:center;">NO RECENT SIGNALS</div>'; return; } 
-            let html = ''; 
-            items.forEach(item => { 
-                const urgencyClass = item.is_close ? `urgency-${item.urgency}` : ''; 
-                let typeIcon = '❓'; 
-                if (item.stream_type === 'video' || item.stream_type === 'youtube') typeIcon = '📺'; 
-                else if (item.stream_type === 'audio') typeIcon = '📻'; 
-                else if (item.stream_type === 'hls' || item.stream_type === 'direct_stream') typeIcon = '🌐'; 
-                
-                let localTimeStr = item.time; 
-                if (item.timestamp) {
-                    const dateObj = new Date(item.timestamp * 1000);
-                    localTimeStr = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }).format(dateObj);
+            
+            // --- GRAB SETTINGS FROM PAYLOAD ---
+            const mapSettings = currentData.map_settings || {};
+            const enableBursts = mapSettings.enable_bursts !== false;
+            const enableSwarms = mapSettings.enable_swarms !== false;
+            
+            const groupHistory = mapSettings.group_feed_history === true;
+            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+            const maxAgeSecs = maxAgeMins * 60;
+            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+            const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
+            const now = Date.now() / 1000;
+            
+            let groupedItems = [];
+            let ungroupedItems = [];
+            
+            // Sort ALL items chronologically FIRST to ensure time-gaps calculate correctly
+            let sortedItems = [...items].sort((a, b) => b.timestamp - a.timestamp); // Newest first
+            
+            sortedItems.forEach(item => {
+                const diff = now - item.timestamp;
+                // If groupHistory is true, everything is eligible. If false, only items younger than maxAge qualify.
+                if (groupHistory || diff <= maxAgeSecs) {
+                    groupedItems.push(item);
+                } else {
+                    ungroupedItems.push(item);
                 }
+            });
+
+            // Idea A: Group by Camera (Biodiversity Burst) with Temporal Clustering
+            let ideaA_Groups = [];
+            let standaloneEligibleItems = [];
+            
+            if (enableBursts) {
+                // Group by camera first
+                let cameraBuckets = {};
+                groupedItems.forEach(item => {
+                    if(!cameraBuckets[item.camera_id]) cameraBuckets[item.camera_id] = [];
+                    cameraBuckets[item.camera_id].push(item);
+                });
                 
-                const timeArgStr = item.timestamp ? item.timestamp : '0';
+                // Now apply the Time Gap splitting inside each camera bucket
+                for (let cam in cameraBuckets) {
+                    let camItems = cameraBuckets[cam]; // already sorted newest first
+                    let clusters = [];
+                    
+                    camItems.forEach(item => {
+                        let placed = false;
+                        // Try to place the item in an existing cluster based on time gap
+                        for (let c of clusters) {
+                            let lastItemTs = c.items[c.items.length - 1].timestamp; // Oldest item currently in this cluster
+                            if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs) {
+                                c.items.push(item);
+                                placed = true;
+                                break;
+                            }
+                        }
+                        // If it doesn't fit within the time gap of ANY cluster, start a new one
+                        if (!placed) {
+                            clusters.push({ type: 'IdeaA', camera_id: cam, items: [item] });
+                        }
+                    });
+                    
+                    // Separate the true clusters from the singletons
+                    clusters.forEach(c => {
+                        if (c.items.length > 1) {
+                            ideaA_Groups.push(c);
+                        } else {
+                            standaloneEligibleItems.push(c.items[0]);
+                        }
+                    });
+                }
+            } else {
+                // If disabled, just pretend everything is a singleton
+                standaloneEligibleItems = [...groupedItems];
+            }
+
+            // Idea B: Group by Species across Region (Swarms) with Temporal Clustering
+            let ideaB_Groups = [];
+            let finalStandalone = [];
+            
+            if (enableSwarms) {
+                // Group by species first
+                let speciesBuckets = {};
+                standaloneEligibleItems.forEach(item => {
+                    if(!speciesBuckets[item.species]) speciesBuckets[item.species] = [];
+                    speciesBuckets[item.species].push(item);
+                });
                 
-                // THE SPECIES JUMP PATCH: Added safeIdSpecies to guarantee mathematical uniqueness
-                const safeIdSpecies = item.species.replace(/[^a-zA-Z0-9]/g, '_');
-                const uniqueFeedId = `feed-item-${item.target_id}-${timeArgStr}-${safeIdSpecies}`;
-                
-                const activeClass = (uniqueFeedId === activeFeedDomId) ? 'active-item' : ''; 
-                
-                const safeSpecies = item.species.replace(/'/g, "\\'");
-                const audioIdArg = item.audio_id ? item.audio_id : 'null';
-                const timeArg = item.timestamp ? item.timestamp : 'null';
-                const methodArg = item.detection_method ? `'${item.detection_method}'` : `'audio'`;
-                const distArg = item.dist ? `'${item.dist}'` : `'Unknown'`;
-                const frameArg = item.frame_size ? `'${item.frame_size}'` : `'N/A'`;
-                
-                const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size);
-                
-                html += `<div class="feed-item ${urgencyClass} ${activeClass}" id="${uniqueFeedId}" data-target-id="${item.target_id}" onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, ${methodArg}, ${distArg}, ${frameArg}, '${uniqueFeedId}')">
-                            <div class="dot bg-${item.urgency}"></div>
-                            <div style="flex:1">
-                                <div style="display:flex; justify-content:space-between">
-                                    <span class="f-sp">${item.species}</span>
-                                    <span class="f-meta">${localTimeStr}</span>
-                                </div>
-                                <div style="margin-bottom: 6px;">${badgesHtml}</div>
-                                <span class="f-loc"><span class="type-icon">${typeIcon}</span>${item.stream}</span>
-                            </div>
-                        </div>`;
-            }); 
+                // Apply Time Gap and Geography splitting inside each species bucket
+                for (let sp in speciesBuckets) {
+                    let spItems = speciesBuckets[sp];
+                    let clusters = [];
+                    
+                    spItems.forEach(item => {
+                        let placed = false;
+                        for (let c of clusters) {
+                            let lastItemTs = c.items[c.items.length - 1].timestamp;
+                            let baseLat = c.items[0].lat;
+                            let baseLon = c.items[0].lon;
+                            let dist = getDistanceKm(item.lat, item.lon, baseLat, baseLon);
+                            
+                            // Must be within BOTH the time gap AND the physical distance limit
+                            if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                                c.items.push(item);
+                                placed = true;
+                                break;
+                            }
+                        }
+                        if (!placed) {
+                            clusters.push({ type: 'IdeaB', species: sp, items: [item] });
+                        }
+                    });
+                    
+                    clusters.forEach(c => {
+                        if (c.items.length > 1) {
+                            ideaB_Groups.push(c);
+                        } else {
+                            finalStandalone.push(c.items[0]);
+                        }
+                    });
+                }
+            } else {
+                finalStandalone = [...standaloneEligibleItems];
+            }
+
+            // Sort all blocks chronologically by max timestamp
+            let allFeedBlocks = [...ideaA_Groups, ...ideaB_Groups, ...finalStandalone, ...ungroupedItems];
+            allFeedBlocks.sort((a, b) => {
+                let tsA = a.type ? Math.max(...a.items.map(i => i.timestamp)) : a.timestamp;
+                let tsB = b.type ? Math.max(...b.items.map(i => i.timestamp)) : b.timestamp;
+                return tsB - tsA; 
+            });
+
+            let html = ''; 
+            
+            // Render Everything Top-to-Bottom
+            allFeedBlocks.forEach(block => {
+                if (block.type === 'IdeaA') {
+                    const streamName = block.items[0].stream;
+                    const maxTs = Math.max(...block.items.map(i => i.timestamp));
+                    const domId = `group-a-${block.camera_id}-${maxTs}`;
+                    const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                    html += `
+                    <div class="feed-group group-a ${activeClass}" id="${domId}">
+                        <div class="group-header" onclick="focusGroupA('${block.camera_id}', '${domId}')">
+                            <span style="font-size:13px;">🌍 BIODIVERSITY BURST</span>
+                            <span class="group-subtext">${block.items.length} species detected simultaneously on '${streamName}'</span>
+                        </div>
+                        <div class="group-items">`;
+                    block.items.forEach(i => html += generateFeedItemHtml(i));
+                    html += `</div></div>`;
+                } else if (block.type === 'IdeaB') {
+                    const spName = block.species;
+                    const safeSpId = spName.replace(/[^a-zA-Z0-9]/g, '_');
+                    const maxTs = Math.max(...block.items.map(i => i.timestamp));
+                    const domId = `group-b-${safeSpId}-${maxTs}`;
+                    const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                    html += `
+                    <div class="feed-group group-b ${activeClass}" id="${domId}">
+                        <div class="group-header" onclick="focusGroupB('${spName.replace(/'/g, "\\'")}', '${domId}')">
+                            <span style="font-size:13px;">🗺️ REGIONAL SWARM</span>
+                            <span class="group-subtext">${block.items.length} '${spName}' detected across region</span>
+                        </div>
+                        <div class="group-items">`;
+                    block.items.forEach(i => html += generateFeedItemHtml(i));
+                    html += `</div></div>`;
+                } else {
+                    // Render Standalone Single Item
+                    html += generateFeedItemHtml(block);
+                }
+            });
+
             con.innerHTML = html; 
             con.scrollTop = currentScroll; 
         }
         
-        function focusFeedTarget(id, feedSpecies, feedAudioId, feedTimestamp, feedMethod, feedDist, feedFrame, feedDomId) { 
-            if (markers[id]) { 
-                let customNode = JSON.parse(JSON.stringify(markers[id].data));
-                customNode.species = feedSpecies;
-                customNode.audio_id = feedAudioId;
-                customNode.detection_method = feedMethod;
-                customNode.dist = feedDist;
-                customNode.frame_size = feedFrame;
-                
-                if (feedTimestamp) {
-                    const diff = (new Date().getTime() / 1000) - feedTimestamp;
-                    if (diff < 180) { customNode.time_ago_str = 'LIVE NOW'; customNode.status = 'live'; }
-                    else if (diff < 3600) { customNode.time_ago_str = Math.floor(diff/60) + 'm ago'; customNode.status = 'recent'; }
-                    else { customNode.time_ago_str = Math.floor(diff/3600) + 'h ago'; customNode.status = 'dormant'; }
-                }
-                
-                customNode.image = '/api/image/' + encodeURIComponent(feedSpecies);
-                
-                const bioKw =["elephant", "rhinoceros", "hippopotamus", "wolf", "coyote", "hyena", "fox", "bear", "lion", "tiger", "leopard", "jaguar", "panther", "panda", "monkey", "gorilla", "ape", "chimpanzee", "gibbon", "baboon", "macaque", "lemur", "cow", "cattle", "sheep", "goat", "yak", "camel", "bovid", "zebra", "horse", "pig", "boar", "elk", "deer", "moose", "caribou", "antelope", "squirrel", "chipmunk", "bat", "mouse", "rat", "hare", "rabbit", "sea lion", "seal", "otter", "walrus", "whale", "dolphin", "porpoise", "frog", "toad", "peeper", "amphibian", "reptile", "snake", "alligator", "crocodile", "cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"];
-                const birdExc =["heron", "frogmouth", "cowbird", "egret", "finch", "dove", "tyrant", "woodpecker", "duck", "goose", "swan", "sparrow", "weaver", "bunting", "warbler", "thrush", "hawk", "eagle", "falcon", "owl", "gull", "tern", "wren", "bird"];
-                
-                let isBird = true;
-                let lowerSp = feedSpecies.toLowerCase();
-                if (birdExc.some(e => lowerSp.includes(e))) {
-                    isBird = true;
-                } else if (bioKw.some(e => lowerSp.includes(e))) {
-                    isBird = false;
-                }
-                
-                let secUrl = isBird ? 'https://www.allaboutbirds.org/guide/' + encodeURIComponent(feedSpecies) : 'https://www.inaturalist.org/search?q=' + encodeURIComponent(feedSpecies);
-                let secName = isBird ? 'ALL ABOUT BIRDS' : 'INATURALIST DATABASE';
-                
-                customNode.links = {
-                    wiki: 'https://en.wikipedia.org/wiki/' + feedSpecies.replace(/ /g, "_"),
-                    secondary: secUrl,
-                    secondary_name: secName
-                };
-                
-                lockedCustomNode = customNode;
-                engageSpotlight(customNode, feedDomId); 
-            } 
-        }
-        
-        function handleSearch() { const input = document.getElementById('search-input'); const clearBtn = document.getElementById('clear-search'); const term = input.value.toLowerCase(); clearBtn.style.display = term ? 'block' : 'none'; const items = document.querySelectorAll('.feed-item'); items.forEach(item => { const text = item.innerText.toLowerCase(); item.style.display = text.includes(term) ? 'flex' : 'none'; }); }
+        function handleSearch() { const input = document.getElementById('search-input'); const clearBtn = document.getElementById('clear-search'); const term = input.value.toLowerCase(); clearBtn.style.display = term ? 'block' : 'none'; const items = document.querySelectorAll('.feed-item, .feed-group'); items.forEach(item => { const text = item.innerText.toLowerCase(); item.style.display = text.includes(term) ? 'flex' : 'none'; }); }
         function clearSearch() { const input = document.getElementById('search-input'); input.value = ''; handleSearch(); renderFeed(currentData.feed); clearSpotlight(); }
         setInterval(updateSystem, 10000); updateSystem();
     </script>

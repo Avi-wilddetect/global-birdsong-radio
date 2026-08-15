@@ -4,3 +4,5 @@ Flask-JWT-Extended
 gunicorn
 psycopg2-binary
 requests
+Pillow
+waitress

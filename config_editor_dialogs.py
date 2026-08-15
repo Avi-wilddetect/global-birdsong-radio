@@ -1,8 +1,8 @@
 # FILE: config_editor_dialogs.py
-# VERSION: 13.1 - "The Dialog Button Patch"
-# RESPONSIBILITY: Houses the Core Engine, Cooldowns, and Advanced Settings dialogs.
+# VERSION: 13.2 - "The Advanced Split Patch"
+# RESPONSIBILITY: Houses the Core Engine, Cooldowns, and Save Confirm dialogs.
+# AdvancedSettingsDialog has been migrated to config_editor_advanced_gui.py.
 # System and Housekeeping dialogs have been safely migrated to config_editor_sys_dialogs.py.
-# UPDATED: Fixed a typo in EngineConfigDialog where 'btns' was incorrectly referenced as 'self.buttons'.
 
 import sys
 import copy
@@ -33,256 +33,6 @@ ROOT = Path(__file__).resolve().parent
 DATABASE_PATH = ROOT / "detections.db"
 CONFIG_FILE = ROOT / "birdnet_config.json"
 
-
-class AdvancedSettingsDialog(QDialog):
-    def __init__(self, loop_config, distance_config, map_config, cookie_config, browser_config, debug_enabled=False, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Advanced Settings & Maintenance")
-        self.setMinimumSize(650, 500)
-
-        self.distance_config = copy.deepcopy(distance_config)
-        self.map_config = copy.deepcopy(map_config)
-        self.cookie_config = copy.deepcopy(cookie_config)
-        self.browser_config = copy.deepcopy(browser_config)
-        
-        self.debug_enabled = debug_enabled
-
-        self.layout = QVBoxLayout(self)
-
-        # --- MAP BALANCE SLIDER ---
-        balance_group = QGroupBox("Map Alert Balance (Audio vs. Vision)")
-        balance_layout = QVBoxLayout(balance_group)
-        
-        info_lbl = QLabel("Controls the ideal ratio of alerts displayed on the Web Map and sidebar. If one engine is quiet, the other will automatically fill the empty slots to keep the map active up to your Target Capacity.")
-        info_lbl.setWordWrap(True)
-        info_lbl.setStyleSheet("color: #aaa; margin-bottom: 5px;")
-        balance_layout.addWidget(info_lbl)
-        
-        slider_layout = QHBoxLayout()
-        self.slider_ratio = QSlider(Qt.Orientation.Horizontal)
-        self.slider_ratio.setRange(0, 100)
-        self.slider_ratio.setValue(self.map_config.get("audio_vision_ratio", 70))
-        
-        self.lbl_ratio = QLabel()
-        self.lbl_ratio.setFixedWidth(250)
-        self.lbl_ratio.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
-        def update_ratio_label(val):
-            self.lbl_ratio.setText(f"Target Ratio: <b>{100-val}% Vision</b> / <b>{val}% Audio</b>")
-            
-        self.slider_ratio.valueChanged.connect(update_ratio_label)
-        update_ratio_label(self.slider_ratio.value())
-        
-        slider_layout.addWidget(QLabel("100% Vision"))
-        slider_layout.addWidget(self.slider_ratio)
-        slider_layout.addWidget(QLabel("100% Audio"))
-        
-        balance_layout.addLayout(slider_layout)
-        balance_layout.addWidget(self.lbl_ratio, alignment=Qt.AlignmentFlag.AlignCenter)
-        
-        # --- TARGET CAPACITIES (FORM LAYOUT) ---
-        capacity_form = QFormLayout()
-        
-        self.spin_target_map_capacity = QSpinBox()
-        self.spin_target_map_capacity.setRange(10, 250) 
-        self.spin_target_map_capacity.setValue(self.map_config.get("target_map_capacity", 50))
-        self.spin_target_map_capacity.setToolTip("The ideal total number of pins on the map. The system will dynamically allocate these slots between Audio and Vision based on the ratio above.")
-        
-        self.spin_target_sidebar_capacity = QSpinBox()
-        self.spin_target_sidebar_capacity.setRange(10, 500)
-        self.spin_target_sidebar_capacity.setValue(self.map_config.get("target_sidebar_capacity", 50))
-        self.spin_target_sidebar_capacity.setToolTip("The maximum number of chronological alerts to display in the scrolling sidebar feed.")
-        
-        capacity_form.addRow("Target Map Capacity (Total Pins):", self.spin_target_map_capacity)
-        capacity_form.addRow("Target Sidebar Capacity (Feed Items):", self.spin_target_sidebar_capacity)
-        
-        balance_layout.addLayout(capacity_form)
-        self.layout.addWidget(balance_group)
-
-        distance_group = QGroupBox("Audio (BirdNET) Distance Estimation Alerts")
-        distance_layout = QHBoxLayout()
-        self.dist_enable_cb = QCheckBox("Enable")
-        distance_layout.addWidget(self.dist_enable_cb)
-        distance_layout.addStretch()
-        self.dist_filters_widget = QWidget()
-        dist_filters_layout = QHBoxLayout()
-        dist_filters_layout.setContentsMargins(0,0,0,0)
-        
-        self.dist_vn_cb = QCheckBox("Very Near"); self.dist_n_cb = QCheckBox("Near")
-        self.dist_m_cb = QCheckBox("Mid-range"); self.dist_f_cb = QCheckBox("Far")
-        
-        dist_filters_layout.addWidget(self.dist_vn_cb); dist_filters_layout.addWidget(self.dist_n_cb)
-        dist_filters_layout.addWidget(self.dist_m_cb); dist_filters_layout.addWidget(self.dist_f_cb)
-        self.dist_filters_widget.setLayout(dist_filters_layout)
-        distance_layout.addWidget(self.dist_filters_widget)
-        distance_group.setLayout(distance_layout)
-        self.dist_enable_cb.toggled.connect(self.toggle_distance_filters)
-        
-        dist_main_lay = QVBoxLayout()
-        dist_main_lay.addLayout(distance_layout)
-        note_lbl = QLabel("<i>Note: Vision (3D depth) rules are handled separately in the Intelligence Hub.</i>")
-        note_lbl.setStyleSheet("color: #888;")
-        dist_main_lay.addWidget(note_lbl)
-        distance_group.setLayout(dist_main_lay)
-        
-        self.layout.addWidget(distance_group)
-
-        map_group = QGroupBox("Map Visualization")
-        map_layout = QHBoxLayout()
-        map_layout.addWidget(QLabel("Map 'Live' Icon Duration (sec):"))
-        self.map_live_spin = QSpinBox()
-        self.map_live_spin.setRange(10, 3600)
-        self.map_live_spin.setValue(120) 
-        self.map_live_spin.setToolTip("Detections younger than this will appear Red (Live) on the map.\nOlder ones turn Orange (Recent).")
-        map_layout.addWidget(self.map_live_spin)
-        map_layout.addStretch()
-        map_group.setLayout(map_layout)
-        self.layout.addWidget(map_group)
-
-        cookie_group = QGroupBox("YouTube Fallback (Cookies.txt)")
-        cookie_layout = QFormLayout(cookie_group)
-        cookie_path_layout = QHBoxLayout()
-        self.cookies_file_edit = QLineEdit()
-        self.browse_cookies_button = QPushButton("Browse...")
-        self.browse_cookies_button.clicked.connect(self.browse_for_cookies_file)
-        cookie_path_layout.addWidget(self.cookies_file_edit)
-        cookie_path_layout.addWidget(self.browse_cookies_button)
-        cookie_layout.addRow("Cookies File:", cookie_path_layout)
-        self.layout.addWidget(cookie_group)
-
-        maint_group = QGroupBox("Identity Engine")
-        maint_group.setStyleSheet("QGroupBox { font-weight: bold; color: #2196F3; border: 1px solid #2196F3; margin-top: 15px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 3px; }")
-        maint_layout = QVBoxLayout(maint_group)
-        
-        info_label = QLabel("Use these tools if you encounter 'Session Not Created', 'Version Mismatch', or '429 Too Many Requests' errors.")
-        info_label.setWordWrap(True)
-        maint_layout.addWidget(info_label)
-
-        btn_layout = QHBoxLayout()
-        
-        self.btn_help = QPushButton("❓ HELP: How to use this?")
-        self.btn_help.clicked.connect(self.show_maintenance_help)
-        self.btn_help.setStyleSheet("background-color: #607D8B; color: white;")
-        
-        self.btn_repair = QPushButton("🔧 Auto-Repair Driver")
-        self.btn_repair.clicked.connect(self.auto_repair_driver)
-        self.btn_repair.setStyleSheet("background-color: #FF9800; color: black; font-weight: bold;")
-        
-        self.btn_refresh_identity = QPushButton("🎭 Refresh Bot Identity")
-        self.btn_refresh_identity.clicked.connect(self.refresh_identity)
-        self.btn_refresh_identity.setStyleSheet("background-color: #4CAF50; color: white; font-weight: bold;")
-
-        btn_layout.addWidget(self.btn_help)
-        btn_layout.addWidget(self.btn_repair)
-        btn_layout.addWidget(self.btn_refresh_identity)
-        maint_layout.addLayout(btn_layout)
-        self.layout.addWidget(maint_group)
-
-        self.layout.addStretch()
-        self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
-        self.layout.addWidget(self.buttons)
-
-        self.populate_ui_from_config()
-
-    def show_maintenance_help(self):
-        msg = (
-            "<h3>System Maintenance Guide</h3>"
-            "<p><b>1. Auto-Repair Driver (The Engine):</b><br>"
-            "Use this if you see <i>'Session Not Created'</i> or <i>'Version Mismatch'</i> errors. "
-            "It scans your installed Chrome version and automatically downloads the matching 'chromedriver.exe', "
-            "killing any stuck processes in the way.</p>"
-            "<hr>"
-            "<p><b>2. Refresh Bot Identity (The License):</b><br>"
-            "Use this if you see <i>'429 Too Many Requests'</i> or <i>'Sign in to confirm'</i> errors. "
-            "It opens a browser window using your configured 'BirdsongRadio' profile. "
-            "<b>Action:</b> Watch a video for 10 seconds, then close the window. This refreshes the 'Trust Token' the bot uses.</p>"
-            "<hr>"
-            "<p><b>Recommended Routine:</b><br>"
-            "If the monitoring crashes, click <b>Repair</b> first, wait for success, then click <b>Refresh</b>."
-        )
-        QMessageBox.information(self, "Help", msg)
-
-    def auto_repair_driver(self):
-        self.btn_repair.setText("Scanning..."); self.btn_repair.setEnabled(False); QApplication.processEvents()
-        for proc in psutil.process_iter(['pid', 'name']):
-            if proc.info['name'] and 'chromedriver' in proc.info['name'].lower():
-                try: proc.kill()
-                except: pass
-        chrome_ver = ChromeMaintenance.get_installed_chrome_version()
-        if not chrome_ver:
-            QMessageBox.critical(self, "Error", "Could not detect Chrome version. Is Google Chrome installed?"); self.btn_repair.setText("🔧 Auto-Repair Driver"); self.btn_repair.setEnabled(True); return
-
-        self.btn_repair.setText(f"Found v{chrome_ver}..."); QApplication.processEvents()
-        success, msg = ChromeMaintenance.download_driver(chrome_ver)
-        if success:
-            QMessageBox.information(self, "Success", f"Driver repaired successfully!\n{msg}")
-        else:
-            QMessageBox.critical(self, "Failed", f"Could not repair driver:\n{msg}")
-        self.btn_repair.setText("🔧 Auto-Repair Driver"); self.btn_repair.setEnabled(True)
-
-    def refresh_identity(self):
-        profile_path = self.browser_config.get("chrome_profile_path", "")
-        if not profile_path or not os.path.exists(profile_path):
-            QMessageBox.critical(self, "Error", "Invalid Profile Path. Please check the main config window.")
-            return
-
-        try:
-            from selenium import webdriver
-            from selenium.webdriver.chrome.service import Service
-            for proc in psutil.process_iter(['pid', 'name']):
-                if proc.info['name'] and 'chrome' in proc.info['name'].lower() and '--headless' in str(proc.cmdline()):
-                    try: proc.kill()
-                    except: pass
-            QMessageBox.information(self, "Instructions", 
-                "A Chrome window will now open using the Bot's profile.\n\n"
-                "1. If prompted, click 'Yes, I'm in' or verify login.\n"
-                "2. Watch any YouTube video for 10-20 seconds.\n"
-                "3. Close the window to save the session.")
-
-            service = Service(executable_path=str(ROOT / "chromedriver.exe"))
-            options = webdriver.ChromeOptions()
-            options.add_argument(f"--user-data-dir={profile_path}")
-            options.add_experimental_option("detach", True) 
-            driver = webdriver.Chrome(service=service, options=options)
-            driver.get("https://www.youtube.com")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to launch browser: {e}\n\nTry 'Auto-Repair Driver' first.")
-
-    def browse_for_cookies_file(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select YouTube Cookies File", "", "Text Files (cookies.txt *.txt)")
-        if file_path: self.cookies_file_edit.setText(file_path)
-
-    def toggle_distance_filters(self, enabled): 
-        self.dist_filters_widget.setEnabled(enabled)
-
-    def populate_ui_from_config(self):
-        self.dist_enable_cb.setChecked(self.distance_config.get("enabled", False))
-        alert_distances = self.distance_config.get("alert_distances", [])
-        for cb, dist in[(self.dist_vn_cb, "Very Near"), (self.dist_n_cb, "Near"), (self.dist_m_cb, "Mid-range"), (self.dist_f_cb, "Far")]:
-            cb.setChecked(dist in alert_distances)
-        self.toggle_distance_filters(self.dist_enable_cb.isChecked())
-        self.map_live_spin.setValue(self.map_config.get("live_window_seconds", 120))
-        self.cookies_file_edit.setText(self.cookie_config.get("youtube_cookies_file", ""))
-
-    def get_updated_configs(self):
-        updated_distance_config = {
-            "enabled": self.dist_enable_cb.isChecked(),
-            "alert_distances": sorted([cb.text() for cb in[self.dist_vn_cb, self.dist_n_cb, self.dist_m_cb, self.dist_f_cb] if cb.isChecked()])
-        }
-        updated_cookie_config = {
-            "youtube_cookies_file": self.cookies_file_edit.text().strip(),
-            "cookie_alert": self.cookie_config.get("cookie_alert", {}) 
-        }
-        updated_map_config = {
-            "live_window_seconds": self.map_live_spin.value(),
-            "audio_vision_ratio": self.slider_ratio.value(),
-            "target_map_capacity": self.spin_target_map_capacity.value(),
-            "target_sidebar_capacity": self.spin_target_sidebar_capacity.value()
-        }
-        
-        return updated_map_config, updated_distance_config, updated_cookie_config, self.debug_enabled
 
 class SaveConfirmDialog(QDialog):
     def __init__(self, changes, widths=None, parent=None):
@@ -333,6 +83,7 @@ class SaveConfirmDialog(QDialog):
         if main_window:
             main_window.unsaved_save_dialog_widths = self.get_column_widths()
             main_window._save_gui_preferences()
+
 
 class TieredCooldownDialog(QDialog):
     def __init__(self, config, widths=None, parent=None):
@@ -642,6 +393,7 @@ class TieredCooldownDialog(QDialog):
             ]
         }
 
+
 class ResetConfirmDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -674,6 +426,7 @@ class ResetConfirmDialog(QDialog):
         is_match = text == "RESET"
         self.reset_button.setEnabled(is_match)
         self.reset_button.setStyleSheet("background-color: #f44336; color: white;" if is_match else "background-color: #cccccc;")
+
 
 class EngineConfigDialog(QDialog):
     def __init__(self, current_config, network_map, loop_config, current_listeners, parent=None):
@@ -772,7 +525,6 @@ class EngineConfigDialog(QDialog):
         strat_tab = QWidget()
         strat_layout = QVBoxLayout()
         
-        # --- REORGANIZED GROUP 1: GLOBAL DISCONNECTS ---
         global_group = QGroupBox("Global Disconnects (Halts Both Engines)")
         global_group.setStyleSheet("QGroupBox { border: 1px solid #B71C1C; margin-top: 15px; color: #EF5350; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
         global_form = QFormLayout()
@@ -799,7 +551,6 @@ class EngineConfigDialog(QDialog):
         global_group.setLayout(global_form)
         strat_layout.addWidget(global_group)
 
-        # --- REORGANIZED GROUP 2: AUDIO MUTES ---
         audio_group = QGroupBox("Audio-Specific Mutes (Vision Keeps Running)")
         audio_group.setStyleSheet("QGroupBox { border: 1px solid #00897B; margin-top: 15px; color: #00E5FF; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
         audio_form = QFormLayout()
@@ -844,7 +595,6 @@ class EngineConfigDialog(QDialog):
         audio_group.setLayout(audio_form)
         strat_layout.addWidget(audio_group)
 
-        # --- Thresholds ---
         thresh_group = QGroupBox("Long-Term Health Thresholds")
         thresh_form = QFormLayout()
         
