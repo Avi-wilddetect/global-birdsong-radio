@@ -1,7 +1,7 @@
 # FILE: config_editor_advanced_gui.py
-# VERSION: 1.2 - "The Temporal Clustering Patch"
+# VERSION: 1.3 - "The Hybrid Elasticity Patch"
 # RESPONSIBILITY: Houses the Advanced Settings dialog with a clean QTabWidget layout.
-# UPDATED: Added 'Max Time Gap Between Items' to control chronological separation of groups.
+# UPDATED: Added 'Burst Zoom Elasticity' slider to control how Leaflet scales Spiderify radii during zoom events.
 
 import os
 import json
@@ -212,25 +212,50 @@ class AdvancedSettingsDialog(QDialog):
         # --- BIODIVERSITY BURSTS (SAME CAMERA) ---
         burst_group = QGroupBox("Biodiversity Bursts (Same Camera Grouping)")
         burst_group.setStyleSheet("QGroupBox { border: 1px solid #AB47BC; margin-top: 15px; color: #E1BEE7; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
-        burst_layout = QFormLayout(burst_group)
+        burst_layout = QVBoxLayout(burst_group)
         
         self.chk_enable_bursts = QCheckBox("Enable Biodiversity Bursts")
+        burst_layout.addWidget(self.chk_enable_bursts)
         
+        # ELASTICITY SLIDER
+        elasticity_layout = QHBoxLayout()
+        self.slider_elasticity = QSlider(Qt.Orientation.Horizontal)
+        self.slider_elasticity.setRange(0, 100)
+        self.slider_elasticity.setValue(self.map_config.get("burst_elasticity", 50))
+        
+        self.lbl_elasticity = QLabel()
+        self.lbl_elasticity.setFixedWidth(200)
+        self.lbl_elasticity.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        def update_elasticity_label(val):
+            self.lbl_elasticity.setText(f"Zoom Elasticity: <b>{val}%</b>")
+            
+        self.slider_elasticity.valueChanged.connect(update_elasticity_label)
+        update_elasticity_label(self.slider_elasticity.value())
+        
+        elasticity_layout.addWidget(QLabel("0% (Rigid Pixels)"))
+        elasticity_layout.addWidget(self.slider_elasticity)
+        elasticity_layout.addWidget(QLabel("100% (Earth Geo)"))
+        elasticity_layout.addWidget(self.lbl_elasticity)
+        
+        burst_form = QFormLayout()
         self.spin_spiderify_radius = QDoubleSpinBox()
         self.spin_spiderify_radius.setRange(0.001, 0.100)
         self.spin_spiderify_radius.setDecimals(3)
         self.spin_spiderify_radius.setSingleStep(0.005)
-        self.spin_spiderify_radius.setToolTip("The geographic radius used to push overlapping map icons apart into a visible ring.")
+        self.spin_spiderify_radius.setToolTip("The geographic radius used to push overlapping map icons apart into a visible ring (Only visible if Elasticity > 0%).")
         
         self.spin_burst_zoom = QSpinBox()
         self.spin_burst_zoom.setRange(5, 18)
         self.spin_burst_zoom.setToolTip("The Leaflet map zoom level triggered when a user clicks the purple Burst header.")
         
-        burst_layout.addRow("", self.chk_enable_bursts)
-        burst_layout.addRow("Spiderify Offset Radius:", self.spin_spiderify_radius)
-        burst_layout.addRow("Burst Auto-Zoom Level:", self.spin_burst_zoom)
+        burst_form.addRow("Ring Expansion Math:", elasticity_layout)
+        burst_form.addRow("Geographic Base Radius:", self.spin_spiderify_radius)
+        burst_form.addRow("Burst Auto-Zoom Level:", self.spin_burst_zoom)
+        burst_layout.addLayout(burst_form)
         map_layout.addWidget(burst_group)
 
+        self.chk_enable_bursts.toggled.connect(self.slider_elasticity.setEnabled)
         self.chk_enable_bursts.toggled.connect(self.spin_spiderify_radius.setEnabled)
         self.chk_enable_bursts.toggled.connect(self.spin_burst_zoom.setEnabled)
 
@@ -369,8 +394,10 @@ class AdvancedSettingsDialog(QDialog):
         self.spin_group_age.setDisabled(self.chk_group_feed.isChecked())
         
         self.chk_enable_bursts.setChecked(self.map_config.get("enable_bursts", True))
+        self.slider_elasticity.setValue(self.map_config.get("burst_elasticity", 50))
         self.spin_spiderify_radius.setValue(self.map_config.get("spiderify_radius", 0.025))
         self.spin_burst_zoom.setValue(self.map_config.get("burst_zoom_level", 13))
+        self.slider_elasticity.setEnabled(self.chk_enable_bursts.isChecked())
         self.spin_spiderify_radius.setEnabled(self.chk_enable_bursts.isChecked())
         self.spin_burst_zoom.setEnabled(self.chk_enable_bursts.isChecked())
         
@@ -400,9 +427,12 @@ class AdvancedSettingsDialog(QDialog):
             "group_feed_history": self.chk_group_feed.isChecked(),
             "max_grouping_age_mins": self.spin_group_age.value(),
             "group_time_gap_mins": self.spin_group_time_gap.value(),
+            
             "enable_bursts": self.chk_enable_bursts.isChecked(),
+            "burst_elasticity": self.slider_elasticity.value(),
             "spiderify_radius": self.spin_spiderify_radius.value(),
             "burst_zoom_level": self.spin_burst_zoom.value(),
+            
             "enable_swarms": self.chk_enable_swarms.isChecked(),
             "swarm_max_distance_km": self.spin_swarm_dist.value(),
             "swarm_bbox_padding": self.spin_swarm_padding.value(),

@@ -1,9 +1,17 @@
 # FILE: config_editor_gui.py
-# VERSION: 13.1 - "The Temporal Clustering Patch"
+# VERSION: 13.2 - "The Black Screen Fix"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Injected the new 'group_time_gap_mins' default into the map_settings dictionary.
+# UPDATED: Injected Nuclear GPU Disable flags to prevent PyQt6 hardware acceleration black screens on Windows 11.
 
 import sys
+
+# --- NUCLEAR GPU DISABLE (Fix for Windows 11 Black Screen) ---
+sys.argv.append("--disable-gpu")
+sys.argv.append("--disable-software-rasterizer")
+sys.argv.append("--disable-gpu-compositing")
+sys.argv.append("--disable-accelerated-2d-canvas")
+sys.argv.append("--disable-d3d11")
+
 import json
 import requests
 import subprocess

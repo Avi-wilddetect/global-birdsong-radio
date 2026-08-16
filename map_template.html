@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Global Nervous System v41.1 (Temporal Clustering Patch)</title>
+    <title>Global Nervous System v41.2 (Hybrid Elasticity Patch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -16,7 +16,7 @@
         
         .leaflet-tile-pane { filter: brightness(0.9) contrast(1.1) saturate(1.1); }
         
-        /* Tooltip Styling */
+        /* Tooltip Styling (TIGHTENED PADDING & INTERACTIVE) */
         .leaflet-tooltip { 
             background: rgba(0,0,0,0.95) !important; 
             border: 1px solid #555 !important; 
@@ -25,8 +25,9 @@
             font-size: 12px; 
             border-radius: 4px; 
             box-shadow: 0 4px 25px rgba(0,0,0,0.8); 
-            padding: 10px 14px; 
-            pointer-events: none; 
+            padding: 6px 10px !important; 
+            pointer-events: auto !important; /* ALLOWS MOUSE HOVER */
+            z-index: 9999 !important; /* KEEPS IT ON TOP */
             white-space: normal !important; 
 			width: max-content !important; 
             max-width: 350px !important;   
@@ -38,10 +39,10 @@
         .leaflet-tooltip-left:before { border-left-color: #333; }
         .leaflet-tooltip-right:before { border-right-color: #333; }
         
-        /* Tooltip Flex Layout for Thumbnail */
+        /* Tooltip Flex Layout for Thumbnail (ENLARGED IMAGE) */
         .tt-layout { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; }
-        .tt-info { flex: 1; padding-right: 12px; }
-        .tt-thumb { width: 55px; height: 55px; object-fit: cover; border-radius: 4px; border: 1px solid #444; background-color: #000; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .tt-info { flex: 1; padding-right: 8px; }
+        .tt-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid #444; background-color: #000; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
         
         .tt-title { 
             font-weight: 900; 
@@ -169,9 +170,17 @@
         .btn { display: block; padding: 10px; background: #1a1a1a; color: #aaa; text-align: center; text-decoration: none; font-weight: 700; font-size: 11px; border: 1px solid #333; border-radius: 4px; margin-top: 8px; transition: 0.2s; cursor: pointer; }
         .btn:hover { background: #333; color: white; border-color: #00e676; }
         .close-x { position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; z-index: 2005; }
-        .visible-anchor { position: relative; width: 0px !important; height: 0px !important; overflow: visible !important; }
         
-        .pulse-core { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; background-size: cover; background-position: center 20%; transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s; box-sizing: border-box; cursor: pointer; }
+        /* SPIDERIFY MARGIN ANIMATION */
+        .visible-anchor { 
+            position: relative; 
+            width: 0px !important; 
+            height: 0px !important; 
+            overflow: visible !important; 
+            transition: margin 0.3s ease-out; /* Smooth glide when zooming */
+        }
+        
+        .pulse-core { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; background-size: cover; background-position: center 20%; transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s, transform 0.2s ease-out; box-sizing: border-box; cursor: pointer; }
         .pulse-core.shape-circle { border-radius: 50%; }
         .pulse-core.shape-square { border-radius: 20%; }
         .pulse-core.status-live { width: 40px; height: 40px; border: 2px solid #FF3D00; box-shadow: 0 0 8px rgba(255, 61, 0, 0.6); z-index: 300; animation: heartbeat 1.5s infinite; }
@@ -179,6 +188,19 @@
         .pulse-core.status-dormant { width: 26px; height: 26px; border: 1px solid #90A4AE; box-shadow: 0 0 3px rgba(144, 164, 174, 0.3); z-index: 100; animation: breath-dormant 5s infinite ease-in-out; }
         .pulse-core.status-listening { width: 14px; height: 14px; background-color: #00E5FF; border: 1px solid #fff; box-shadow: 0 0 10px #00E5FF; z-index: 50; animation: radar-ping 2.5s infinite; }
         
+        /* MAP ICON HOVER EFFECT (BASE GLOW) */
+        .hover-glow {
+            transform: translate(-50%, -50%) scale(1.15) !important;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
+            border: 2px solid #fff !important;
+        }
+
+        /* MAP ICON THICK STROBE FLARE (ACTIVATED VIA JS) */
+        .strobe-flare {
+            border-width: 2.5px !important;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 1) !important;
+        }
+
         .visible-anchor.target-active { z-index: 9999 !important; }
         /* TIGHTER SPOTLIGHT RING */
         .visible-anchor.target-active::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border: 1px dashed #fff; border-radius: 50%; box-shadow: 0 0 8px #fff, inset 0 0 4px #fff; animation: target-spin 6s linear infinite; pointer-events: none; z-index: -1; }
@@ -208,7 +230,7 @@
     <div id="map"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v41.1</div>
+    <div class="version-tag">v41.2</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -262,6 +284,13 @@
         map.on('click', () => { 
             clearSpotlight(); 
         });
+
+        // RECALCULATE SPIDERIFY HYBRID MATH ON ZOOM
+        map.on('zoomend', () => {
+            if (currentData && currentData.nodes) {
+                renderMap(currentData.nodes);
+            }
+        });
         
         // HAVERSINE DISTANCE MATH (Idea B)
         function getDistanceKm(lat1, lon1, lat2, lon2) {
@@ -283,6 +312,17 @@
         let lockedCustomNode = null;
         let connectionLostTime = null;
         let activeRegionBox = null; // Polygon for Idea B Swarms
+
+        // --- GLOBAL HOVER Tracking Dictionaries ---
+        const hoverTimeouts = {};     // 4-second persistence delays
+        const strobeIntervals = {};   // 1.5-second rapid strobe loop
+        const strobeTimeouts = {};    // Kills the strobe after 1.5s
+        const activeHighlights = {};  // Tracks if a marker is in ANY part of its highlight cycle
+        const mapHovers = {};         // Tracks if mouse is physically over the map marker itself
+        const tooltipIntentTimers = {}; // 0.5s delay before opening tooltip on hover
+        const gracePeriodTimers = {}; // 50ms transition window from icon to tooltip
+        const tooltipHovers = {};     // Tracks if mouse is inside the actual tooltip box
+        const strobeStates = {};      // Tracks mid-strobe UI state
 
         function getBadgesHtml(method, dist, frameSize) {
             let m = method || 'audio';
@@ -314,6 +354,192 @@
             
             html += `</div>`;
             return html;
+        }
+
+        // --- DIRECT MAP MARKER HOVER LOGIC ---
+        function handleMapMarkerMouseOver(id) {
+            mapHovers[id] = true;
+            
+            // Cancel transition grace periods
+            if (gracePeriodTimers[id]) {
+                clearTimeout(gracePeriodTimers[id]);
+                delete gracePeriodTimers[id];
+            }
+            
+            // Instantly cancel the 4-second decay timer
+            if (hoverTimeouts[id]) {
+                clearTimeout(hoverTimeouts[id]);
+                delete hoverTimeouts[id];
+            }
+            
+            // If it's ALREADY highlighted (from sidebar), keep it on top instantly
+            if (activeHighlights[id]) {
+                if (markers[id] && markers[id].marker) {
+                    markers[id].marker.setZIndexOffset(9000);
+                }
+            }
+
+            // TOOLTIP & GLOW 0.5s INTENT DELAY
+            if (!tooltipIntentTimers[id]) {
+                tooltipIntentTimers[id] = setTimeout(() => {
+                    activeHighlights[id] = true;
+                    if (markers[id] && markers[id].marker) {
+                        let el = markers[id].marker.getElement();
+                        if (el) {
+                            let core = el.querySelector('.pulse-core');
+                            if (core) core.classList.add('hover-glow');
+                        }
+                        markers[id].marker.setZIndexOffset(9000);
+                        
+                        // Open the tooltip perfectly offset above the icon
+                        markers[id].marker.bindTooltip(markers[id].lastTooltip, { 
+                            direction: 'top', 
+                            sticky: false, 
+                            opacity: 1, 
+                            offset: [0, -40], 
+                            interactive: true // Leaflet hook allowing hover
+                        }).openTooltip();
+                        
+                        // Explicitly bind to the Tooltip DOM node to catch transitions
+                        let tt = markers[id].marker.getTooltip();
+                        if (tt) {
+                            let ttEl = tt.getElement();
+                            if (ttEl) {
+                                ttEl.onmouseenter = () => {
+                                    tooltipHovers[id] = true;
+                                    if (gracePeriodTimers[id]) clearTimeout(gracePeriodTimers[id]);
+                                    if (hoverTimeouts[id]) clearTimeout(hoverTimeouts[id]);
+                                    activeHighlights[id] = true;
+                                };
+                                ttEl.onmouseleave = () => {
+                                    delete tooltipHovers[id];
+                                    handleMapMarkerMouseOut(id);
+                                };
+                            }
+                        }
+                    }
+                }, 500);
+            }
+        }
+
+        function handleMapMarkerMouseOut(id) {
+            delete mapHovers[id];
+            
+            // CANCEL INTENT IF IT WAS JUST A SWIPE
+            if (tooltipIntentTimers[id]) {
+                clearTimeout(tooltipIntentTimers[id]);
+                delete tooltipIntentTimers[id];
+            }
+
+            // Provide a 50ms window for the mouse to cross the gap from Icon to Tooltip
+            if (gracePeriodTimers[id]) clearTimeout(gracePeriodTimers[id]);
+            
+            gracePeriodTimers[id] = setTimeout(() => {
+                // If the mouse successfully landed on the tooltip box, DO NOTHING.
+                if (tooltipHovers[id]) return; 
+
+                // Otherwise, the mouse is gone. Close the tooltip.
+                if (markers[id] && markers[id].marker) {
+                    markers[id].marker.closeTooltip();
+                    markers[id].marker.unbindTooltip();
+                }
+
+                // ONLY start the 4-second decay if the icon was actually highlighted
+                if (activeHighlights[id]) {
+                    if (hoverTimeouts[id]) {
+                        clearTimeout(hoverTimeouts[id]);
+                    }
+                    
+                    hoverTimeouts[id] = setTimeout(() => {
+                        delete activeHighlights[id]; 
+                        
+                        if (markers[id] && markers[id].marker) {
+                            let el = markers[id].marker.getElement();
+                            if (el) {
+                                let core = el.querySelector('.pulse-core');
+                                if (core) {
+                                    core.classList.remove('hover-glow');
+                                    core.classList.remove('strobe-flare');
+                                }
+                            }
+                            // Revert to normal z-index logic if not actively fully focused via map click
+                            if(!activeFocusIds.includes(id)) {
+                                markers[id].marker.setZIndexOffset(getZIndex(markers[id].data.status));
+                            }
+                        }
+                        delete hoverTimeouts[id];
+                    }, 4000);
+                }
+            }, 50);
+        }
+
+        // --- MAP ICON HOVER EFFECT (SIDEBAR JAVASCRIPT DRIVEN STROBE) ---
+        function setMarkerHover(idOrIds, isHover) {
+            let ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+            
+            ids.forEach(id => {
+                if (isHover) {
+                    // Instantly cancel any pending 4-second cleanup timers because we are actively hovering
+                    if (hoverTimeouts[id]) { 
+                        clearTimeout(hoverTimeouts[id]); 
+                        delete hoverTimeouts[id]; 
+                    }
+
+                    // Only initiate the 1.5s strobe if it's not already in an active highlight cycle
+                    if (!activeHighlights[id]) {
+                        activeHighlights[id] = true;
+                        
+                        // Apply the baseline white hover-glow and pop to top layer immediately
+                        if (markers[id] && markers[id].marker) {
+                            let el = markers[id].marker.getElement();
+                            if (el) {
+                                let core = el.querySelector('.pulse-core');
+                                if (core) {
+                                    core.classList.add('hover-glow');
+                                }
+                            }
+                            markers[id].marker.setZIndexOffset(9000); // Pure Leaflet Z-Index forcing
+                        }
+
+                        // Clear old strobe tracking just in case
+                        if(strobeIntervals[id]) clearInterval(strobeIntervals[id]);
+                        if(strobeTimeouts[id]) clearTimeout(strobeTimeouts[id]);
+                        
+                        // Start the 150ms Strobe Interval
+                        let isFlare = false;
+                        strobeIntervals[id] = setInterval(() => {
+                            isFlare = !isFlare;
+                            strobeStates[id] = isFlare;
+                            if (markers[id] && markers[id].marker) {
+                                let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
+                                if (core) {
+                                    if (isFlare) core.classList.add('strobe-flare');
+                                    else core.classList.remove('strobe-flare');
+                                }
+                            }
+                        }, 150); // 150ms toggle -> ~5 flashes in 1.5s
+
+                        // Automatically kill the strobe after 1.5s and settle into solid glow
+                        strobeTimeouts[id] = setTimeout(() => {
+                            clearInterval(strobeIntervals[id]);
+                            delete strobeIntervals[id];
+                            delete strobeStates[id];
+                            
+                            // Ensure the flare class is removed cleanly
+                            if (markers[id] && markers[id].marker) {
+                                let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
+                                if (core) core.classList.remove('strobe-flare');
+                            }
+                        }, 1500);
+                    }
+                } else {
+                    // Mouse Left Sidebar Item
+                    // Delegate to the exact same logic as leaving the map marker directly
+                    if (!mapHovers[id] && !tooltipHovers[id]) {
+                        handleMapMarkerMouseOut(id);
+                    }
+                }
+            });
         }
 
         function openModal() { document.getElementById('submit-modal').style.display = 'flex'; }
@@ -369,9 +595,14 @@
         function renderMap(nodes) {
             const mapSettings = currentData.map_settings || {};
             const enableBursts = mapSettings.enable_bursts !== false;
-            const radius = mapSettings.spiderify_radius !== undefined ? parseFloat(mapSettings.spiderify_radius) : 0.025;
+            
+            // RESET ALL OFFSETS
+            nodes.forEach(node => { 
+                node.offsetX = 0; 
+                node.offsetY = 0; 
+            });
 
-            // SPIDERIFY ALGORITHM (Idea A - Offset live icons that share the same exact coordinate)
+            // HYBRID SPIDERIFY ALGORITHM (Pixel Offset + Zoom Elasticity)
             if (enableBursts) {
                 const locMap = {};
                 nodes.forEach(node => {
@@ -380,32 +611,64 @@
                     locMap[k].push(node);
                 });
 
+                // Extract elasticity (0.0 to 1.0). Default to 0.5 (50%)
+                const elasticity = (mapSettings.burst_elasticity !== undefined ? mapSettings.burst_elasticity : 50) / 100.0;
+                
+                // Base calculation variables
+                const baseZoom = 8;
+                const baseRadius = 45; // 45 pixels apart at zoom level 8
+                
+                // Hybrid Math Formula
+                let radiusPx = baseRadius * Math.pow(2, (map.getZoom() - baseZoom) * elasticity);
+                
+                // Hard Caps so it never completely collapses or flies off screen
+                radiusPx = Math.max(20, Math.min(radiusPx, 150));
+
                 for (let k in locMap) {
                     let items = locMap[k];
                     if (items.length > 1) {
                         items.forEach((node, i) => {
                             let angle = (i / items.length) * 2 * Math.PI;
-                            node.lat += radius * Math.cos(angle);
-                            node.lon += radius * Math.sin(angle);
+                            // Shift phase by -90 degrees (-PI/2) so the first icon points straight up
+                            angle -= Math.PI / 2;
+                            node.offsetX = radiusPx * Math.cos(angle);
+                            node.offsetY = radiusPx * Math.sin(angle);
                         });
                     }
                 }
             }
 
-            // Standard render loop
-            nodes.forEach(node => { if (markers[node.id]) { updateMarker(markers[node.id], node); } else { createMarker(node); } }); 
+            // Standard render loop using new offsets
+            nodes.forEach(node => { 
+                if (markers[node.id]) { updateMarker(markers[node.id], node); } 
+                else { createMarker(node); } 
+            }); 
         }
 
         function createMarker(node) { 
             const htmlContent = buildIconHtml(node);
             const classContent = 'visible-anchor';
-            const icon = L.divIcon({ className: classContent, html: htmlContent, iconSize:[0, 0], iconAnchor:[0, 0] }); 
+            
+            // Apply new pixel offsets to the Anchor
+            const icon = L.divIcon({ 
+                className: classContent, 
+                html: htmlContent, 
+                iconSize: [0, 0], 
+                iconAnchor: [-node.offsetX || 0, -node.offsetY || 0] 
+            }); 
+            
             const m = L.marker([node.lat, node.lon], { icon: icon, zIndexOffset: getZIndex(node.status) }).addTo(map); 
+            
+            // --- THE DIRECT HOVER PATCH ---
+            m.on('mouseover', () => handleMapMarkerMouseOver(node.id));
+            m.on('mouseout', () => handleMapMarkerMouseOut(node.id));
             
             const badgesHtml = getBadgesHtml(node.detection_method, node.dist, node.frame_size);
             const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${node.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${node.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${node.time_ago_str}</div></div></div>${node.image ? `<img class="tt-thumb" src="${node.image}" />` : ''}</div>`; 
             
-            m.bindTooltip(tooltipContent, { direction: 'auto', sticky: false, opacity: 1, offset:[0, -25] }); 
+            // Stash tooltip content for dynamic binding
+            m.lastTooltip = tooltipContent;
+            
             m.on('click', (e) => { 
                 L.DomEvent.stopPropagation(e); 
                 lockedCustomNode = null; 
@@ -418,6 +681,8 @@
         function updateMarker(ref, newNode) { 
             const isTarget = activeFocusIds.includes(newNode.id); 
             const newLatLng = L.latLng(newNode.lat, newNode.lon);
+            
+            // Only update geographic position if the camera physically moved
             if (ref.marker.getLatLng().lat !== newLatLng.lat || ref.marker.getLatLng().lng !== newLatLng.lng) {
                 ref.marker.setLatLng(newLatLng);
             }
@@ -426,25 +691,28 @@
             const newHtml = buildIconHtml(newNode);
             const newClass = 'visible-anchor ' + (isTarget ? 'target-active' : '');
             
-            if (ref.lastHtml !== newHtml || ref.lastClass !== newClass) {
-                const newIcon = L.divIcon({ className: newClass, html: newHtml, iconSize:[0, 0], iconAnchor:[0, 0] }); 
-                ref.marker.setIcon(newIcon); 
-                ref.lastHtml = newHtml;
-                ref.lastClass = newClass;
-            }
+            // Update the icon definition (This handles the Spiderify expansion)
+            const newIcon = L.divIcon({ 
+                className: newClass, 
+                html: newHtml, 
+                iconSize: [0, 0], 
+                iconAnchor: [-newNode.offsetX || 0, -newNode.offsetY || 0] 
+            }); 
+            ref.marker.setIcon(newIcon); 
+            ref.lastHtml = newHtml;
+            ref.lastClass = newClass;
             
-            ref.marker.setZIndexOffset(isTarget ? 9999 : getZIndex(newNode.status)); 
+            // --- THE Z-INDEX PROTECTION PATCH ---
+            ref.marker.setZIndexOffset(isTarget ? 9999 : (activeHighlights[newNode.id] ? 9000 : getZIndex(newNode.status))); 
             
             const badgesHtml = getBadgesHtml(newNode.detection_method, newNode.dist, newNode.frame_size);
             const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${newNode.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${newNode.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${newNode.time_ago_str}</div></div></div>${newNode.image ? `<img class="tt-thumb" src="${newNode.image}" />` : ''}</div>`; 
             
             if (ref.lastTooltip !== tooltipContent) {
-                if (ref.marker.getTooltip()) {
-                    ref.marker.getTooltip().setContent(tooltipContent); 
-                } else {
-                    ref.marker.bindTooltip(tooltipContent, { direction: 'auto', sticky: false, opacity: 1, offset:[0, -25] });
-                }
                 ref.lastTooltip = tooltipContent;
+                if (ref.marker.getTooltip() && ref.marker.isTooltipOpen()) {
+                    ref.marker.setTooltipContent(tooltipContent);
+                }
             }
 
             // Only update Intel Metadata if it's the solitary focus and the panel is currently doing something
@@ -459,7 +727,12 @@
             const focusClass = activeFocusIds.includes(node.id) ? 'target-focus' : ''; 
             let shapeClass = 'shape-circle'; 
             if (node.stream_type === 'hls' || node.stream_type === 'direct_stream' || node.stream_type === 'mjpeg') { shapeClass = 'shape-square'; } 
-            return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass}" style="${bgStyle}"></div>`; 
+            
+            // Check global tracking dictionaries to inject hover/strobe classes immune to DOM refreshes
+            let glowClass = activeHighlights[node.id] ? 'hover-glow' : '';
+            let flareClass = strobeStates[node.id] ? 'strobe-flare' : '';
+            
+            return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass} ${glowClass} ${flareClass}" style="${bgStyle}"></div>`; 
         }
 
         // --- CLEARS ALL HIGHLIGHTS WHEN MAP IS CLICKED ---
@@ -473,12 +746,42 @@
             document.querySelectorAll('.feed-group').forEach(el => el.classList.remove('active-group'));
             document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item'));
             
-            Object.values(markers).forEach(ref => updateMarker(ref, ref.data));
+            // Instantly destroy all hover and strobe state timers
+            for (let id in hoverTimeouts) clearTimeout(hoverTimeouts[id]);
+            for (let id in strobeIntervals) clearInterval(strobeIntervals[id]);
+            for (let id in strobeTimeouts) clearTimeout(strobeTimeouts[id]);
+            for (let id in tooltipIntentTimers) clearTimeout(tooltipIntentTimers[id]);
+            for (let id in gracePeriodTimers) clearTimeout(gracePeriodTimers[id]);
+            
+            // Clear tracking dictionaries
+            Object.keys(hoverTimeouts).forEach(k => delete hoverTimeouts[k]);
+            Object.keys(strobeIntervals).forEach(k => delete strobeIntervals[k]);
+            Object.keys(strobeTimeouts).forEach(k => delete strobeTimeouts[k]);
+            Object.keys(activeHighlights).forEach(k => delete activeHighlights[k]);
+            Object.keys(mapHovers).forEach(k => delete mapHovers[k]);
+            Object.keys(tooltipHovers).forEach(k => delete tooltipHovers[k]);
+            Object.keys(strobeStates).forEach(k => delete strobeStates[k]);
+            Object.keys(tooltipIntentTimers).forEach(k => delete tooltipIntentTimers[k]);
+            Object.keys(gracePeriodTimers).forEach(k => delete gracePeriodTimers[k]);
+            
+            Object.values(markers).forEach(ref => {
+                let el = ref.marker.getElement();
+                if(el) {
+                    let core = el.querySelector('.pulse-core');
+                    // Aggressively strip any residual visual classes
+                    if(core) {
+                        core.classList.remove('hover-glow');
+                        core.classList.remove('strobe-flare');
+                    }
+                }
+                updateMarker(ref, ref.data);
+            });
             L.DomUtil.removeClass(map.getContainer(), 'map-spotlight-active');
             
             map.eachLayer(function(layer) {
                 if (layer.getTooltip && layer.isTooltipOpen()) {
                     layer.closeTooltip();
+                    layer.unbindTooltip();
                 }
             });
             
@@ -914,6 +1217,8 @@
             const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size);
             
             return `<div class="feed-item ${urgencyClass} ${activeClass}" id="${uniqueFeedId}" data-target-id="${item.target_id}" 
+                         onmouseenter="setMarkerHover('${item.target_id}', true)" 
+                         onmouseleave="setMarkerHover('${item.target_id}', false)"
                          onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, ${methodArg}, ${distArg}, ${frameArg}, '${uniqueFeedId}', true)">
                         <div class="dot bg-${item.urgency}"></div>
                         <div style="flex:1">
@@ -1075,9 +1380,17 @@
                     const maxTs = Math.max(...block.items.map(i => i.timestamp));
                     const domId = `group-a-${block.camera_id}-${maxTs}`;
                     const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                    
+                    // Create JSON string array for hover IDs
+                    const targetIds = block.items.map(i => i.target_id);
+                    const hoverIds = JSON.stringify(targetIds).replace(/"/g, "'");
+
                     html += `
                     <div class="feed-group group-a ${activeClass}" id="${domId}">
-                        <div class="group-header" onclick="focusGroupA('${block.camera_id}', '${domId}')">
+                        <div class="group-header" 
+                             onmouseenter="setMarkerHover(${hoverIds}, true)" 
+                             onmouseleave="setMarkerHover(${hoverIds}, false)"
+                             onclick="focusGroupA('${block.camera_id}', '${domId}')">
                             <span style="font-size:13px;">🌍 BIODIVERSITY BURST</span>
                             <span class="group-subtext">${block.items.length} species detected simultaneously on '${streamName}'</span>
                         </div>
@@ -1090,9 +1403,17 @@
                     const maxTs = Math.max(...block.items.map(i => i.timestamp));
                     const domId = `group-b-${safeSpId}-${maxTs}`;
                     const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                    
+                    // Create JSON string array for hover IDs
+                    const targetIds = block.items.map(i => i.target_id);
+                    const hoverIds = JSON.stringify(targetIds).replace(/"/g, "'");
+
                     html += `
                     <div class="feed-group group-b ${activeClass}" id="${domId}">
-                        <div class="group-header" onclick="focusGroupB('${spName.replace(/'/g, "\\'")}', '${domId}')">
+                        <div class="group-header" 
+                             onmouseenter="setMarkerHover(${hoverIds}, true)" 
+                             onmouseleave="setMarkerHover(${hoverIds}, false)"
+                             onclick="focusGroupB('${spName.replace(/'/g, "\\'")}', '${domId}')">
                             <span style="font-size:13px;">🗺️ REGIONAL SWARM</span>
                             <span class="group-subtext">${block.items.length} '${spName}' detected across region</span>
                         </div>
