@@ -197,8 +197,8 @@
 
         /* MAP ICON THICK STROBE FLARE (ACTIVATED VIA JS) */
         .strobe-flare {
-            border-width: 2.5px !important;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 1) !important;
+            border-width: 3px !important;
+            box-shadow: 0 0 14px rgba(255, 255, 255, 1) !important;
         }
 
         .visible-anchor.target-active { z-index: 9999 !important; }
@@ -391,12 +391,20 @@
                         }
                         markers[id].marker.setZIndexOffset(9000);
                         
-                        // Open the tooltip perfectly offset above the icon
+                        // --- THE DYNAMIC TOOLTIP ROUTING PATCH ---
+                        let pt = map.latLngToContainerPoint(markers[id].marker.getLatLng());
+                        // Sidebar occupies rightmost 380px. Tooltip is ~350px wide (175px overflow to the right if centered).
+                        // 380 + 175 = 555px. If the icon is within 550px of the right screen edge, push tooltip to the left.
+                        let isNearRightEdge = pt.x > (window.innerWidth - 550);
+                        let ttDirection = isNearRightEdge ? 'left' : 'top';
+                        let ttOffset = isNearRightEdge ? [-20, 0] : [0, -40];
+                        
+                        // Open the tooltip perfectly offset to avoid the sidebar
                         markers[id].marker.bindTooltip(markers[id].lastTooltip, { 
-                            direction: 'top', 
+                            direction: ttDirection, 
                             sticky: false, 
                             opacity: 1, 
-                            offset: [0, -40], 
+                            offset: ttOffset, 
                             interactive: true // Leaflet hook allowing hover
                         }).openTooltip();
                         
