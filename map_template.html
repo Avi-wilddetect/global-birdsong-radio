@@ -459,7 +459,7 @@
                                 let core = el.querySelector('.pulse-core');
                                 if (core) {
                                     core.classList.remove('hover-glow');
-                                    core.classList.remove('strobe-flare');
+                                    core.classList.remove('strobe-flare'); // Safety catch
                                 }
                             }
                             // Revert to normal z-index logic if not actively fully focused via map click
@@ -485,53 +485,51 @@
                         delete hoverTimeouts[id]; 
                     }
 
-                    // Only initiate the 1.5s strobe if it's not already in an active highlight cycle
-                    if (!activeHighlights[id]) {
-                        activeHighlights[id] = true;
-                        
-                        // Apply the baseline white hover-glow and pop to top layer immediately
-                        if (markers[id] && markers[id].marker) {
-                            let el = markers[id].marker.getElement();
-                            if (el) {
-                                let core = el.querySelector('.pulse-core');
-                                if (core) {
-                                    core.classList.add('hover-glow');
-                                }
+                    // ALWAYS RESTART THE STROBE ON MOUSE ENTER
+                    activeHighlights[id] = true;
+                    
+                    // Apply the baseline white hover-glow and pop to top layer immediately
+                    if (markers[id] && markers[id].marker) {
+                        let el = markers[id].marker.getElement();
+                        if (el) {
+                            let core = el.querySelector('.pulse-core');
+                            if (core) {
+                                core.classList.add('hover-glow');
                             }
-                            markers[id].marker.setZIndexOffset(9000); // Pure Leaflet Z-Index forcing
                         }
-
-                        // Clear old strobe tracking just in case
-                        if(strobeIntervals[id]) clearInterval(strobeIntervals[id]);
-                        if(strobeTimeouts[id]) clearTimeout(strobeTimeouts[id]);
-                        
-                        // Start the 150ms Strobe Interval
-                        let isFlare = false;
-                        strobeIntervals[id] = setInterval(() => {
-                            isFlare = !isFlare;
-                            strobeStates[id] = isFlare;
-                            if (markers[id] && markers[id].marker) {
-                                let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
-                                if (core) {
-                                    if (isFlare) core.classList.add('strobe-flare');
-                                    else core.classList.remove('strobe-flare');
-                                }
-                            }
-                        }, 150); // 150ms toggle -> ~5 flashes in 1.5s
-
-                        // Automatically kill the strobe after 1.5s and settle into solid glow
-                        strobeTimeouts[id] = setTimeout(() => {
-                            clearInterval(strobeIntervals[id]);
-                            delete strobeIntervals[id];
-                            delete strobeStates[id];
-                            
-                            // Ensure the flare class is removed cleanly
-                            if (markers[id] && markers[id].marker) {
-                                let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
-                                if (core) core.classList.remove('strobe-flare');
-                            }
-                        }, 1500);
+                        markers[id].marker.setZIndexOffset(9000); // Pure Leaflet Z-Index forcing
                     }
+
+                    // Clear old strobe tracking just in case
+                    if(strobeIntervals[id]) clearInterval(strobeIntervals[id]);
+                    if(strobeTimeouts[id]) clearTimeout(strobeTimeouts[id]);
+                    
+                    // Start the 150ms Strobe Interval
+                    let isFlare = false;
+                    strobeIntervals[id] = setInterval(() => {
+                        isFlare = !isFlare;
+                        strobeStates[id] = isFlare;
+                        if (markers[id] && markers[id].marker) {
+                            let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
+                            if (core) {
+                                if (isFlare) core.classList.add('strobe-flare');
+                                else core.classList.remove('strobe-flare');
+                            }
+                        }
+                    }, 150); // 150ms toggle -> ~5 flashes in 1.5s
+
+                    // Automatically kill the strobe after 1.5s and settle into solid glow
+                    strobeTimeouts[id] = setTimeout(() => {
+                        clearInterval(strobeIntervals[id]);
+                        delete strobeIntervals[id];
+                        delete strobeStates[id];
+                        
+                        // Ensure the flare class is removed cleanly
+                        if (markers[id] && markers[id].marker) {
+                            let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
+                            if (core) core.classList.remove('strobe-flare');
+                        }
+                    }, 1500);
                 } else {
                     // Mouse Left Sidebar Item
                     // Delegate to the exact same logic as leaving the map marker directly
