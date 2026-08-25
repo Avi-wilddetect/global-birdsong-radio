@@ -12,9 +12,9 @@
   "send_audio_telegram_birdnet": false,
   "fast_mode_enabled": true,
   "capture_seconds": 12,
-  "interval_seconds": 260,
+  "interval_seconds": 300,
   "score_threshold": 0.3,
-  "parallel_listeners": 4,
+  "parallel_listeners": 3,
   "interval_jitter": 15,
   "batch_size": 3,
   "hiccup_penalty_minutes": 5,
@@ -41,8 +41,7 @@
   "network_map": {
     "L1": "Wi-Fi 2 - GBR1",
     "L2": "Wi-Fi 2 - GBR1",
-    "L3": "YOUR_WIFI_ADAPTER_2",
-    "L4": "YOUR_WIFI_ADAPTER_2"
+    "L3": "YOUR_WIFI_ADAPTER_2"
   },
   "loop_management": {
     "enabled": true,
@@ -60,120 +59,52 @@
   },
   "streams": [
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1778683329.4245837,
+      "channel_name": "CarnyxWild",
+      "created_at": 1779612553.0381796,
       "enabled": true,
-      "lat": 40.58708,
-      "lon": -111.63464,
+      "lat": 54.97004,
+      "lon": -1.59919,
       "mute_audio": false,
-      "name": "Bird Feeder Cam, Alta, Utah, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=XSPrmTIJOJY",
+      "name": "Kittiwake Colony Nesting Cam, Baltic, Gateshead, Newcastle, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=q4iYru8casU",
       "stream_type": "youtube",
-      "updated_at": 1786855561.3111436
+      "updated_at": 1787650165.7347364
     },
     {
-      "channel_name": "Wheeler8Acres",
-      "created_at": 1777395367.8050046,
-      "disable_reason": "Dead (Case A Sync)",
+      "channel_name": "CarnyxWild",
+      "created_at": 1779612798.0107841,
       "enabled": true,
-      "lat": 33.2864,
-      "lon": -85.50955,
+      "lat": 53.92077,
+      "lon": -1.64906,
       "mute_audio": false,
-      "name": "Bird Feeder Cam, Northeast Alabama, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=EJJ8TsrXNmI",
+      "name": "Barn Owls Cam 2, Leathley in Wharfedale, North Yorkshire, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=IDQk_XpOgZc",
       "stream_type": "youtube",
-      "updated_at": 1778684377.1431184
+      "updated_at": 1787650097.8469756
     },
     {
-      "channel_name": "Birdcam.it",
-      "created_at": 1771109148.2245016,
+      "channel_name": "CarnyxWild",
+      "created_at": 1779613038.2502303,
       "enabled": true,
-      "lat": 41.90271,
-      "lon": 12.48376,
+      "lat": 52.46881,
+      "lon": -3.68104,
       "mute_audio": false,
-      "name": "Cam 1, Pelegrins Alex and Amelia Nest, Highest Water Tower, Spring of the Acqua Vergine, Rome, Italy (YouTube)",
-      "original_yt_title": "Birdcam.it - Live Peregrine Falcons Nest Alex & Amelia - Cam 1 2026-04-23 16:09",
-      "page_url": "https://www.youtube.com/watch?v=2qgbIZfp7Rw",
+      "name": "Osprey Nest Cam 2, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=ppZk-UOrgSw",
       "stream_type": "youtube",
-      "updated_at": 1778693279.2332146
+      "updated_at": 1787650032.943406
     },
     {
-      "channel_name": "Birdcam.it",
-      "created_at": 1771109248.879255,
+      "channel_name": "CarnyxWild",
+      "created_at": 1779612960.799644,
       "enabled": true,
-      "lat": 41.90271,
-      "lon": 12.48376,
+      "lat": 52.46881,
+      "lon": -3.68104,
       "mute_audio": false,
-      "name": "Cam2, Pelegrins Alex and Amelia Nest, Highest Water Tower, Spring of the Acqua Vergine, Rome, Italy (YouTube)",
-      "original_yt_title": "Birdcam.it - Live Peregrine Falcons Nest Alex & Amelia - Cam 2 2026-04-23 16:10",
-      "page_url": "https://www.youtube.com/watch?v=NZCYvt7T8c0",
+      "name": "Osprey Nest Cam 1, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=tm84wYgG1Bk",
       "stream_type": "youtube",
-      "updated_at": 1778693269.1869123
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1771109549.1964793,
-      "enabled": true,
-      "lat": 41.84567,
-      "lon": 12.48269,
-      "mute_audio": false,
-      "name": "Pelegrins Albangel & Velangel Nest Cam, Dome of the Buon Pastore, Rome, Italy (YouTube)",
-      "original_yt_title": "Birdcam.it - Live Peregrine Falcons Nest Albangel & Velangel 2026-04-23 16:10",
-      "page_url": "https://www.youtube.com/watch?v=u_Gx4gqZ6Ps",
-      "stream_type": "youtube",
-      "updated_at": 1785251437.9603605
-    },
-    {
-      "channel_name": "Birdcam.it",
-      "created_at": 1776460864.3720365,
-      "enabled": true,
-      "lat": 41.84567,
-      "lon": 12.48269,
-      "mute_audio": false,
-      "name": "Kestrel Nest Cam Luna & Orione, High School Roof, Rome, Italy (YouTube)",
-      "original_yt_title": "Birdcam.it - Live Kestrel Nest Cam Luna & Orione",
-      "page_url": "https://www.youtube.com/watch?v=-Z2gxFYJEwY",
-      "stream_type": "youtube",
-      "updated_at": 1778693244.6905453
-    },
-    {
-      "channel_name": "Birdcam.it",
-      "created_at": 1776461114.7639477,
-      "enabled": true,
-      "lat": 41.80386,
-      "lon": 12.4939,
-      "mute_audio": false,
-      "name": "Pelegrins Alrisha & Sirius Nest Cam, AMA Waste Management Plant in Ponte Malnome, Rome, Italy (YouTube)",
-      "original_yt_title": "Birdcam.it - Live Peregrine Falcons Nest Alrisha & Sirius",
-      "page_url": "https://www.youtube.com/watch?v=aOOEteMO0aM",
-      "stream_type": "youtube",
-      "updated_at": 1778693014.427891
-    },
-    {
-      "channel_name": "Home by the Hedgerow",
-      "created_at": 1775922177.5299842,
-      "enabled": true,
-      "lat": 50.54626,
-      "lon": -4.55308,
-      "mute_audio": false,
-      "name": "Garden Wildlife Cam, Cornwall, UK (YouTube)",
-      "original_yt_title": "Live Garden Wildlife Cameras | Cornwall, UK",
-      "page_url": "https://www.youtube.com/watch?v=cW82zgAq4Qk",
-      "stream_type": "youtube",
-      "updated_at": 1778694215.196426
-    },
-    {
-      "channel_name": "afarTV",
-      "created_at": 1774317934.067764,
-      "enabled": true,
-      "lat": 14.7486,
-      "lon": -91.56313,
-      "mute_audio": false,
-      "name": " Santa Maria Volcano (Santiaguito), Guatamala (YouTube)",
-      "original_yt_title": "\ud83d\udd34 Live Now: 24/7 Santa Maria (Santiaguito) Volcano in 4K Ultra HD 2026-04-29 22:14",
-      "page_url": "https://www.youtube.com/watch?v=PUsC4_-RuGQ",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4151998
+      "updated_at": 1787649980.1483395
     },
     {
       "channel_name": "PixCams",
@@ -213,19 +144,6 @@
       "updated_at": 1777668586.415304
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1757888756.4271512,
-      "enabled": true,
-      "lat": 29.88239,
-      "lon": -81.28859,
-      "mute_audio": false,
-      "name": "Alligator and Spoonbill Swamp, St. Augustine, Florida, USA (YouTube)",
-      "original_yt_title": "LIVE Alligators and Spoonbills - St. Augustine's Alligator Farm Zoological Park | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=qJr5KK6F7Q0",
-      "stream_type": "youtube",
-      "updated_at": 1786855705.9507444
-    },
-    {
       "channel_name": "Explore Big Surf, Beaches and Sunsets",
       "created_at": 1773534091.5933225,
       "enabled": true,
@@ -237,42 +155,6 @@
       "page_url": "https://www.youtube.com/watch?v=fAS2TFePbQk",
       "stream_type": "youtube",
       "updated_at": 1777668586.4153728
-    },
-    {
-      "channel_name": "Explore Oceans",
-      "created_at": 1773535152.5375252,
-      "enabled": true,
-      "lat": 34.01367,
-      "lon": -119.74196,
-      "mute_audio": false,
-      "name": "Anacapa Island Ocean, Channel Islands National Park, California, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=OAJF1Ie1m_Q",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4154062
-    },
-    {
-      "channel_name": "EarthCam",
-      "created_at": 1768059173.304835,
-      "enabled": true,
-      "lat": 43.21325,
-      "lon": -77.42673,
-      "mute_audio": false,
-      "name": "Animals and Nature Cam, Webster, New Yrok, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=ZNDtaQp1Gak",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4154396
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767791049.834826,
-      "enabled": true,
-      "lat": 45.03828,
-      "lon": -84.64266,
-      "mute_audio": false,
-      "name": "Animals and Wildlife Cam, Gaylord, Michigan, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=IU_-Pl9O5jQ",
-      "stream_type": "youtube",
-      "updated_at": 1786855611.2310426
     },
     {
       "channel_name": "Eastern Backwoods Outdoors",
@@ -299,20 +181,6 @@
       "updated_at": 1777668586.4155335
     },
     {
-      "channel_name": "Explore Hummingbird & Bird Migration Cams",
-      "created_at": 1771014723.269326,
-      "enabled": true,
-      "lat": 31.3904,
-      "lon": -110.23961,
-      "mute_audio": false,
-      "name": "Back Porch Cam, Ash Canyon Bird Sanctuary, Huachuca Mountains, Arizona, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=-iFBRrqp6hE&variant=1776453385",
-      "original_yt_title": "LIVE Javelinas & Arizona Wildlife Cam: Ash Canyon Bird Sanctuary Back Porch | explore.org 2026-04-17 22:16",
-      "page_url": "https://www.youtube.com/watch?v=-iFBRrqp6hE",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.415581
-    },
-    {
       "channel_name": "Explore Oceans",
       "created_at": 1773534399.6004078,
       "enabled": true,
@@ -323,56 +191,6 @@
       "page_url": "https://www.youtube.com/watch?v=Lv9t0hZTvz4",
       "stream_type": "youtube",
       "updated_at": 1777668586.415617
-    },
-    {
-      "channel_name": "Texas Backyard Wildlife",
-      "created_at": 1774551345.6377983,
-      "enabled": true,
-      "lat": 30.38578,
-      "lon": -97.54751,
-      "mute_audio": false,
-      "name": "Backyard Cam, Austin, Texas, USA (YouTube)",
-      "original_yt_title": "Texas Wildlife in an Austin Backyard 2026-05-13 17:43",
-      "page_url": "https://www.youtube.com/watch?v=lBlvG2FRmv8",
-      "stream_type": "youtube",
-      "updated_at": 1778683442.6585617
-    },
-    {
-      "channel_name": "Bird Watching HQ",
-      "created_at": 1767789721.1959352,
-      "enabled": true,
-      "lat": 41.29201,
-      "lon": -81.56665,
-      "mute_audio": false,
-      "name": "Backyard Wildlife Cam, Cuyahoga Valley National Park, Ohio, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=QhxCVRJrVHs",
-      "stream_type": "youtube",
-      "updated_at": 1778150413.435572
-    },
-    {
-      "channel_name": "Tennessee Wildlife Livestream",
-      "created_at": 1775901909.3312583,
-      "enabled": true,
-      "lat": 35.44449,
-      "lon": -86.78476,
-      "mute_audio": false,
-      "name": "Backyard wildlife Cam, Tennessee, USA (YouTube)",
-      "original_yt_title": "Tennessee Backyard Wildlife Camera 24/7 2026-05-13 17:44",
-      "page_url": "https://www.youtube.com/watch?v=unDCiSw9WNg",
-      "stream_type": "youtube",
-      "updated_at": 1779615191.918061
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772217790.6891532,
-      "enabled": true,
-      "lat": 35.70921,
-      "lon": -93.47592,
-      "mute_audio": false,
-      "name": "Backyard, Bird Feeder, Ozark Mountains, Southern Missouri, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=_wnjeiATFk4",
-      "stream_type": "youtube",
-      "updated_at": 1786855700.7985792
     },
     {
       "channel_name": "PixCams",
@@ -397,18 +215,6 @@
       "page_url": "https://www.youtube.com/watch?v=uxzRXhKshow",
       "stream_type": "youtube",
       "updated_at": 1777668586.4158182
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774017321.7558265,
-      "enabled": true,
-      "lat": 40.40964,
-      "lon": -79.93372,
-      "mute_audio": false,
-      "name": "Bald Eagle Cam, Glen Hazel, Pittsburgh, Pennsylvania, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=yPq9aNukckQ",
-      "stream_type": "youtube",
-      "updated_at": 1786855445.8912256
     },
     {
       "channel_name": "PixCams",
@@ -448,7 +254,7 @@
       "updated_at": 1777668586.4160395
     },
     {
-      "channel_name": "Charter Group Birdcams \u05e6\u05d9\u05e4\u05d5\u05e8\u05d9\u05dd \u05d0\u05d5\u05e0\u05dc\u05d9\u05d9\u05df \u05e7\u05d1\u05d5\u05e6\u05ea \u05e6'\u05e8\u05d8\u05e8",
+      "channel_name": "Charter Group Birdcams",
       "created_at": 1759440232.2549093,
       "enabled": true,
       "lat": 29.64679,
@@ -460,7 +266,7 @@
       "updated_at": 1777668586.4160836
     },
     {
-      "channel_name": "Charter Group Birdcams \u05e6\u05d9\u05e4\u05d5\u05e8\u05d9\u05dd \u05d0\u05d5\u05e0\u05dc\u05d9\u05d9\u05df \u05e7\u05d1\u05d5\u05e6\u05ea \u05e6'\u05e8\u05d8\u05e8",
+      "channel_name": "Charter Group Birdcams",
       "created_at": 1767753197.884932,
       "enabled": true,
       "lat": 32.762313,
@@ -508,31 +314,6 @@
       "updated_at": 1777668586.4162147
     },
     {
-      "channel_name": "Canadian Bird Nerd",
-      "created_at": 1772217506.26095,
-      "enabled": true,
-      "lat": 51.49888,
-      "lon": -115.92874,
-      "mute_audio": false,
-      "name": "Bird Bath Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
-      "original_yt_title": "Relax with Nature: Live Canadian Bird Bath Cam in 4K 2026-05-13 16:30",
-      "page_url": "https://www.youtube.com/watch?v=q1oAQ8_NBo8",
-      "stream_type": "youtube",
-      "updated_at": 1778679056.141872
-    },
-    {
-      "channel_name": "Alyssa's Nature Sanctuary",
-      "created_at": 1774319219.4502163,
-      "enabled": true,
-      "lat": 34.57256,
-      "lon": -120.50248,
-      "mute_audio": false,
-      "name": "Bird Bath Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=rlt81BfVXi4",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4162803
-    },
-    {
       "channel_name": "NatureTec",
       "created_at": 1757827194.7700078,
       "enabled": true,
@@ -555,30 +336,6 @@
       "page_url": "https://www.youtube.com/watch?v=WM2c68qsDnM",
       "stream_type": "youtube",
       "updated_at": 1777668586.4163425
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767816302.9527876,
-      "enabled": true,
-      "lat": 54.02968,
-      "lon": -0.72546,
-      "mute_audio": false,
-      "name": "Bird Cam, Fotherdale, Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=1PHylxad21s",
-      "stream_type": "youtube",
-      "updated_at": 1786855682.455855
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767878475.5097525,
-      "enabled": true,
-      "lat": 42.79033,
-      "lon": -88.6843,
-      "mute_audio": false,
-      "name": "Bird Cam, Kettle Moraine State Forest, Whitewater, Wisconsin, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=KSbM3x3aJmI",
-      "stream_type": "youtube",
-      "updated_at": 1786855617.8598478
     },
     {
       "channel_name": "PixCams",
@@ -607,18 +364,6 @@
     },
     {
       "channel_name": "PixCams",
-      "created_at": 1771013080.8580995,
-      "enabled": true,
-      "lat": 40.42647,
-      "lon": -79.6633,
-      "mute_audio": false,
-      "name": "Bird Feeder 2, Murrysville, Pennsylvania, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=a-IydWw-VXM",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4166255
-    },
-    {
-      "channel_name": "PixCams",
       "created_at": 1771012992.5015829,
       "enabled": true,
       "lat": 40.42647,
@@ -628,18 +373,6 @@
       "page_url": "https://www.youtube.com/watch?v=M_MnriRVIUc",
       "stream_type": "youtube",
       "updated_at": 1777668586.4166574
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772216553.3924086,
-      "enabled": true,
-      "lat": 36.24601,
-      "lon": -86.8922,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam 2, Nashville, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=3uEi1fE7mCY",
-      "stream_type": "youtube",
-      "updated_at": 1786855482.5863025
     },
     {
       "channel_name": "Nashville Bird Cam",
@@ -655,69 +388,6 @@
       "updated_at": 1777668586.416725
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1771110919.8981302,
-      "enabled": true,
-      "lat": 41.29201,
-      "lon": -81.56665,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam Cam, Cuyahoga Valley National Park, Ohio, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=He8euo0i6nM",
-      "stream_type": "youtube",
-      "updated_at": 1786855710.9621518
-    },
-    {
-      "channel_name": "Cornish Wildlife Watch",
-      "created_at": 1767769562.7048874,
-      "enabled": true,
-      "lat": 50.44667,
-      "lon": -4.8493,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Cornwall, UK (YouTube)",
-      "original_yt_title": "LIVE Bird Feeder Cam - Cornwall UK - Bird Watching",
-      "page_url": "https://www.youtube.com/watch?v=2X8H4jsLbfQ",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.416793
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1775903369.908733,
-      "enabled": true,
-      "lat": 50.38645,
-      "lon": 16.096,
-      "mute_audio": false,
-      "name": "Chicken Coop Cam, Near Reservoir Rozkos, Czech Republic (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=CHd1G_WWb3I",
-      "stream_type": "youtube",
-      "updated_at": 1786855658.114915
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767787904.5216932,
-      "enabled": true,
-      "lat": 47.617576,
-      "lon": -82.404002,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Ontario, Canada (YouTube)",
-      "original_yt_title": "Ontario Bird Feeder Cam- The Most Colourful Birds in 4K",
-      "page_url": "https://www.youtube.com/watch?v=XIT7RE2GkTE",
-      "stream_type": "youtube",
-      "updated_at": 1786855477.6733835
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772218303.0350478,
-      "enabled": true,
-      "lat": 40.18194,
-      "lon": -83.06369,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Powell, Ohio, USA (YouTube)",
-      "original_yt_title": "LIVE: Bird and Wildlife Camera's - Powell, Ohio (Cardinals, Blue Jays, Woodpeckers, Raccoons) 24/7",
-      "page_url": "https://www.youtube.com/watch?v=Q2W9LTGR-U0",
-      "stream_type": "youtube",
-      "updated_at": 1786589566.9135554
-    },
-    {
       "channel_name": "PixCams",
       "created_at": 1772649846.8959599,
       "enabled": true,
@@ -728,30 +398,6 @@
       "page_url": "https://www.youtube.com/watch?v=nhffONcy8Eg",
       "stream_type": "youtube",
       "updated_at": 1777668586.4169278
-    },
-    {
-      "channel_name": "Canadian Bird Nerd",
-      "created_at": 1757809158.1106586,
-      "enabled": true,
-      "lat": 51.49888,
-      "lon": -115.92874,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=7JvA7URIUfo",
-      "stream_type": "youtube",
-      "updated_at": 1778679320.0973687
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1768042803.2648282,
-      "enabled": true,
-      "lat": 57.2892,
-      "lon": -3.62517,
-      "mute_audio": false,
-      "name": "Bird Feeder, Caledonian Pine Forest, Abernethy reserve, Scotland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=txk-CLxQF4I",
-      "stream_type": "youtube",
-      "updated_at": 1785849688.1982286
     },
     {
       "channel_name": "Gettysburg LiveCam",
@@ -778,43 +424,6 @@
       "updated_at": 1777668586.4172056
     },
     {
-      "channel_name": "Bird Watching HQ",
-      "created_at": 1773513573.373845,
-      "enabled": true,
-      "lat": 64.75374,
-      "lon": -147.34961,
-      "mute_audio": false,
-      "name": "Bird Feeder, North Pole, Alaska, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=iWwNdoiac8M",
-      "stream_type": "youtube",
-      "updated_at": 1778150419.01493
-    },
-    {
-      "channel_name": "Scottish Wildlife Garden",
-      "created_at": 1774543834.8137228,
-      "enabled": true,
-      "lat": 56.26418,
-      "lon": -5.33017,
-      "mute_audio": false,
-      "name": "Bird Feeders, Wildlife Garden Cam, Argyll, Scotland (YouTube)",
-      "original_yt_title": "LIVE \ud83d\udd34 Bird Feeders, Wildlife Cameras Scotland UK from Scottish Wildlife Garden",
-      "page_url": "https://www.youtube.com/watch?v=BUc-jc_PiUE",
-      "stream_type": "youtube",
-      "updated_at": 1778682591.9315968
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772218781.9243267,
-      "enabled": true,
-      "lat": 52.37053,
-      "lon": 7.71444,
-      "mute_audio": false,
-      "name": "Bird Nest Box1, Recke, Germany (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=on7uHHwZDZQ",
-      "stream_type": "youtube",
-      "updated_at": 1786855677.1494439
-    },
-    {
       "channel_name": "Locus",
       "created_at": 1772897970.587872,
       "enabled": true,
@@ -826,31 +435,6 @@
       "page_url": "https://locus.creacast.com:9443/jasper_ridge_birdcast.mp3",
       "stream_type": "audio",
       "updated_at": 1777668586.4173434
-    },
-    {
-      "channel_name": "chiricahuamountains",
-      "created_at": 1768575713.2425067,
-      "enabled": true,
-      "lat": 31.9298,
-      "lon": -109.38091,
-      "mute_audio": false,
-      "name": "Birding Cam, Chiricahua mountains, Arizona, USA (YouTube)",
-      "original_yt_title": "Water tank along the creek. Birding Chiricahua mountains south eastern Arizona. 2026-05-13 18:08",
-      "page_url": "https://www.youtube.com/watch?v=YCfYoOBKcSM",
-      "stream_type": "youtube",
-      "updated_at": 1778684918.1332204
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767499262.420516,
-      "enabled": true,
-      "lat": -25.74237,
-      "lon": 28.23081,
-      "mute_audio": false,
-      "name": "Birds Feeder, Suburban Garden, Pretoria, South Africa (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=MrLVxFR1IbI",
-      "stream_type": "youtube",
-      "updated_at": 1786855715.6528766
     },
     {
       "channel_name": "Nature Live Camera",
@@ -865,32 +449,7 @@
       "updated_at": 1777668586.4174623
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1757807231.6124256,
-      "enabled": true,
-      "lat": 41.67616,
-      "lon": -86.25342,
-      "mute_audio": false,
-      "name": "Birds, Squirrels & Wildlife Feeder Cam, South Bend, Indiana, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=7uYC9ciShOw",
-      "page_url": "https://www.youtube.com/watch?v=bZish-38Bbs",
-      "stream_type": "youtube",
-      "updated_at": 1786855672.4668462
-    },
-    {
-      "channel_name": "Relaxing Wildlife",
-      "created_at": 1774547383.3002193,
-      "enabled": true,
-      "lat": 41.67616,
-      "lon": -86.25342,
-      "mute_audio": false,
-      "name": "Birds, Squirrels & Wildlife Feeder Cam, South Bend, Indiana, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=bZish-38Bbs",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4175355
-    },
-    {
-      "channel_name": "Live Wolf & Bison Cams: North American Wildlife",
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
       "created_at": 1774311280.5870764,
       "enabled": true,
       "lat": 49.1313,
@@ -900,32 +459,6 @@
       "page_url": "https://www.youtube.com/watch?v=WjxG5mHc3kg",
       "stream_type": "youtube",
       "updated_at": 1777668586.4175675
-    },
-    {
-      "channel_name": "Live Wolf & Bison Cams: North American Wildlife",
-      "created_at": 1774311393.2963166,
-      "enabled": true,
-      "lat": 49.1313,
-      "lon": -107.4461,
-      "mute_audio": false,
-      "name": "Bison Water Hole, Grasslands National Park, Canada (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=g6wxYiESkE4",
-      "page_url": "https://www.youtube.com/watch?v=g6wxYiESkE4",
-      "stream_type": "youtube",
-      "updated_at": 1783751004.6345732
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1772650954.4164982,
-      "enabled": true,
-      "lat": -24.02363,
-      "lon": 30.74824,
-      "mute_audio": false,
-      "name": "Black Eagles, Selati Wilderness Foundation, Gravelotte, South Africa (YouTube)",
-      "original_yt_title": "LIVE Black Eagle Nest Cam: South Africa - Africam | explore.org 2026-05-01 22:53",
-      "page_url": "https://www.youtube.com/watch?v=_xhLV-TJpd8",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.417634
     },
     {
       "channel_name": "Explore Manatee, River & Wetland Bird Cams",
@@ -952,18 +485,6 @@
       "page_url": "https://www.youtube.com/watch?v=z-eGhnlggLI",
       "stream_type": "youtube",
       "updated_at": 1777668586.4177804
-    },
-    {
-      "channel_name": "DIRECTO NATURA",
-      "created_at": 1774513466.9915252,
-      "enabled": true,
-      "lat": 40.69216,
-      "lon": -2.05064,
-      "mute_audio": false,
-      "name": "Booted Eagle Nest, Cam 64, Alto Tajo Natura Park, Guadalajara, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=qQ8BaejUlqU",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4178164
     },
     {
       "channel_name": "FalconCam Project",
@@ -1026,18 +547,6 @@
       "updated_at": 1777668586.4179847
     },
     {
-      "channel_name": "Window To Wildlife",
-      "created_at": 1767788183.86314,
-      "enabled": true,
-      "lat": 26.52366,
-      "lon": -82.18992,
-      "mute_audio": false,
-      "name": "Captiva Bald Eagles PTZ Cam, Captiva Island, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=EOxc_lfPF1U",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4180162
-    },
-    {
       "channel_name": "Africam",
       "created_at": 1768074245.396178,
       "enabled": true,
@@ -1075,44 +584,6 @@
       "updated_at": 1777668586.4181557
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1757806702.2323174,
-      "enabled": true,
-      "lat": 33.4662,
-      "lon": -110.82488,
-      "mute_audio": false,
-      "name": "Central Highlands, Arizona, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=jaGPSAZ_uow",
-      "stream_type": "youtube",
-      "updated_at": 1786855720.678823
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772217427.7429554,
-      "enabled": true,
-      "lat": 51.49888,
-      "lon": -115.92874,
-      "mute_audio": false,
-      "name": "House Sparrow Nest Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
-      "original_yt_title": "LIVE Mountain View Bird Feeder Cam - CANADA 4K/60fps 2026-05-13 16:31",
-      "page_url": "https://www.youtube.com/watch?v=7JvA7URIUfo",
-      "stream_type": "youtube",
-      "updated_at": 1783565010.880097
-    },
-    {
-      "channel_name": "Allen Birdcam",
-      "created_at": 1767765272.562235,
-      "enabled": true,
-      "lat": 51.34841,
-      "lon": 0.20332,
-      "mute_audio": false,
-      "name": "City Forest Wildlife Cam, London, UK (YouTube)",
-      "original_yt_title": "LIVE - Croc Rock -  London UK Forest wildlife cam | Foxes, hedgehogs, squirrels, deer and many more",
-      "page_url": "https://www.youtube.com/watch?v=N19ZaTrflZQ",
-      "stream_type": "youtube",
-      "updated_at": 1778677816.2992506
-    },
-    {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
       "created_at": 1758200614.3187757,
       "enabled": true,
@@ -1125,18 +596,6 @@
       "page_url": "https://www.youtube.com/watch?v=Vyh0NdAygyY",
       "stream_type": "youtube",
       "updated_at": 1777668586.418328
-    },
-    {
-      "channel_name": "Madarles - Live Bird Cams",
-      "created_at": 1774215631.091486,
-      "enabled": true,
-      "lat": 47.86184,
-      "lon": 21.11739,
-      "mute_audio": false,
-      "name": "Common Buzzard Nest Cam, Polgar, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=NK2vncxQUoM",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4183645
     },
     {
       "channel_name": "Locus",
@@ -1152,7 +611,7 @@
       "updated_at": 1777668586.4183965
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1768254929.703146,
       "enabled": true,
       "lat": 36.27028,
@@ -1164,7 +623,7 @@
       "updated_at": 1777668586.41843
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1774230678.457605,
       "enabled": true,
       "lat": 36.27028,
@@ -1176,7 +635,7 @@
       "updated_at": 1777668586.4184618
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1773432306.6283584,
       "enabled": true,
       "lat": 36.27028,
@@ -1186,31 +645,6 @@
       "page_url": "https://www.youtube.com/watch?v=2sFs4U7F2-E",
       "stream_type": "youtube",
       "updated_at": 1777668586.4184947
-    },
-    {
-      "channel_name": "Explore Hummingbird & Bird Migration Cams",
-      "created_at": 1771015389.7694528,
-      "enabled": true,
-      "lat": 40.669779,
-      "lon": -98.88623,
-      "mute_audio": false,
-      "name": "Crane Cam, Rowe Sanctuary, Audubon, Platte River, Nebraska, USA (YouTube)",
-      "original_yt_title": "LIVE Sandhill Crane Migration Cam: Audubon's Rowe Sanctuary | explore.org 2026-05-01 22:50",
-      "page_url": "https://www.youtube.com/watch?v=kdmRPtFM-AY",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.418528
-    },
-    {
-      "channel_name": "CritterVision",
-      "created_at": 1767874304.7201817,
-      "enabled": true,
-      "lat": 32.81743,
-      "lon": -80.1111,
-      "mute_audio": false,
-      "name": "Critter Cam, Johns Island, South Carolina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=HlJ4aRtYhoo",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.418582
     },
     {
       "channel_name": "Locus",
@@ -1276,70 +710,6 @@
       "updated_at": 1777668586.418818
     },
     {
-      "channel_name": "Wildlife Rescue of Dade County",
-      "created_at": 1775899657.1112473,
-      "enabled": true,
-      "lat": 25.63381,
-      "lon": -80.71281,
-      "mute_audio": false,
-      "name": "Eagle Nest Cam, Wildlife Rescue of Dade County, South Florida, USA (YouTube)",
-      "original_yt_title": "Wildlife Rescue of Dade County Eagle Nest Cam 2026-05-13 18:10",
-      "page_url": "https://www.youtube.com/watch?v=WiEGb1Ta_QY",
-      "stream_type": "youtube",
-      "updated_at": 1778685039.369529
-    },
-    {
-      "channel_name": "Wildlife Rescue of Dade County",
-      "created_at": 1775899567.3873572,
-      "enabled": true,
-      "lat": 25.63381,
-      "lon": -80.71281,
-      "mute_audio": false,
-      "name": "Eagle Nest Top Cam, Wildlife Rescue of Dade County, South Florida, USA (YouTube)",
-      "original_yt_title": "Wildlife Rescue of Dade County Eagle Nest Top Cam 2026-05-13 18:11",
-      "page_url": "https://www.youtube.com/watch?v=mQyljdV0LwM",
-      "stream_type": "youtube",
-      "updated_at": 1778685077.3311398
-    },
-    {
-      "channel_name": "DIRECTO NATURA",
-      "created_at": 1768887784.7224,
-      "enabled": true,
-      "lat": 40.69226,
-      "lon": -2.05105,
-      "name": "Eagle Nest, Cam 64, Alto Tajo National Park, Guadalajara, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=qQ8BaejUlqU",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4189222
-    },
-    {
-      "channel_name": "Trempealeau Eagles",
-      "created_at": 1757806219.22265,
-      "enabled": true,
-      "lat": 44.00736,
-      "lon": -91.45193,
-      "mute_audio": false,
-      "name": "Eagle nest, Mississippi, Trempealeau, Wisconsin, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=8bMrSm0Ap20",
-      "page_url": "https://www.youtube.com/watch?v=8bMrSm0Ap20",
-      "stream_type": "youtube",
-      "updated_at": 1783729718.6020463
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1768259810.1666963,
-      "enabled": true,
-      "lat": 43.31182,
-      "lon": -91.77277,
-      "mute_audio": false,
-      "name": "Eagles Cam 1, Decorah, Iowa, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=IVmL3diwJuw",
-      "original_yt_title": "Decorah Eagles powered by EXPLORE.org 2026-04-17 22:18",
-      "page_url": "https://www.youtube.com/watch?v=IVmL3diwJuw",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.418987
-    },
-    {
       "channel_name": "Explore Live Nature Cams",
       "created_at": 1773529917.1215327,
       "enabled": true,
@@ -1376,18 +746,6 @@
       "page_url": "https://live.hdontap.com/hls/hosb1/falconshire-raptors_remote-ptz_mux.stream/playlist.m3u8?t=yzybEfyae799Q5rO34kT-Q&e=1774896542",
       "stream_type": "hls",
       "updated_at": 1777668586.4190893
-    },
-    {
-      "channel_name": "Window To Wildlife",
-      "created_at": 1774214885.9219537,
-      "enabled": true,
-      "lat": 26.52366,
-      "lon": -82.18992,
-      "mute_audio": false,
-      "name": "Eaglet Quinn, Captiva Island, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=gDyhPdoBY28",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4191225
     },
     {
       "channel_name": "Explore Oceans",
@@ -1438,19 +796,6 @@
       "updated_at": 1777668586.4192448
     },
     {
-      "channel_name": "Africam",
-      "created_at": 1774522563.883395,
-      "enabled": true,
-      "lat": -20.49572,
-      "lon": 25.1846,
-      "mute_audio": false,
-      "name": "Elephants, Lions & More, Waterhole Cam, Jack\u2019s Camp, Makgadikgadi, Kalahari, Botswana (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=jG0uYl5S44E",
-      "page_url": "https://www.youtube.com/watch?v=jG0uYl5S44E",
-      "stream_type": "youtube",
-      "updated_at": 1783750120.8413184
-    },
-    {
       "channel_name": "hdontap",
       "created_at": 1769186411.5369177,
       "enabled": true,
@@ -1490,18 +835,6 @@
       "updated_at": 1777668586.419376
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774551697.8985147,
-      "enabled": true,
-      "lat": 37.94355,
-      "lon": -84.5734,
-      "mute_audio": false,
-      "name": "Farm at Kentucky Equine Adoption Center, Nicholasville, Kentucky, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=LA0eX1GXnx0",
-      "stream_type": "youtube",
-      "updated_at": 1786855596.8349125
-    },
-    {
       "channel_name": "Z\u00e1chrann\u00e1 stanice \u017eivo\u010dich\u016f Makov",
       "created_at": 1769266696.4718618,
       "enabled": true,
@@ -1538,43 +871,6 @@
       "updated_at": 1777668586.4195008
     },
     {
-      "channel_name": "Explore Manatee, River & Wetland Bird Cams",
-      "created_at": 1768065046.0635831,
-      "enabled": true,
-      "lat": -28.67142,
-      "lon": 24.75226,
-      "mute_audio": false,
-      "name": "Flamingo Cam, Kamfers Dam, Kimberley, South Africa (YouTube)",
-      "original_yt_title": "LIVE Lesser Flamingo Cam: Kamfers Dam, South Africa - Africam | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=C_4Yy-QbQTQ",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4195337
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1772217970.4017608,
-      "enabled": true,
-      "lat": 32.81743,
-      "lon": -80.1111,
-      "mute_audio": false,
-      "name": "Forest Cam, Johns Island, South Carolina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=3A5U0POr0Q8",
-      "stream_type": "youtube",
-      "updated_at": 1786855641.2504833
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1757825855.7406895,
-      "enabled": true,
-      "lat": 49.69381,
-      "lon": 19.1838,
-      "mute_audio": false,
-      "name": "Forest Nook - Zywiec, Poland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=KVE-Z8qwcMg",
-      "stream_type": "youtube",
-      "updated_at": 1786855517.5880923
-    },
-    {
       "channel_name": "Africam",
       "created_at": 1768515711.6229599,
       "enabled": true,
@@ -1585,43 +881,6 @@
       "page_url": "https://www.youtube.com/watch?v=LaicUirnDJ4",
       "stream_type": "youtube",
       "updated_at": 1777668586.419625
-    },
-    {
-      "channel_name": "PixCams",
-      "created_at": 1772649318.6925297,
-      "enabled": true,
-      "lat": 40.42647,
-      "lon": -79.6633,
-      "mute_audio": false,
-      "name": "Fox Den Cam 1, Murrysville, Pennsylvania, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=e3YqN1UwVGI",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.419654
-    },
-    {
-      "channel_name": "PixCams",
-      "created_at": 1774015859.4067533,
-      "enabled": true,
-      "lat": 40.42647,
-      "lon": -79.6633,
-      "mute_audio": false,
-      "name": "Fox Den Cam 2, Murrysville, Pennsylvania, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=HwepkNOECB8",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4196856
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1768254261.6108992,
-      "enabled": true,
-      "lat": 34.02145,
-      "lon": -119.78531,
-      "mute_audio": false,
-      "name": "Fraser Point Bald Eagle Nest 2, Santa Cruz Island, California, USA (YouTube)",
-      "original_yt_title": "Fraser Point Bald Eagle Nest 2 powered by EXPLORE.org",
-      "page_url": "https://www.youtube.com/watch?v=OY4V_AppZ6s",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4197161
     },
     {
       "channel_name": "Locus",
@@ -1661,18 +920,6 @@
       "updated_at": 1777668586.4198086
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774317293.2385135,
-      "enabled": true,
-      "lat": 14.47182,
-      "lon": -90.87845,
-      "mute_audio": false,
-      "name": "Fuego volcano, Guatemala (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=yCzgcbCxg8s",
-      "stream_type": "youtube",
-      "updated_at": 1786855579.8716602
-    },
-    {
       "channel_name": "Locus",
       "created_at": 1772897694.516868,
       "enabled": true,
@@ -1686,31 +933,6 @@
       "updated_at": 1777668586.4198663
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1757876447.1731424,
-      "enabled": true,
-      "lat": 33.52294,
-      "lon": -86.80934,
-      "mute_audio": false,
-      "name": "Garden and Critter Cam, Birmingham, Alabama, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=LK_MNTYEHR8",
-      "stream_type": "youtube",
-      "updated_at": 1786855628.5788121
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774558483.001411,
-      "enabled": true,
-      "lat": 36.04415,
-      "lon": -78.56046,
-      "mute_audio": false,
-      "name": "Goats In The Backwoods, Blueridge Mountains, North Carolina, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=-1iFHDbscSI",
-      "page_url": "https://www.youtube.com/watch?v=-1iFHDbscSI",
-      "stream_type": "youtube",
-      "updated_at": 1786855692.0383887
-    },
-    {
       "channel_name": "Indiana Department of Natural Resources",
       "created_at": 1768517386.7824395,
       "enabled": true,
@@ -1721,18 +943,6 @@
       "page_url": "https://www.youtube.com/watch?v=caO25rPhMOg",
       "stream_type": "youtube",
       "updated_at": 1777668586.4199839
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774213114.639742,
-      "enabled": true,
-      "lat": 57.2892,
-      "lon": -3.62517,
-      "mute_audio": false,
-      "name": "Goshawk Nest Cam, Caledonian Pine Forest, Abernethy reserve, Scotland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=rXb9kA7Tv4s",
-      "stream_type": "youtube",
-      "updated_at": 1786855747.4657445
     },
     {
       "channel_name": "Explore Gorilla & Bonobo Cams: Great Apes",
@@ -1760,7 +970,7 @@
       "updated_at": 1777668586.42011
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1775508291.4965847,
       "enabled": true,
       "lat": 47.23077,
@@ -1785,18 +995,6 @@
       "updated_at": 1777668586.420201
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774207492.1341069,
-      "enabled": true,
-      "lat": 32.90604,
-      "lon": 35.74798,
-      "mute_audio": false,
-      "name": "Griffon Vulture Nest CAM, Gamla Nature Reserve, Israel (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=FdUQg5504tY",
-      "stream_type": "youtube",
-      "updated_at": 1786855663.9219334
-    },
-    {
       "channel_name": "NatureTec",
       "created_at": 1772218711.25062,
       "enabled": true,
@@ -1807,20 +1005,6 @@
       "page_url": "https://www.youtube.com/watch?v=l0nT3wSnxEo",
       "stream_type": "youtube",
       "updated_at": 1777668586.4203143
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1773532511.4552593,
-      "enabled": true,
-      "lat": 33.37673,
-      "lon": -118.42302,
-      "mute_audio": false,
-      "name": "High Cam, West End Bald Eagle Nest, Catalina Island, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=wfuqjSNXZ14&variant=1777665335",
-      "original_yt_title": "West End Bald Eagle Nest Low Cam powered by EXPLORE.org 2026-05-01 22:55",
-      "page_url": "https://www.youtube.com/watch?v=wfuqjSNXZ14",
-      "stream_type": "youtube",
-      "updated_at": 1784130091.9739275
     },
     {
       "channel_name": "Locus",
@@ -1900,18 +1084,6 @@
       "updated_at": 1777668586.4205291
     },
     {
-      "channel_name": "Alyssa's Nature Sanctuary",
-      "created_at": 1774319088.6047492,
-      "enabled": true,
-      "lat": 34.57256,
-      "lon": -120.50248,
-      "mute_audio": false,
-      "name": "Hummingbird Feeder Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=1P2IKTcgw6c",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4205668
-    },
-    {
       "channel_name": "Hummingbird Spot",
       "created_at": 1757806331.176786,
       "enabled": true,
@@ -1922,19 +1094,6 @@
       "page_url": "https://www.youtube.com/watch?v=pXe8MpU7uzk",
       "stream_type": "youtube",
       "updated_at": 1777668586.4205954
-    },
-    {
-      "channel_name": "Alyssa's Nature Sanctuary",
-      "created_at": 1767654132.3244777,
-      "enabled": true,
-      "lat": 34.57256,
-      "lon": -120.50248,
-      "mute_audio": false,
-      "name": "Hummingbird Nest Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
-      "original_yt_title": "\ud83d\udd34 LIVE 24/7 \ud83d\udd0a Amazing Allens Hummingbird Nest Cam Watch Lily Raise Her Chicks from Egg to Fledge",
-      "page_url": "https://www.youtube.com/watch?v=nYzRIKv5j44",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4206257
     },
     {
       "channel_name": "Locus",
@@ -1950,28 +1109,6 @@
       "updated_at": 1777668586.4206579
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1773519954.5557582,
-      "enabled": true,
-      "lat": 38.11565,
-      "lon": -3.98485,
-      "name": "Iberian Lynx, Cam 36, Gato Clavo, Sierra Morena Park, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=JuBKDmfYVk8",
-      "stream_type": "youtube",
-      "updated_at": 1786855742.8116605
-    },
-    {
-      "channel_name": "DIRECTO NATURA",
-      "created_at": 1768656889.8705359,
-      "enabled": true,
-      "lat": 38.11565,
-      "lon": -3.98485,
-      "name": "Iberian Lynx, Cam 40, Gato Clavo, Sierra Morena Park, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=FSF7m4pwQXU",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4207098
-    },
-    {
       "channel_name": "afarTV",
       "created_at": 1768051465.156754,
       "enabled": true,
@@ -1984,18 +1121,6 @@
       "page_url": "https://www.youtube.com/watch?v=h8O0UXsL7uk",
       "stream_type": "youtube",
       "updated_at": 1777668586.420736
-    },
-    {
-      "channel_name": "Nature Live Camera",
-      "created_at": 1774545427.2760653,
-      "enabled": true,
-      "lat": 57.0599,
-      "lon": 9.90353,
-      "mute_audio": false,
-      "name": "Inside a Kestrel Nest - 24/7 LIVE by Morten Hilmer, northern region of Denmark (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=uPTbEyoM0TQ",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4207895
     },
     {
       "channel_name": "Locus",
@@ -2044,19 +1169,6 @@
       "page_url": "https://locus.creacast.com:9443/kozmic.mp3",
       "stream_type": "audio",
       "updated_at": 1777668586.4208908
-    },
-    {
-      "channel_name": "Explore Hummingbird & Bird Migration Cams",
-      "created_at": 1759408242.0187624,
-      "enabled": true,
-      "lat": 43.90459,
-      "lon": -91.31382,
-      "mute_audio": false,
-      "name": "Lake Onalaska, Mississippi, La Crosse, Wisconsin, USA (YouTube)",
-      "original_yt_title": "LIVE Mississippi River Flyway Cam: Bird Migration & Bald Eagles | explore.org 2026-04-17 22:25",
-      "page_url": "https://www.youtube.com/watch?v=ka6EwnUUvbY",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.420918
     },
     {
       "channel_name": "FalconCam Project",
@@ -2121,43 +1233,6 @@
       "updated_at": 1777668586.4210489
     },
     {
-      "channel_name": "American Eagle Foundation",
-      "created_at": 1767867679.9341626,
-      "enabled": true,
-      "lat": 29.96281,
-      "lon": -81.4189,
-      "mute_audio": false,
-      "name": "Live Bald Eagle Cam 1, North East Coast, Florida, USA (YouTube)",
-      "original_yt_title": "NEFL Cam 1 - Live Bald Eagle Cam 2026-05-01 22:36",
-      "page_url": "https://www.youtube.com/watch?v=5XuW9MtCQaM",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4210753
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774318287.6283348,
-      "enabled": true,
-      "lat": 29.96281,
-      "lon": -81.4189,
-      "mute_audio": false,
-      "name": "Live Bald Eagle Cam 2, North East Coast, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=s1IvO9iObEE",
-      "stream_type": "youtube",
-      "updated_at": 1786855486.9085858
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774318234.2782075,
-      "enabled": true,
-      "lat": 29.96281,
-      "lon": -81.4189,
-      "mute_audio": false,
-      "name": "Live Bald Eagle Cam 3, North East Coast, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=pyZQ_txERtA",
-      "stream_type": "youtube",
-      "updated_at": 1786855491.6626263
-    },
-    {
       "channel_name": "Monterey Bay Aquarium",
       "created_at": 1769116435.19557,
       "enabled": true,
@@ -2192,55 +1267,6 @@
       "page_url": "https://www.youtube.com/watch?v=oI8R4_UG3Fs",
       "stream_type": "youtube",
       "updated_at": 1777668586.4211993
-    },
-    {
-      "channel_name": "Hummingbird Spot",
-      "created_at": 1767747240.520556,
-      "enabled": true,
-      "lat": -0.02603,
-      "lon": -78.75896,
-      "mute_audio": false,
-      "name": "Live Hummingbird Feeders at Sachatamia Lodge in Ecuador (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=c3KfiiBTIvA",
-      "page_url": "https://www.youtube.com/watch?v=c3KfiiBTIvA",
-      "stream_type": "youtube",
-      "updated_at": 1783734046.157342
-    },
-    {
-      "channel_name": "NatureTec",
-      "created_at": 1774545368.882136,
-      "enabled": true,
-      "lat": 40.69216,
-      "lon": -2.05064,
-      "mute_audio": false,
-      "name": "LIVE Kestrel Nest Box Cam - Recke (Germany)",
-      "page_url": "https://www.youtube.com/watch?v=9_-C2d9Fy4w",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4212496
-    },
-    {
-      "channel_name": "Madarles - Live Bird Cams",
-      "created_at": 1774537177.7387218,
-      "enabled": true,
-      "lat": 47.95018,
-      "lon": 21.35727,
-      "mute_audio": false,
-      "name": "LIVE Long-eared Owl Nest Cam, Tiszavasv\u00e1ri, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=0jgC1gJjFNo",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4212744
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774537978.237891,
-      "enabled": true,
-      "lat": 48.012,
-      "lon": 21.38709,
-      "mute_audio": false,
-      "name": "LIVE Long-eared Owls vs. Common Kestrels, Tiszal\u00f6k, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=3bGzrpa5Gnw",
-      "stream_type": "youtube",
-      "updated_at": 1785892545.104314
     },
     {
       "channel_name": "HANS NATURE CHANNEL",
@@ -2281,55 +1307,7 @@
       "updated_at": 1777668586.4213831
     },
     {
-      "channel_name": "Madarles - Live Bird Cams",
-      "created_at": 1774538107.4553492,
-      "enabled": true,
-      "lat": 47.86714,
-      "lon": 21.13834,
-      "mute_audio": false,
-      "name": "LIVE Red-footed Falcon Nest Cam #1, Polg\u00e1r, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=zyUVd6kRwws",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4214072
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774538168.8708503,
-      "enabled": true,
-      "lat": 47.86714,
-      "lon": 21.13834,
-      "mute_audio": false,
-      "name": "LIVE Red-footed Falcon Nest Cam #2, Polg\u00e1r, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=zyUVd6kRwws",
-      "stream_type": "youtube",
-      "updated_at": 1785945087.101506
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774522718.4983253,
-      "enabled": true,
-      "lat": -24.80157,
-      "lon": 31.40139,
-      "mute_audio": false,
-      "name": "Live Safari from Nkorho Bush Lodge | 24/7 Wildlife in Sabi Sand, South Africa (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=sQAhSkjRKGk",
-      "stream_type": "youtube",
-      "updated_at": 1786855568.120643
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774544474.2752883,
-      "enabled": true,
-      "lat": 54.02968,
-      "lon": -0.72546,
-      "mute_audio": false,
-      "name": "LIVE Tawny Owls, Kestrels , Buzzards, Badgers & More | From Ash Wood, Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=m2M_GBwzrGc",
-      "stream_type": "youtube",
-      "updated_at": 1786855687.4259036
-    },
-    {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1768254645.8839116,
       "enabled": true,
       "lat": 46.91332,
@@ -2352,19 +1330,6 @@
       "page_url": "https://locus.creacast.com:9443/london_camberwell.ogg",
       "stream_type": "audio",
       "updated_at": 1777668586.4215295
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1768252720.3369362,
-      "enabled": true,
-      "lat": 33.37673,
-      "lon": -118.42302,
-      "mute_audio": false,
-      "name": "Low Cam, West End Bald Eagle Nest, Catalina Island, USA (YouTube)",
-      "original_yt_title": "West End Bald Eagle Nest Low Cam powered by EXPLORE.org 2026-04-17 22:36",
-      "page_url": "https://www.youtube.com/watch?v=wfuqjSNXZ14",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4215565
     },
     {
       "channel_name": "Africam",
@@ -2413,19 +1378,6 @@
       "page_url": "https://www.youtube.com/watch?v=4V5rtm9Nrfo",
       "stream_type": "youtube",
       "updated_at": 1777668586.4216528
-    },
-    {
-      "channel_name": "Africam",
-      "created_at": 1768063635.2444897,
-      "enabled": true,
-      "lat": -1.48227,
-      "lon": 35.13,
-      "mute_audio": false,
-      "name": "Mahali Mzuri Cam, Maasai Mara, Kenya (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=jIh2FYqMOw0",
-      "page_url": "https://www.youtube.com/watch?v=jIh2FYqMOw0",
-      "stream_type": "youtube",
-      "updated_at": 1783747797.5739648
     },
     {
       "channel_name": "Explore African Wildlife",
@@ -2477,44 +1429,7 @@
       "updated_at": 1777668586.4217925
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767842461.4426348,
-      "enabled": true,
-      "lat": -1.50436,
-      "lon": 35.37757,
-      "mute_audio": false,
-      "name": "Mara Bushtops, Kenya (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=xXZqU5vnEug",
-      "stream_type": "youtube",
-      "updated_at": 1786855606.2477474
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774551587.1325238,
-      "enabled": true,
-      "lat": 37.94355,
-      "lon": -84.5734,
-      "mute_audio": false,
-      "name": "Mares: Candy, Lightning, and Marsha, Kentucky Equine Adoption Center, Nicholasville, Kentucky, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=B5I8GchAu5U",
-      "stream_type": "youtube",
-      "updated_at": 1786855601.6574523
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774321824.9934273,
-      "enabled": true,
-      "lat": 47.44142,
-      "lon": -114.11435,
-      "mute_audio": false,
-      "name": "Mission Mountain Range,Ninepipe Wildlife Management Area, Montana, USA (YouTube)",
-      "original_yt_title": "Mission Mountain Range powered by Explore.org",
-      "page_url": "https://www.youtube.com/watch?v=wDgZkzkOP-s",
-      "stream_type": "youtube",
-      "updated_at": 1786855473.3673491
-    },
-    {
-      "channel_name": "Live Wolf & Bison Cams: North American Wildlife",
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
       "created_at": 1774321113.8947804,
       "enabled": true,
       "lat": 37.96295,
@@ -2526,7 +1441,7 @@
       "updated_at": 1777668586.4218874
     },
     {
-      "channel_name": "Explore Zen Den",
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
       "created_at": 1774321281.4188092,
       "enabled": true,
       "lat": 37.96295,
@@ -2535,7 +1450,7 @@
       "name": "Mission Wolf Zeab's Den, Colorado, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=1ltBSJh5qdU",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4219081
+      "updated_at": 1787653110.569122
     },
     {
       "channel_name": "Africam",
@@ -2576,7 +1491,7 @@
       "updated_at": 1777668586.4219787
     },
     {
-      "channel_name": "Live Wolf & Bison Cams: North American Wildlife",
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
       "created_at": 1774322138.0621262,
       "enabled": true,
       "lat": 64.85662,
@@ -2624,19 +1539,6 @@
       "page_url": "https://www.youtube.com/watch?v=1aPhtRjjzb0",
       "stream_type": "youtube",
       "updated_at": 1777668586.4220712
-    },
-    {
-      "channel_name": "Deer Creek Wildlife Cam",
-      "created_at": 1771106306.860436,
-      "enabled": true,
-      "lat": 43.21675,
-      "lon": -123.34637,
-      "mute_audio": false,
-      "name": "Nature South Cam, Deer Creek Park, Roseburg, Oregon, USA (YouTube)",
-      "original_yt_title": "Deer Creek Nature Cam (South Cam) | Roseburg, OR 2026-05-13 16:47",
-      "page_url": "https://www.youtube.com/watch?v=cZg0iFvbCDQ",
-      "stream_type": "youtube",
-      "updated_at": 1778680885.0987408
     },
     {
       "channel_name": "Friends of Midway Atoll NWR",
@@ -2739,43 +1641,6 @@
       "updated_at": 1777668586.422278
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774307607.5297039,
-      "enabled": true,
-      "lat": 47.43171,
-      "lon": -114.16637,
-      "mute_audio": false,
-      "name": "Osprey & Canada Goose Nest, Charlo, Montana, USA (YouTube)",
-      "original_yt_title": "LIVE Osprey & Canada Goose Nest at Rogers Place - Charlo, MT | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=NcA6CWW8ysY",
-      "stream_type": "youtube",
-      "updated_at": 1786855501.1087763
-    },
-    {
-      "channel_name": "Window To Wildlife",
-      "created_at": 1774214957.969094,
-      "enabled": true,
-      "lat": 26.52366,
-      "lon": -82.18992,
-      "mute_audio": false,
-      "name": "Osprey Cam, Captiva Island, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=t_uCyilSDTo",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4223256
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774017771.3489113,
-      "enabled": true,
-      "lat": 40.96062,
-      "lon": -80.07899,
-      "mute_audio": false,
-      "name": "Osprey Cam, Moraine State Park, Pittsburgh, Pennsylvania, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=5DlywACQ9qM",
-      "stream_type": "youtube",
-      "updated_at": 1786855456.4628139
-    },
-    {
       "channel_name": "hdontap",
       "created_at": 1769183394.7860968,
       "enabled": true,
@@ -2802,30 +1667,6 @@
       "updated_at": 1777668586.4223952
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774213049.119229,
-      "enabled": true,
-      "lat": 57.2892,
-      "lon": -3.62517,
-      "mute_audio": false,
-      "name": "Osprey Nest Cameram, Caledonian Pine Forest, Abernethy reserve, Scotland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=VDXNDR1SjsQ",
-      "stream_type": "youtube",
-      "updated_at": 1786855760.9113884
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1773521082.326603,
-      "enabled": true,
-      "lat": 39.62678,
-      "lon": 2.94455,
-      "mute_audio": false,
-      "name": "Osprey Nest, Cam 76, Majorca, Balearic Islands, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=KSbpEHC_9bE",
-      "stream_type": "youtube",
-      "updated_at": 1786855730.2266035
-    },
-    {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
       "created_at": 1774307082.6702588,
       "enabled": true,
@@ -2837,30 +1678,6 @@
       "page_url": "https://www.youtube.com/watch?v=3VVoYO-ZFPE",
       "stream_type": "youtube",
       "updated_at": 1777668586.4224627
-    },
-    {
-      "channel_name": "Window To Wildlife",
-      "created_at": 1774215128.9423265,
-      "enabled": true,
-      "lat": 26.52366,
-      "lon": -82.18992,
-      "mute_audio": false,
-      "name": "Osprey PTZ Cam, Captiva Island, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=OmO3Eqg1SHU",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4224844
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774213179.1764882,
-      "enabled": true,
-      "lat": 57.2892,
-      "lon": -3.62517,
-      "mute_audio": true,
-      "name": "Osprey Zoom Cam, Caledonian Pine Forest, Abernethy reserve, Scotland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=uplkCLJublk",
-      "stream_type": "youtube",
-      "updated_at": 1786855754.3183084
     },
     {
       "channel_name": "Cornell Lab Bird Cams",
@@ -2910,30 +1727,6 @@
       "page_url": "https://www.youtube.com/watch?v=wtylzrJvCKU",
       "stream_type": "youtube",
       "updated_at": 1777668586.4226036
-    },
-    {
-      "channel_name": "Madarles - Live Bird Cams",
-      "created_at": 1772216979.3889644,
-      "enabled": true,
-      "lat": 47.87109,
-      "lon": 18.9896,
-      "mute_audio": false,
-      "name": "Owl Nest Cam, Szokolya, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=XOcQ5KWvK-w",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.422627
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774220081.935227,
-      "enabled": true,
-      "lat": -25.74237,
-      "lon": 28.23081,
-      "mute_audio": true,
-      "name": "Owl Spring, Suburban Garden, Pretoria, South Africa (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=fqi4E54HljI",
-      "stream_type": "youtube",
-      "updated_at": 1786855468.9397783
     },
     {
       "channel_name": "iPanda",
@@ -3036,82 +1829,6 @@
       "updated_at": 1777668586.423007
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774308308.161891,
-      "enabled": true,
-      "lat": 38.97775,
-      "lon": -76.51301,
-      "mute_audio": true,
-      "name": "Peregrine Falcons Nest, Chesapeake Conservancy, Baltimore, Virgina, USA (YouTube)",
-      "original_yt_title": "LIVE Peregrine Falcons Nest - Chesapeake Conservancy - Boh and Barb | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=1_BdSTneH3s",
-      "stream_type": "youtube",
-      "updated_at": 1786855505.6998825
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1758100528.354064,
-      "enabled": true,
-      "lat": 7.37804,
-      "lon": 124.84117,
-      "mute_audio": false,
-      "name": "Philippine Eagles Cam, Mount Apo, Mindanao, Philippines (YouTube)",
-      "original_yt_title": "Philippine Eagles Cam powered by EXPLORE.org",
-      "page_url": "https://www.youtube.com/watch?v=QoKy-rn66og",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.423051
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1771107013.6056588,
-      "enabled": true,
-      "lat": 58.76436,
-      "lon": -93.21785,
-      "mute_audio": false,
-      "name": "Polar Bear Cam, Cape Churchill, Wapusk National Park, Canada (YouTube)",
-      "original_yt_title": "LIVE Arctic Tundra: Cape South - Wapusk National Park | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=dF6frKSZZU8",
-      "stream_type": "youtube",
-      "updated_at": 1786855668.5965343
-    },
-    {
-      "channel_name": "Z\u00e1chrann\u00e1 stanice \u017eivo\u010dich\u016f Makov",
-      "created_at": 1774316169.9614804,
-      "enabled": true,
-      "lat": 49.36288,
-      "lon": 14.09642,
-      "mute_audio": false,
-      "name": "Pond Cam, Animal Rescue Station, Makov, Cizova, Czech Republic (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=SLYQKV_vgDw",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4230938
-    },
-    {
-      "channel_name": "Royal Free Charity",
-      "created_at": 1768051516.3476415,
-      "enabled": true,
-      "lat": 51.56082,
-      "lon": -0.16279,
-      "mute_audio": false,
-      "name": "Pond Cam, Hampstead Heath, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=FJO4gWN7Osc",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.423114
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1768061834.954252,
-      "enabled": true,
-      "lat": 45.90388,
-      "lon": -68.92139,
-      "mute_audio": false,
-      "name": "Pond Camera, Maine, USA (YouTube)",
-      "original_yt_title": "Pond Camera",
-      "page_url": "https://www.youtube.com/watch?v=vtSQZSJ6CQU",
-      "stream_type": "youtube",
-      "updated_at": 1786855496.2745757
-    },
-    {
       "channel_name": "Locus",
       "created_at": 1757844623.1325126,
       "enabled": true,
@@ -3123,18 +1840,6 @@
       "page_url": "https://locus.creacast.com:9443/acra_wave_farm.mp3",
       "stream_type": "audio",
       "updated_at": 1777668586.423157
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774316626.416148,
-      "enabled": true,
-      "lat": 19.02281,
-      "lon": -98.62863,
-      "mute_audio": false,
-      "name": "Popocatepetl Volcano, San Pedro, Benito Juarez, Mexico (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=1j3T1kbrD1c",
-      "stream_type": "youtube",
-      "updated_at": 1786855586.2911146
     },
     {
       "channel_name": "The Wildlife Trust of South and West Wales",
@@ -3210,18 +1915,6 @@
       "updated_at": 1777668586.423302
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774027332.4740293,
-      "enabled": true,
-      "lat": 45.30319,
-      "lon": -69.04075,
-      "mute_audio": false,
-      "name": "Richard's PTZ Cam, Food Pantry For Deer, Brownville, Maine, USA, (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=On2B_GPSXWs",
-      "stream_type": "youtube",
-      "updated_at": 1786855460.92014
-    },
-    {
       "channel_name": "Locus",
       "created_at": 1772896196.9294035,
       "enabled": true,
@@ -3267,11 +1960,10 @@
       "lat": 45.30319,
       "lon": -69.04075,
       "mute_audio": false,
-      "name": "Ryan's Bird Buffet,  Food Pantry For Deer, Brownville, Maine, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=47dcM4M16Ic",
+      "name": "Ryan's Bird Buffet, Food Pantry For Deer, Brownville, Maine, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=47dcM4M16Ic",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4234073
+      "updated_at": 1787668082.2440803
     },
     {
       "channel_name": "Africam",
@@ -3298,19 +1990,6 @@
       "updated_at": 1777668586.4236317
     },
     {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1774552232.0279872,
-      "enabled": true,
-      "lat": 33.99887,
-      "lon": -119.74183,
-      "mute_audio": false,
-      "name": "Sauces Bald Eagle Cam, Channel Islands National Park, California, USA (YouTube)",
-      "original_yt_title": "Sauces Bald Eagle - Channel Islands National Park Cams powered by EXPLORE.org",
-      "page_url": "https://www.youtube.com/watch?v=rnTsOesC6hE",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4236574
-    },
-    {
       "channel_name": "Explore African Wildlife",
       "created_at": 1774399473.7776937,
       "enabled": true,
@@ -3334,18 +2013,6 @@
       "page_url": "https://www.youtube.com/watch?v=jSq4IZT3o1M",
       "stream_type": "youtube",
       "updated_at": 1777668586.4236994
-    },
-    {
-      "channel_name": "Scottish Wildlife Garden",
-      "created_at": 1774228250.827968,
-      "enabled": true,
-      "lat": 56.26418,
-      "lon": -5.33017,
-      "mute_audio": false,
-      "name": "Scottish Wildlife Garden Nest Box, Argyll, Scotland, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=IBj3Tlu8OUo",
-      "stream_type": "youtube",
-      "updated_at": 1778176845.0024552
     },
     {
       "channel_name": "Sea-EagleCAM4",
@@ -3434,19 +2101,7 @@
       "updated_at": 1777668586.423855
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774558449.0552878,
-      "enabled": true,
-      "lat": 36.04415,
-      "lon": -78.56046,
-      "mute_audio": false,
-      "name": "Soothing Stream in Nature, Blueridge Mountains, North Carolina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=TdVizZWSsqE",
-      "stream_type": "youtube",
-      "updated_at": 1786855696.4788322
-    },
-    {
-      "channel_name": "Live Wolf & Bison Cams: North American Wildlife",
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
       "created_at": 1773531312.9875624,
       "enabled": true,
       "lat": 47.90838,
@@ -3456,18 +2111,6 @@
       "page_url": "https://www.youtube.com/watch?v=CYl_uPm7yto",
       "stream_type": "youtube",
       "updated_at": 1777668586.4238942
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767732741.2049327,
-      "enabled": true,
-      "lat": 35.78517,
-      "lon": -80.88384,
-      "mute_audio": false,
-      "name": "Statesville, North Carolina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=0zT458PYuB8",
-      "stream_type": "youtube",
-      "updated_at": 1786855510.2546897
     },
     {
       "channel_name": "Locus",
@@ -3495,32 +2138,6 @@
       "updated_at": 1777668586.4239678
     },
     {
-      "channel_name": "HANS NATUURKANAAL",
-      "created_at": 1774549026.9782262,
-      "enabled": true,
-      "lat": 51.53866,
-      "lon": 5.33122,
-      "mute_audio": false,
-      "name": "Tawny Owl Cam, Live Outdoor Nest Box, De Mortel, Netherlands (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=7nUjsBV3ZgM&variant=1778682223",
-      "original_yt_title": "Tawny Owl 2 CAM\ud83e\udd89Live Outdoor Nest Box OWL-2",
-      "page_url": "https://www.youtube.com/watch?v=7nUjsBV3ZgM",
-      "stream_type": "youtube",
-      "updated_at": 1779715435.0601375
-    },
-    {
-      "channel_name": "Nature Live Camera",
-      "created_at": 1774210098.3550563,
-      "enabled": true,
-      "lat": 57.0599,
-      "lon": 9.90353,
-      "mute_audio": false,
-      "name": "Tawny Owl Nest, Morten Hilmer, Northern Denemark (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=U-rvoF1tLoU",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4240031
-    },
-    {
       "channel_name": "Africam",
       "created_at": 1771105274.495852,
       "enabled": true,
@@ -3543,30 +2160,6 @@
       "page_url": "https://www.youtube.com/watch?v=vEEGzyCvL8Q",
       "stream_type": "youtube",
       "updated_at": 1777668586.4240322
-    },
-    {
-      "channel_name": "Explore Bat Cams: Bat Caves & Flying Foxes",
-      "created_at": 1774552189.1641953,
-      "enabled": true,
-      "lat": 29.82458,
-      "lon": -82.33985,
-      "mute_audio": false,
-      "name": "The Giant Flying Fox Cam, Lubee Bat Conservancy, Gainesville, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=Zahk-Cm0gqk",
-      "stream_type": "youtube",
-      "updated_at": 1778697101.2561965
-    },
-    {
-      "channel_name": "Explore Bat Cams: Bat Caves & Flying Foxes",
-      "created_at": 1774552157.0257218,
-      "enabled": true,
-      "lat": 29.82458,
-      "lon": -82.33985,
-      "mute_audio": false,
-      "name": "The Mixed Species Flying Fox Cam, Lubee Bat Conservancy, Gainesville, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=EXSoa7sQTzQ",
-      "stream_type": "youtube",
-      "updated_at": 1778697063.638174
     },
     {
       "channel_name": "Explore Oceans",
@@ -3617,44 +2210,6 @@
       "updated_at": 1777668586.4241245
     },
     {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1774552112.4209096,
-      "enabled": true,
-      "lat": 33.43982,
-      "lon": -118.49966,
-      "mute_audio": false,
-      "name": "Two Harbors Bald Eagle Cam, Catalina Island, 22 miles off the coast of Southern California, USA (YouTube)",
-      "original_yt_title": "Two Harbors Bald Eagle Cam powered by EXPLORE.org",
-      "page_url": "https://www.youtube.com/watch?v=E5T2eHM8tcI",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4241395
-    },
-    {
-      "channel_name": "Explore Eagle Nest Cams",
-      "created_at": 1774552037.997501,
-      "enabled": true,
-      "lat": 33.37673,
-      "lon": -118.42302,
-      "mute_audio": false,
-      "name": "Two Harbors Overlook, Catalina Island, 22 miles off the coast of Southern California, USA (YouTube)",
-      "original_yt_title": "Two Harbors Overlook powered by EXPLORE.org",
-      "page_url": "https://www.youtube.com/watch?v=2yx7RKxpyzQ",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4241555
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1773537900.0334666,
-      "enabled": true,
-      "lat": 19.72825,
-      "lon": -156.06026,
-      "mute_audio": true,
-      "name": "Underwater Cam, Mega Lab, Off the Coast of Kona, Hawaii, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=jOp_aAXsYmE",
-      "stream_type": "youtube",
-      "updated_at": 1786855464.3890984
-    },
-    {
       "channel_name": "Viva The Keys",
       "created_at": 1773536491.7119951,
       "enabled": true,
@@ -3665,18 +2220,6 @@
       "page_url": "https://www.youtube.com/watch?v=qi0mY6zVQnY",
       "stream_type": "youtube",
       "updated_at": 1777668586.4241862
-    },
-    {
-      "channel_name": "Deerfield Beach Live",
-      "created_at": 1773536147.4127657,
-      "enabled": true,
-      "lat": 26.31121,
-      "lon": -80.06926,
-      "mute_audio": true,
-      "name": "Underwater Cam, Deerfield Beach, Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=SHfAtWHr9Ks",
-      "stream_type": "youtube",
-      "updated_at": 1778681294.259743
     },
     {
       "channel_name": "Destin-Fort Walton Beach",
@@ -3701,18 +2244,6 @@
       "page_url": "https://www.youtube.com/watch?v=oBTGY6Ax870",
       "stream_type": "youtube",
       "updated_at": 1777668586.424357
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1773520243.385323,
-      "enabled": true,
-      "lat": 40.85605,
-      "lon": -4.762966,
-      "mute_audio": true,
-      "name": "Underwater fauna, Cam 71, Avila, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=WwX7cj_esqo",
-      "stream_type": "youtube",
-      "updated_at": 1786855735.1456227
     },
     {
       "channel_name": "Explore African Wildlife",
@@ -3740,19 +2271,6 @@
       "updated_at": 1777668586.4244096
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
-      "created_at": 1774552002.9688265,
-      "enabled": true,
-      "lat": 36.30723,
-      "lon": -121.81854,
-      "mute_audio": false,
-      "name": "Ventana Wildlife Society Condor Pen Cam, Big Sur, California, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=j_rQ1Wky7l0",
-      "page_url": "https://www.youtube.com/watch?v=j_rQ1Wky7l0",
-      "stream_type": "youtube",
-      "updated_at": 1783717802.7507622
-    },
-    {
       "channel_name": "Locus",
       "created_at": 1757806864.8186786,
       "enabled": true,
@@ -3776,31 +2294,6 @@
       "page_url": "https://www.youtube.com/watch?v=mPQOtowEbNg",
       "stream_type": "youtube",
       "updated_at": 1777668586.4244561
-    },
-    {
-      "channel_name": "Charter Wildlife Cams",
-      "created_at": 1769184370.2417626,
-      "enabled": true,
-      "lat": 32.75437,
-      "lon": 35.01626,
-      "mute_audio": false,
-      "name": "Vulture Feeding Station Cam, Hai-Bar Nature Reserve, Isarel (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=IKr6MkUkv1c",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.424471
-    },
-    {
-      "channel_name": "DIRECTO NATURA",
-      "created_at": 1773519130.3238766,
-      "enabled": true,
-      "lat": 38.24228,
-      "lon": -7.11968,
-      "mute_audio": false,
-      "name": "Vulture Feeding Station, Cam 35, Valencia del Mombuey, Spain (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=xObVIyz0jv8",
-      "page_url": "https://www.youtube.com/watch?v=xObVIyz0jv8",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.424486
     },
     {
       "channel_name": "hdontap",
@@ -3938,31 +2431,6 @@
       "updated_at": 1777668586.4246504
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1774215794.552354,
-      "enabled": true,
-      "lat": 46.80663,
-      "lon": 19.01761,
-      "mute_audio": false,
-      "name": "White Stork Nest Cam, Solt, Hungary (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=_0yMwcaLqIA",
-      "stream_type": "youtube",
-      "updated_at": 1785378298.0789404
-    },
-    {
-      "channel_name": "DIRECTO NATURA",
-      "created_at": 1771016228.606156,
-      "enabled": true,
-      "lat": 41.59676,
-      "lon": -4.11971,
-      "mute_audio": false,
-      "name": "White Stork's Nest Cam 72, Santa Mar\u00eda in Pe\u00f1afiel, Valladolid, Spain (YouTube)",
-      "original_yt_title": "Pe\u00f1afiel. Nido cig\u00fce\u00f1as \ud83d\udd34 DIRECTO (C\u00e1mara 72 | Pe\u00f1afiel, Valladolid) 2026-05-13 18:42",
-      "page_url": "https://www.youtube.com/watch?v=YoLMON6x3iE",
-      "stream_type": "youtube",
-      "updated_at": 1778686988.2860355
-    },
-    {
       "channel_name": "PixCams",
       "created_at": 1772649591.033428,
       "enabled": true,
@@ -3987,43 +2455,6 @@
       "updated_at": 1777668586.4247093
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1768656329.883434,
-      "enabled": true,
-      "lat": 39.81298,
-      "lon": -5.93675,
-      "name": "Wildlife Cam 73, Tagus River Basin,Monfrag\u00fce National Park, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=6d6yK8f6qxs",
-      "stream_type": "youtube",
-      "updated_at": 1786855738.6907408
-    },
-    {
-      "channel_name": "Determined To Explore",
-      "created_at": 1767873138.2720454,
-      "enabled": true,
-      "lat": 35.75615,
-      "lon": -76.27743,
-      "mute_audio": false,
-      "name": "Wildlife Cam, Costal North Carolina, North Carolina, USA (YouTube)",
-      "original_yt_title": "LIVE Animal Cam \ud83d\udc3e | You Never Know What Will Show Up! (Deer, Raccoons & More) 2026-05-13 17:12",
-      "page_url": "https://www.youtube.com/watch?v=viKDPBpLGsQ",
-      "stream_type": "youtube",
-      "updated_at": 1778681569.3350685
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1775900568.3815346,
-      "enabled": true,
-      "lat": 44.55054,
-      "lon": -83.42495,
-      "mute_audio": false,
-      "name": "Wildlife Cam, Critter Camp, Rose City, Michigan, USA (YouTube)",
-      "original_yt_title": "\ud83e\udd8c Critter Camp @ Rose City Trails, Live Michigan Wildlife Cam | Deer, Turkeys & More \ud83e\udd9d",
-      "page_url": "https://www.youtube.com/watch?v=KN-JT37syPY",
-      "stream_type": "youtube",
-      "updated_at": 1786855514.4065316
-    },
-    {
       "channel_name": "Africam",
       "created_at": 1768895937.3089397,
       "enabled": true,
@@ -4046,18 +2477,6 @@
       "page_url": "https://www.youtube.com/watch?v=8J9USywkGmw",
       "stream_type": "youtube",
       "updated_at": 1777668586.4248102
-    },
-    {
-      "channel_name": "Fernwood Hills",
-      "created_at": 1775902810.201417,
-      "enabled": true,
-      "lat": 42.94059,
-      "lon": -81.46148,
-      "mute_audio": false,
-      "name": "Wildlife Cam, Hemlock Grove Forest, Fernwood Hills, Komoka, Ontario, Canada (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=y9S0jA0mOx8",
-      "stream_type": "youtube",
-      "updated_at": 1778687497.0885668
     },
     {
       "channel_name": "hdontap",
@@ -4169,19 +2588,6 @@
       "updated_at": 1777668586.4249697
     },
     {
-      "channel_name": "Africam",
-      "created_at": 1768516979.5874808,
-      "enabled": true,
-      "lat": -24.99635,
-      "lon": 31.59177,
-      "mute_audio": false,
-      "name": "Wildlife Cam, Skukuza Camp, Kruger National Park, South Africa (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=QDcUbYHgme4",
-      "page_url": "https://www.youtube.com/watch?v=QDcUbYHgme4",
-      "stream_type": "youtube",
-      "updated_at": 1783738900.7931917
-    },
-    {
       "channel_name": "hdontap",
       "created_at": 1769182459.8872588,
       "enabled": true,
@@ -4219,19 +2625,6 @@
       "updated_at": 1777668586.4250307
     },
     {
-      "channel_name": "Urdaibai Bird Center",
-      "created_at": 1772638507.832887,
-      "enabled": true,
-      "lat": 43.393,
-      "lon": -2.67993,
-      "mute_audio": true,
-      "name": "Wildlife Cam, Urdaibai Biosphere Reserve, Basque Country, Spain (YouTube)",
-      "original_yt_title": "\ud83d\udd34 Urdaibai Golondrinas - En DIRECTO | Enarak Zuzenean | Live Swallows Basque Country 2026-05-13 19:04",
-      "page_url": "https://www.youtube.com/watch?v=6PAtCqVmDNY",
-      "stream_type": "youtube",
-      "updated_at": 1778688333.579077
-    },
-    {
       "channel_name": "Africam",
       "created_at": 1767828370.9196832,
       "enabled": true,
@@ -4266,20 +2659,6 @@
       "page_url": "https://www.youtube.com/watch?v=F0GOOP82094",
       "stream_type": "youtube",
       "updated_at": 1777668586.4251077
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1767874344.891949,
-      "enabled": true,
-      "lat": 36.899,
-      "lon": -80.74861,
-      "mute_audio": false,
-      "name": "Wildlife In The Backwoods, North Carolina, USA (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=xuiDPWNOCd0",
-      "original_yt_title": "Live DEER and Wildlife In The Backwoods",
-      "page_url": "https://www.youtube.com/watch?v=d7jbmg_fguM",
-      "stream_type": "youtube",
-      "updated_at": 1783565126.6618567
     },
     {
       "channel_name": "Africam",
@@ -4354,18 +2733,6 @@
       "updated_at": 1777668586.4252126
     },
     {
-      "channel_name": "Alyssa's Nature Sanctuary",
-      "created_at": 1776460500.7473302,
-      "enabled": true,
-      "lat": 34.57256,
-      "lon": -120.50248,
-      "name": "Live Camera New Hummingbird Nest",
-      "original_yt_title": "\ud83d\udd34 LIVE 24/7 \ud83d\udd0a Amazing Allens Hummingbird Nest Cam Watch Mom Raise Her Chicks from Egg to Fledge 2026-05-13 16:12",
-      "page_url": "https://www.youtube.com/watch?v=nYzRIKv5j44&variant=1778678027",
-      "stream_type": "youtube",
-      "updated_at": 1778678027.370166
-    },
-    {
       "channel_name": "Brownville's Food Pantry For Deer",
       "created_at": 1776461134.0139737,
       "enabled": true,
@@ -4375,56 +2742,6 @@
       "original_yt_title": "Ryan's Bird Buffet \"Ground View\" at Brownville's  Food Pantry For Deer",
       "page_url": "https://www.youtube.com/watch?v=yTXV5RrjEyc",
       "updated_at": 1777668586.4252427
-    },
-    {
-      "channel_name": "Cornell Lab Bird Cams",
-      "created_at": 1776461804.1920567,
-      "enabled": true,
-      "lat": 43.04114,
-      "lon": -91.13155,
-      "mute_audio": false,
-      "name": "Wisconsin Kestrel Cam | Cornell Lab | Raptor Resource Project",
-      "original_yt_title": "Wisconsin Kestrel Cam | Cornell Lab | Raptor Resource Project 2026-05-13 16:45",
-      "page_url": "https://www.youtube.com/watch?v=BRNsaDSzpnk",
-      "stream_type": "youtube",
-      "updated_at": 1779614270.346953
-    },
-    {
-      "channel_name": "Gettysburg LiveCam",
-      "created_at": 1776462183.3226752,
-      "enabled": true,
-      "lat": 39.83199,
-      "lon": -77.23305,
-      "name": "24/7 Live Birdhouse Cam | Cavity Nesting Pair \u2013 Nesting Season 2026",
-      "original_yt_title": "24/7 Live Birdhouse Cam | Cavity Nesting Pair \u2013 Nesting Season 2026",
-      "page_url": "https://www.youtube.com/watch?v=sdDY1pOG6dM",
-      "updated_at": 1777668586.4252732
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1776465586.1446579,
-      "enabled": true,
-      "lat": 43.98399,
-      "lon": -69.4192,
-      "mute_audio": false,
-      "name": "Osprey Nest, Audubon, Hog Island, Maine, USA (YouTube)",
-      "original_yt_title": "LIVE Audubon Boat House Osprey Nest | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=z-eGhnlggLI",
-      "stream_type": "youtube",
-      "updated_at": 1783565067.385231
-    },
-    {
-      "channel_name": "Robert E Fuller",
-      "created_at": 1776467052.3372324,
-      "enabled": true,
-      "lat": 54.02968,
-      "lon": -0.72546,
-      "mute_audio": false,
-      "name": "Swan Nest Cam, Ash Wood, Yorkshire, UK (YouTube)",
-      "original_yt_title": "\ud83d\udd34 LIVE Swan Nest \ud83e\udda2 | Bird Cams | Robert E Fuller 2026-05-13 17:33",
-      "page_url": "https://www.youtube.com/watch?v=BtubSVxucnY&variant=1778682825",
-      "stream_type": "youtube",
-      "updated_at": 1778682825.1857927
     },
     {
       "channel_name": "PixCams",
@@ -4437,19 +2754,6 @@
       "page_url": "https://www.youtube.com/watch?v=dDIfhPXn_-c",
       "stream_type": "youtube",
       "updated_at": 1777668586.4253464
-    },
-    {
-      "channel_name": "Backyard Birding",
-      "created_at": 1777393827.5321453,
-      "enabled": true,
-      "lat": 34.78558,
-      "lon": -96.09509,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Oklahom, USA (YouTube)",
-      "original_yt_title": "Live Bird Feeder Camera in Oklahoma | Bird Feeder Live Stream #CATTV #Birds",
-      "page_url": "https://www.youtube.com/watch?v=FyaBTXcNJRc&variant=1778678207",
-      "stream_type": "youtube",
-      "updated_at": 1778678207.4868314
     },
     {
       "channel_name": "Cedarview Birds",
@@ -4476,31 +2780,6 @@
       "updated_at": 1777668586.4253898
     },
     {
-      "channel_name": "Wheeler8Acres",
-      "created_at": 1777395487.1671414,
-      "enabled": true,
-      "lat": 33.2864,
-      "lon": -85.50955,
-      "mute_audio": false,
-      "name": "Deer & Critters Cam, Northeast Alabama, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=vzdfIiy8c0I",
-      "stream_type": "youtube",
-      "updated_at": 1778684410.8793201
-    },
-    {
-      "channel_name": "Steve Wildlife",
-      "created_at": 1777395706.7133043,
-      "enabled": true,
-      "lat": 42.43852,
-      "lon": -71.11835,
-      "mute_audio": false,
-      "name": "Marsh Bird Feeder Cam, Boston Area, Massachusetts, USA (YouTube)",
-      "original_yt_title": "LIVE Bird Feeder Wildlife Cam with Bird Sounds and Chirping! 2026-05-13 18:27",
-      "page_url": "https://www.youtube.com/watch?v=uL5PgrUnJEU",
-      "stream_type": "youtube",
-      "updated_at": 1778686087.0373418
-    },
-    {
       "channel_name": "Northern Nibblers",
       "created_at": 1777396268.6027772,
       "enabled": true,
@@ -4513,45 +2792,6 @@
       "updated_at": 1777668586.4254487
     },
     {
-      "channel_name": "Finch Research Network (FiRN)",
-      "created_at": 1777396601.3324275,
-      "enabled": true,
-      "lat": 50.64504,
-      "lon": -114.14872,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Foothills, Alberta, Canada (YouTube)",
-      "original_yt_title": "2026-05-13 - Foothills Birds - Foothills, AB - Live Stream Bird Feeder Cam (FiRN) 2026-05-13 17:55",
-      "page_url": "https://www.youtube.com/watch?v=GCwXqvCIuEA",
-      "stream_type": "youtube",
-      "updated_at": 1778684132.1582465
-    },
-    {
-      "channel_name": "Finch Research Network (FiRN)",
-      "created_at": 1777396792.5463614,
-      "enabled": true,
-      "lat": 42.83785,
-      "lon": -106.30371,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Casper, Wyoming, USA (YouTube)",
-      "original_yt_title": "2026-05-13 - Flocking Around - Casper, WY - Live Stream Bird Feeder Cam 2026-05-13 17:53",
-      "page_url": "https://www.youtube.com/watch?v=IpKzUWPlKJw",
-      "stream_type": "youtube",
-      "updated_at": 1778684001.0673122
-    },
-    {
-      "channel_name": "Birds in Ukraine",
-      "created_at": 1777397366.4241984,
-      "enabled": true,
-      "lat": 51.97375,
-      "lon": 31.72491,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Polissia, Ukraine (YouTube)",
-      "original_yt_title": "OnlyBirds: LIVE Bird Feeder Cam | Birds in UA | Ukraine 2026-05-01 23:28",
-      "page_url": "https://www.youtube.com/watch?v=TQh1gjfcy00",
-      "stream_type": "youtube",
-      "updated_at": 1777668586.4254954
-    },
-    {
       "channel_name": "Manchester Wildlife Garden",
       "created_at": 1777397680.894291,
       "enabled": true,
@@ -4562,19 +2802,6 @@
       "page_url": "https://www.youtube.com/watch?v=oLvrGIwn6fk",
       "stream_type": "youtube",
       "updated_at": 1777668586.4255104
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1777397859.0228872,
-      "enabled": true,
-      "lat": 34.60492,
-      "lon": -96.33679,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Oklahoma, USA (YouTube)",
-      "original_yt_title": "LIVE  Bird Feeder Camera in Oklahoma.  Cardinals ,Blue Jays & Backyard Birds in Real Time #birds",
-      "page_url": "https://www.youtube.com/watch?v=qoxs8fsCx2w",
-      "stream_type": "youtube",
-      "updated_at": 1786819899.1453974
     },
     {
       "channel_name": "Coral Morphologic",
@@ -4613,19 +2840,6 @@
       "updated_at": 1777670250.9974563
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1777670566.8697712,
-      "enabled": true,
-      "lat": 44.31563,
-      "lon": -84.72129,
-      "mute_audio": false,
-      "name": "Bird Feeder Ground Cam, Michigan, USA (YouTube)",
-      "original_yt_title": "\ud83d\udd34 Live Bird Feeder Ground Cam - Michigan Backyard Birds (Cardinals, Blue Jays, Goldfinches)",
-      "page_url": "https://www.youtube.com/watch?v=tpBozfFm2mo",
-      "stream_type": "youtube",
-      "updated_at": 1786819941.9162712
-    },
-    {
       "channel_name": "Andy's Birds",
       "created_at": 1777670613.766323,
       "enabled": true,
@@ -4636,45 +2850,6 @@
       "page_url": "https://www.youtube.com/watch?v=AJ7rr6RmPro",
       "stream_type": "youtube",
       "updated_at": 1777670613.7663238
-    },
-    {
-      "channel_name": "North Carolina Bird Cam",
-      "created_at": 1777670786.6592617,
-      "enabled": true,
-      "lat": 36.0001,
-      "lon": -79.99824,
-      "mute_audio": false,
-      "name": "Bird Feeder Cam, Piedmont, North Carolina, USA (YouTube)",
-      "original_yt_title": "Live Bird Feeder Cam in the Piedmont of North Carolina 24/7 2026-05-13 18:02",
-      "page_url": "https://www.youtube.com/watch?v=AzRZcgzN0eg",
-      "stream_type": "youtube",
-      "updated_at": 1778684536.033778
-    },
-    {
-      "channel_name": "JJ's Jungle \u2013 Live National Forest Wildlife Cams",
-      "created_at": 1777671101.1066878,
-      "enabled": true,
-      "lat": 45.86573,
-      "lon": -90.1655,
-      "mute_audio": false,
-      "name": "McCaslin Brook Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
-      "original_yt_title": "\ud83d\udd34 McCaslin Brook Live 24/7 | Serene Babbling Brook Sounds & Wildlife | Nicolet National Forest.",
-      "page_url": "https://www.youtube.com/watch?v=YqR1ajq7QQ4",
-      "stream_type": "youtube",
-      "updated_at": 1778682418.082547
-    },
-    {
-      "channel_name": "JJ's Jungle \u2013 Live National Forest Wildlife Cams",
-      "created_at": 1777671148.217705,
-      "enabled": true,
-      "lat": 45.86573,
-      "lon": -90.1655,
-      "mute_audio": false,
-      "name": "Wildlife Feeder Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
-      "original_yt_title": "\ud83d\udd34 24/7 Wildlife Feeder Live | Birds, Deer & Flying Squirrels | Nicolet National Forest, Wisconsin",
-      "page_url": "https://www.youtube.com/watch?v=7h6xemdYQAI",
-      "stream_type": "youtube",
-      "updated_at": 1778682438.6528208
     },
     {
       "channel_name": "bald eagle",
@@ -4725,6 +2900,57 @@
       "updated_at": 1777672206.600072
     },
     {
+      "channel_name": "Allen Birdcam",
+      "created_at": 1767765272.562235,
+      "enabled": true,
+      "lat": 51.34841,
+      "lon": 0.20332,
+      "mute_audio": false,
+      "name": "City Forest Wildlife Cam, London, UK (YouTube)",
+      "original_yt_title": "LIVE - Croc Rock -  London UK Forest wildlife cam | Foxes, hedgehogs, squirrels, deer and many more",
+      "page_url": "https://www.youtube.com/watch?v=N19ZaTrflZQ",
+      "stream_type": "youtube",
+      "updated_at": 1778677816.2992506
+    },
+    {
+      "channel_name": "Canadian Bird Nerd",
+      "created_at": 1772217506.26095,
+      "enabled": true,
+      "lat": 51.49888,
+      "lon": -115.92874,
+      "mute_audio": false,
+      "name": "Bird Bath Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
+      "original_yt_title": "Relax with Nature: Live Canadian Bird Bath Cam in 4K 2026-05-13 16:30",
+      "page_url": "https://www.youtube.com/watch?v=q1oAQ8_NBo8",
+      "stream_type": "youtube",
+      "updated_at": 1778679056.141872
+    },
+    {
+      "channel_name": "Canadian Bird Nerd",
+      "created_at": 1757809158.1106586,
+      "enabled": true,
+      "lat": 51.49888,
+      "lon": -115.92874,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=7JvA7URIUfo",
+      "stream_type": "youtube",
+      "updated_at": 1778679320.0973687
+    },
+    {
+      "channel_name": "Deer Creek Wildlife Cam",
+      "created_at": 1771106306.860436,
+      "enabled": true,
+      "lat": 43.21675,
+      "lon": -123.34637,
+      "mute_audio": false,
+      "name": "Nature South Cam, Deer Creek Park, Roseburg, Oregon, USA (YouTube)",
+      "original_yt_title": "Deer Creek Nature Cam (South Cam) | Roseburg, OR 2026-05-13 16:47",
+      "page_url": "https://www.youtube.com/watch?v=cZg0iFvbCDQ",
+      "stream_type": "youtube",
+      "updated_at": 1778680885.0987408
+    },
+    {
       "channel_name": "Deer Creek Wildlife Cam",
       "created_at": 1778680956.73188,
       "enabled": true,
@@ -4750,6 +2976,31 @@
       "updated_at": 1778681282.9736414
     },
     {
+      "channel_name": "Deerfield Beach Live",
+      "created_at": 1773536147.4127657,
+      "enabled": true,
+      "lat": 26.31121,
+      "lon": -80.06926,
+      "mute_audio": true,
+      "name": "Underwater Cam, Deerfield Beach, Florida, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=SHfAtWHr9Ks",
+      "stream_type": "youtube",
+      "updated_at": 1778681294.259743
+    },
+    {
+      "channel_name": "Scottish Wildlife Garden",
+      "created_at": 1774543834.8137228,
+      "enabled": true,
+      "lat": 56.26418,
+      "lon": -5.33017,
+      "mute_audio": false,
+      "name": "Bird Feeders, Wildlife Garden Cam, Argyll, Scotland (YouTube)",
+      "original_yt_title": "LIVE \ud83d\udd34 Bird Feeders, Wildlife Cameras Scotland UK from Scottish Wildlife Garden",
+      "page_url": "https://www.youtube.com/watch?v=BUc-jc_PiUE",
+      "stream_type": "youtube",
+      "updated_at": 1778682591.9315968
+    },
+    {
       "channel_name": "DIRECTO NATURA",
       "created_at": 1778683907.4777453,
       "enabled": true,
@@ -4760,6 +3011,31 @@
       "page_url": "https://www.youtube.com/watch?v=kEzHu8tId40",
       "stream_type": "youtube",
       "updated_at": 1778683907.477746
+    },
+    {
+      "channel_name": "Wheeler8Acres",
+      "created_at": 1777395367.8050046,
+      "disable_reason": "Dead (Case A Sync)",
+      "enabled": true,
+      "lat": 33.2864,
+      "lon": -85.50955,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam, Northeast Alabama, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=EJJ8TsrXNmI",
+      "stream_type": "youtube",
+      "updated_at": 1778684377.1431184
+    },
+    {
+      "channel_name": "Wheeler8Acres",
+      "created_at": 1777395487.1671414,
+      "enabled": true,
+      "lat": 33.2864,
+      "lon": -85.50955,
+      "mute_audio": false,
+      "name": "Deer & Critters Cam, Northeast Alabama, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=vzdfIiy8c0I",
+      "stream_type": "youtube",
+      "updated_at": 1778684410.8793201
     },
     {
       "channel_name": "Wheeler8Acres",
@@ -4810,19 +3086,7 @@
       "updated_at": 1778685629.518205
     },
     {
-      "channel_name": "Live Owl Nests & California Condors",
-      "created_at": 1778686444.848027,
-      "enabled": true,
-      "lat": 47.44251,
-      "lon": -114.1497,
-      "mute_audio": false,
-      "name": "Great Horned Owl Nest Cam, Owl Research Institute, Montana, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=oSKMHVbMPUQ",
-      "stream_type": "youtube",
-      "updated_at": 1778686444.8480275
-    },
-    {
-      "channel_name": "Live Owl Nests & California Condors",
+      "channel_name": "Explore Owl Nests & California Condors",
       "created_at": 1778686629.0782049,
       "enabled": true,
       "lat": 44.77403,
@@ -4834,16 +3098,16 @@
       "updated_at": 1778686629.0782053
     },
     {
-      "channel_name": "Steve Beckwith Outdoors - Maine Outback",
-      "created_at": 1778687236.4412277,
+      "channel_name": "Fernwood Hills",
+      "created_at": 1775902810.201417,
       "enabled": true,
-      "lat": 43.40982,
-      "lon": -70.92164,
+      "lat": 42.94059,
+      "lon": -81.46148,
       "mute_audio": false,
-      "name": "Wildlife Right Cam, Lebanon, Maine, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=eWJ1U3DnhFY",
+      "name": "Wildlife Cam, Hemlock Grove Forest, Fernwood Hills, Komoka, Ontario, Canada (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=y9S0jA0mOx8",
       "stream_type": "youtube",
-      "updated_at": 1778687236.4412286
+      "updated_at": 1778687497.0885668
     },
     {
       "channel_name": "Fernwood Hills",
@@ -4882,42 +3146,6 @@
       "updated_at": 1778687935.5214953
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1778693846.3773642,
-      "enabled": true,
-      "lat": 39.02643,
-      "lon": -77.50561,
-      "mute_audio": false,
-      "name": "Eagle Cam, Dulles Greenway, Virgina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=GRRPNu-msKM",
-      "stream_type": "youtube",
-      "updated_at": 1786626998.7568188
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1778693888.4526267,
-      "enabled": true,
-      "lat": 39.02643,
-      "lon": -77.50561,
-      "mute_audio": false,
-      "name": "Eagle Cam PTZ, Dulles Greenway, Virgina, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=zuN8WawsuEQ",
-      "stream_type": "youtube",
-      "updated_at": 1786627001.2
-    },
-    {
-      "channel_name": "Unknown Channel",
-      "created_at": 1778694734.462193,
-      "enabled": true,
-      "lat": 28.54469,
-      "lon": -81.73052,
-      "mute_audio": false,
-      "name": "Backyard Bird Feeder Cam, Central Florida, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=OJl2ohH4zSo",
-      "stream_type": "youtube",
-      "updated_at": 1786589660.1094456
-    },
-    {
       "channel_name": "Explore Bat Cams: Bat Caves & Flying Foxes",
       "created_at": 1778696603.386863,
       "enabled": true,
@@ -4954,30 +3182,28 @@
       "updated_at": 1778696918.7614803
     },
     {
-      "channel_name": "Explore Hummingbird & Bird Migration Cams",
-      "created_at": 1778697701.086396,
+      "channel_name": "Explore Bat Cams: Bat Caves & Flying Foxes",
+      "created_at": 1774552157.0257218,
       "enabled": true,
-      "lat": 9.07426,
-      "lon": -79.65985,
+      "lat": 29.82458,
+      "lon": -82.33985,
       "mute_audio": false,
-      "name": "Tropical Hummingbird Canopy Tower Cam, Soberan\u00eda National Park, Panama (YouTube)",
-      "original_url": "https://www.youtube.com/watch?v=JE2CGFclrRg&variant=1778697701",
-      "page_url": "https://www.youtube.com/watch?v=JE2CGFclrRg",
+      "name": "The Mixed Species Flying Fox Cam, Lubee Bat Conservancy, Gainesville, Florida, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=EXSoa7sQTzQ",
       "stream_type": "youtube",
-      "updated_at": 1783739423.6479907
+      "updated_at": 1778697063.638174
     },
     {
-      "channel_name": "Explore Hummingbird & Bird Migration Cams",
-      "created_at": 1778697816.5817199,
+      "channel_name": "Explore Bat Cams: Bat Caves & Flying Foxes",
+      "created_at": 1774552189.1641953,
       "enabled": true,
-      "lat": 31.3904,
-      "lon": -110.23961,
+      "lat": 29.82458,
+      "lon": -82.33985,
       "mute_audio": false,
-      "name": "Viewing Area Cam, Ash Canyon Bird Sanctuary, Huachuca Mountains, Arizona, USA (YouTube)",
-      "original_yt_title": "LIVE Javelinas & Arizona Wildlife Cam: Ash Canyon Bird Sanctuary Back Porch | explore.org 2026-04-17 22:16",
-      "page_url": "https://www.youtube.com/watch?v=GptwwrGTMMo",
+      "name": "The Giant Flying Fox Cam, Lubee Bat Conservancy, Gainesville, Florida, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=Zahk-Cm0gqk",
       "stream_type": "youtube",
-      "updated_at": 1778697816.5817206
+      "updated_at": 1778697101.2561965
     },
     {
       "channel_name": "Explore Africa",
@@ -5028,19 +3254,6 @@
       "updated_at": 1778943121.974485
     },
     {
-      "channel_name": "Unknown Channel",
-      "created_at": 1778943287.1242886,
-      "enabled": true,
-      "lat": 50.58096,
-      "lon": -126.77156,
-      "mute_audio": false,
-      "name": "OrcaLab Orca Whale Lookout Main Cam, Hanson Island, British Columbia, Canada (Youtube)",
-      "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=hTOmWcmr2Tc",
-      "stream_type": "youtube",
-      "updated_at": 1783564967.6298602
-    },
-    {
       "channel_name": "Explore Bee Hive & Backyard Cams",
       "created_at": 1778944486.8635974,
       "enabled": true,
@@ -5066,18 +3279,6 @@
     },
     {
       "channel_name": "Explore Bee Hive & Backyard Cams",
-      "created_at": 1778944797.586245,
-      "enabled": true,
-      "lat": 30.24826,
-      "lon": -97.73578,
-      "mute_audio": false,
-      "name": "Northern Cardinal and White-eyed Vireo Nest Cams, Austin, Texas, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=13ABWWKvJZo",
-      "stream_type": "youtube",
-      "updated_at": 1778944797.5862463
-    },
-    {
-      "channel_name": "Explore Bee Hive & Backyard Cams",
       "created_at": 1778944948.9536872,
       "enabled": true,
       "lat": 30.4592,
@@ -5096,10 +3297,10 @@
       "lon": 10.78403,
       "mute_audio": false,
       "name": "Honey Bee Inside the Colony Cam, Waal, Bavaria, Germany (YouTube)",
-      "original_yt_title": "LIVE Honey Bee Cam: The Landing Zone - Buchloe, Germany | explore.org 2026-04-17 22:20",
+      "original_yt_title": "LIVE Honey Bee Hive Cam: Inside the Colony \u2013 Buchloe, Germany | explore.org",
       "page_url": "https://www.youtube.com/watch?v=dBzbfKXQDjI",
       "stream_type": "youtube",
-      "updated_at": 1778945283.3013196
+      "updated_at": 1787650594.8664403
     },
     {
       "channel_name": "Collins Creek Critters",
@@ -5126,160 +3327,57 @@
       "updated_at": 1778945564.9589555
     },
     {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779611867.7833192,
+      "channel_name": "HANS NATUURKANAAL",
+      "created_at": 1774549026.9782262,
       "enabled": true,
-      "lat": 55.3502,
-      "lon": -1.50004,
+      "lat": 51.53866,
+      "lon": 5.33122,
       "mute_audio": false,
-      "name": "Roseate Terns and Puffins Cam 1, Coquet Island, Hauxley, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=nK5mX9Jnl7g",
+      "name": "Tawny Owl Cam, Live Outdoor Nest Box, De Mortel, Netherlands (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=7nUjsBV3ZgM&variant=1778682223",
+      "original_yt_title": "Tawny Owl 2 CAM\ud83e\udd89Live Outdoor Nest Box OWL-2",
+      "page_url": "https://www.youtube.com/watch?v=7nUjsBV3ZgM",
       "stream_type": "youtube",
-      "updated_at": 1779611867.7833197
+      "updated_at": 1779715435.0601375
     },
     {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779611979.094315,
+      "channel_name": "Explore Owl Nests & California Condors",
+      "created_at": 1774552002.9688265,
       "enabled": true,
-      "lat": 55.3502,
-      "lon": -1.50004,
+      "lat": 36.30723,
+      "lon": -121.81854,
       "mute_audio": false,
-      "name": "Roseate Tern Nest Cam 2, Coquet Island, Hauxley, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=5fzSKm1RXEw",
+      "name": "Ventana Wildlife Society Condor Pen Cam, Big Sur, California, USA (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=j_rQ1Wky7l0",
+      "page_url": "https://www.youtube.com/watch?v=j_rQ1Wky7l0",
       "stream_type": "youtube",
-      "updated_at": 1779611979.0943155
+      "updated_at": 1783717802.7507622
     },
     {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612089.5180779,
+      "channel_name": "Trempealeau Eagles",
+      "created_at": 1757806219.22265,
       "enabled": true,
-      "lat": 55.3502,
-      "lon": -1.50004,
+      "lat": 44.00736,
+      "lon": -91.45193,
       "mute_audio": false,
-      "name": "Puffins Top of the Hide Cam 3, Coquet Island, Hauxley, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=tijUdIiNtIc",
+      "name": "Eagle nest, Mississippi, Trempealeau, Wisconsin, USA (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=8bMrSm0Ap20",
+      "page_url": "https://www.youtube.com/watch?v=8bMrSm0Ap20",
       "stream_type": "youtube",
-      "updated_at": 1779612089.518079
+      "updated_at": 1783729718.6020463
     },
     {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612174.323099,
+      "channel_name": "Hummingbird Spot",
+      "created_at": 1767747240.520556,
       "enabled": true,
-      "lat": 55.3502,
-      "lon": -1.50004,
+      "lat": -0.02603,
+      "lon": -78.75896,
       "mute_audio": false,
-      "name": "Puffin Burrow Cam 4, Coquet Island, Hauxley, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=laW8czXL01g",
+      "name": "Live Hummingbird Feeders at Sachatamia Lodge in Ecuador (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=c3KfiiBTIvA",
+      "page_url": "https://www.youtube.com/watch?v=c3KfiiBTIvA",
       "stream_type": "youtube",
-      "updated_at": 1779612174.3230999
-    },
-    {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612553.0381796,
-      "enabled": true,
-      "lat": 54.97004,
-      "lon": -1.59919,
-      "mute_audio": false,
-      "name": "Kittiwake Colony Nesting Cam, Baltic, Gateshead, Newcastle, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=q4iYru8casU",
-      "stream_type": "youtube",
-      "updated_at": 1779612553.0381799
-    },
-    {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612750.7729433,
-      "enabled": true,
-      "lat": 53.92077,
-      "lon": -1.64906,
-      "mute_audio": false,
-      "name": "Barn Owls Cam 1, Leathley in Wharfedale, North Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=HSuh2CLE0gg",
-      "stream_type": "youtube",
-      "updated_at": 1779612750.7729445
-    },
-    {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612798.0107841,
-      "enabled": true,
-      "lat": 53.92077,
-      "lon": -1.64906,
-      "mute_audio": false,
-      "name": "Barn Owls Cam 2, Leathley in Wharfedale, North Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=IDQk_XpOgZc",
-      "stream_type": "youtube",
-      "updated_at": 1779612798.0107853
-    },
-    {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779612960.799644,
-      "enabled": true,
-      "lat": 52.46881,
-      "lon": -3.68104,
-      "mute_audio": false,
-      "name": "Osprey Nest Cam 1, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=tm84wYgG1Bk",
-      "stream_type": "youtube",
-      "updated_at": 1779612960.799645
-    },
-    {
-      "channel_name": "CarnyxWild",
-      "created_at": 1779613038.2502303,
-      "enabled": true,
-      "lat": 52.46881,
-      "lon": -3.68104,
-      "mute_audio": false,
-      "name": "Osprey Nest Cam 2, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=ppZk-UOrgSw",
-      "stream_type": "youtube",
-      "updated_at": 1779613038.2502313
-    },
-    {
-      "channel_name": "CarnyxWild Two",
-      "created_at": 1779613309.0258412,
-      "enabled": true,
-      "lat": 54.32212,
-      "lon": -1.94959,
-      "mute_audio": false,
-      "name": "Ponds Ground Nesting Birds Cam 1, Bolton Castle, Yorkshire Dales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=aarfiIYPQpQ",
-      "stream_type": "youtube",
-      "updated_at": 1779613309.025842
-    },
-    {
-      "channel_name": "CarnyxWild Two",
-      "created_at": 1779613534.3340633,
-      "enabled": true,
-      "lat": 54.59114,
-      "lon": -6.43396,
-      "mute_audio": false,
-      "name": "Black-headed Gulls and Common Terns Nesting Cam, Lough Neagh, Northern Ireland (Youtube)",
-      "page_url": "https://www.youtube.com/watch?v=CmOkS5bh-jU",
-      "stream_type": "youtube",
-      "updated_at": 1779613534.3340642
-    },
-    {
-      "channel_name": "CarnyxWild Two",
-      "created_at": 1779613776.2467499,
-      "enabled": true,
-      "lat": 51.0782,
-      "lon": -0.33381,
-      "mute_audio": false,
-      "name": "Newts, Insects and other Invertebrates Pond Cam, Warnham Local Nature Reserve, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=bNRD1MnmXJc",
-      "stream_type": "youtube",
-      "updated_at": 1779613776.2467508
-    },
-    {
-      "channel_name": "Wildlife Pulse",
-      "created_at": 1779614167.917844,
-      "enabled": true,
-      "lat": 49.69381,
-      "lon": 19.1838,
-      "mute_audio": false,
-      "name": "Mountain Nook - Zywiec, Poland (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=bevUVUtweyY",
-      "stream_type": "youtube",
-      "updated_at": 1779614167.9178445
+      "updated_at": 1783734046.157342
     },
     {
       "channel_name": "City of Vincent",
@@ -5293,6 +3391,1402 @@
       "page_url": "https://www.youtube.com/watch?v=8Npf0mKnN-Y",
       "stream_type": "youtube",
       "updated_at": 1783738392.524152
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1768516979.5874808,
+      "enabled": true,
+      "lat": -24.99635,
+      "lon": 31.59177,
+      "mute_audio": false,
+      "name": "Wildlife Cam, Skukuza Camp, Kruger National Park, South Africa (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=QDcUbYHgme4",
+      "page_url": "https://www.youtube.com/watch?v=QDcUbYHgme4",
+      "stream_type": "youtube",
+      "updated_at": 1783738900.7931917
+    },
+    {
+      "channel_name": "Explore Hummingbird & Bird Migration Cams",
+      "created_at": 1778697701.086396,
+      "enabled": true,
+      "lat": 9.07426,
+      "lon": -79.65985,
+      "mute_audio": false,
+      "name": "Tropical Hummingbird Canopy Tower Cam, Soberan\u00eda National Park, Panama (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=JE2CGFclrRg&variant=1778697701",
+      "page_url": "https://www.youtube.com/watch?v=JE2CGFclrRg",
+      "stream_type": "youtube",
+      "updated_at": 1783739423.6479907
+    },
+    {
+      "channel_name": "Explore Wolf & Bison Cams: North American Wildlife",
+      "created_at": 1774311393.2963166,
+      "enabled": true,
+      "lat": 49.1313,
+      "lon": -107.4461,
+      "mute_audio": false,
+      "name": "Bison Water Hole, Grasslands National Park, Canada (YouTube)",
+      "original_url": "https://www.youtube.com/watch?v=g6wxYiESkE4",
+      "page_url": "https://www.youtube.com/watch?v=g6wxYiESkE4",
+      "stream_type": "youtube",
+      "updated_at": 1783751004.6345732
+    },
+    {
+      "channel_name": "Explore Oceans",
+      "created_at": 1773535152.5375252,
+      "enabled": true,
+      "lat": 34.01367,
+      "lon": -119.74196,
+      "mute_audio": true,
+      "name": "Anacapa Island Ocean, Channel Islands National Park, California, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=OAJF1Ie1m_Q",
+      "stream_type": "youtube",
+      "updated_at": 1787099036.72213
+    },
+    {
+      "channel_name": "afarTV",
+      "created_at": 1774317934.067764,
+      "enabled": true,
+      "lat": 14.7486,
+      "lon": -91.56313,
+      "mute_audio": false,
+      "name": " Santa Maria Volcano (Santiaguito), Guatamala (YouTube)",
+      "original_yt_title": "\ud83d\udd34 Live Now: 24/7 Santa Maria (Santiaguito) Volcano in 4K Ultra HD (Cam A)",
+      "page_url": "https://www.youtube.com/watch?v=a6AmmqAX6DA",
+      "stream_type": "youtube",
+      "updated_at": 1787099707.9648888
+    },
+    {
+      "channel_name": "CritterVision",
+      "created_at": 1767874304.7201817,
+      "enabled": true,
+      "lat": 32.81743,
+      "lon": -80.1111,
+      "mute_audio": false,
+      "name": "Critter Cam, Johns Island, South Carolina, USA (YouTube)",
+      "original_yt_title": "CritterVision Wildlife Critter Cam",
+      "page_url": "https://www.youtube.com/watch?v=0cn-Y3Mfx3g",
+      "stream_type": "youtube",
+      "updated_at": 1787181549.4497306
+    },
+    {
+      "channel_name": "Explore Manatee, River & Wetland Bird Cams",
+      "created_at": 1768065046.0635831,
+      "enabled": true,
+      "lat": -28.67142,
+      "lon": 24.75226,
+      "mute_audio": false,
+      "name": "Flamingo Cam, Kamfers Dam, Kimberley, South Africa (YouTube)",
+      "original_yt_title": "LIVE Lesser Flamingo Cam: Kamfers Dam, South Africa - Africam | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=TMHrXstD5pI",
+      "stream_type": "youtube",
+      "updated_at": 1787182283.6805716
+    },
+    {
+      "channel_name": "NatureTec",
+      "created_at": 1774545368.882136,
+      "enabled": true,
+      "lat": 40.69216,
+      "lon": -2.05064,
+      "mute_audio": false,
+      "name": "LIVE Kestrel Nest Box Cam - Recke (Germany)",
+      "original_yt_title": "LIVE Kestrel-/Owl-/Pigeon Nest Box Cam - Recke (Germany)",
+      "page_url": "https://www.youtube.com/watch?v=7e7kIUPjt6s",
+      "stream_type": "youtube",
+      "updated_at": 1787182719.3712664
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787350907.8680408,
+      "enabled": true,
+      "lat": -18.68008,
+      "lon": 26.15131,
+      "mute_audio": false,
+      "name": "Deteema Springs, Hwange National Park, Zimbabwe (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=m4cAV-_7YpY",
+      "stream_type": "youtube",
+      "updated_at": 1787350972.6489923
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787351757.9425929,
+      "enabled": true,
+      "lat": -19.07009,
+      "lon": 27.34504,
+      "mute_audio": false,
+      "name": "Wilderness Linkwasha Camp, Hwange Waterhole, Zimbabwe (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=-rXriX4SiQk",
+      "stream_type": "youtube",
+      "updated_at": 1787351757.9425943
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787351144.1334722,
+      "enabled": true,
+      "lat": -1.27368,
+      "lon": 34.97065,
+      "mute_audio": false,
+      "name": "Angama Mara, Maasai Mara, Kenya (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=Njur5IV7icE",
+      "stream_type": "youtube",
+      "updated_at": 1787351795.0637915
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787351280.2201426,
+      "enabled": true,
+      "lat": 0.05935,
+      "lon": 36.76534,
+      "mute_audio": false,
+      "name": "Porini Rhino Camp, Ol Pejeta Conservancy, Kenya (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=5dhmXmUD1ZE",
+      "stream_type": "youtube",
+      "updated_at": 1787351811.0448327
+    },
+    {
+      "channel_name": "afarTV",
+      "created_at": 1787099921.7847533,
+      "enabled": true,
+      "lat": 14.47182,
+      "lon": -90.87845,
+      "mute_audio": false,
+      "name": "Live Now: 24/7 Semeru Volcano Watch (Multi-cams)",
+      "original_yt_title": "Live Now: 24/7 Semeru Volcano Watch (Multi-cams)",
+      "page_url": "https://www.youtube.com/watch?v=EYYgrzyqgZM",
+      "stream_type": "youtube",
+      "updated_at": 1787351910.9130952
+    },
+    {
+      "channel_name": "afarTV",
+      "created_at": 1774316626.416148,
+      "enabled": true,
+      "lat": 19.02281,
+      "lon": -98.62863,
+      "mute_audio": false,
+      "name": "Popocatepetl Volcano, San Pedro, Benito Juarez, Mexico (YouTube)",
+      "original_yt_title": "\ud83d\udd34 Live Now: 24/7 Erupting Popocat\u00e9petl Volcano from San Pedro Benito Ju\u00e1rez, Mexico in 4K Ultra HD",
+      "page_url": "https://www.youtube.com/watch?v=1j3T1kbrD1c",
+      "stream_type": "youtube",
+      "updated_at": 1787352579.5070527
+    },
+    {
+      "channel_name": "Zachranna stanice zivocichu Makov",
+      "created_at": 1774316169.9614804,
+      "enabled": true,
+      "lat": 49.36288,
+      "lon": 14.09642,
+      "mute_audio": false,
+      "name": "Pond Cam, Animal Rescue Station, Makov, Cizova, Czech Republic (YouTube)",
+      "original_yt_title": "Z\u00e1chrann\u00e1 stanice \u017eivo\u010dich\u016f Makov - Krm\u00edtko",
+      "page_url": "https://www.youtube.com/watch?v=F0fsV1GGZ3M",
+      "stream_type": "youtube",
+      "updated_at": 1787352652.175784
+    },
+    {
+      "channel_name": "Eastern Backwoods Outdoors",
+      "created_at": 1767874344.891949,
+      "enabled": true,
+      "lat": 36.899,
+      "lon": -80.74861,
+      "mute_audio": false,
+      "name": "Wildlife In The Backwoods, North Carolina, USA (YouTube)",
+      "original_yt_title": "Live DEER and Wildlife In The Backwoods",
+      "page_url": "https://www.youtube.com/watch?v=d7jbmg_fguM",
+      "stream_type": "youtube",
+      "updated_at": 1787352765.2063186
+    },
+    {
+      "channel_name": "Allen Birdcam",
+      "created_at": 1774220081.935227,
+      "enabled": true,
+      "lat": -25.74237,
+      "lon": 28.23081,
+      "mute_audio": true,
+      "name": "Owl Spring, Suburban Garden, Pretoria, South Africa (YouTube)",
+      "original_yt_title": "\ud83d\udd34 Owl Spring. Relaxation / Meditation | Water, Birds and night sounds",
+      "page_url": "https://www.youtube.com/watch?v=fqi4E54HljI",
+      "stream_type": "youtube",
+      "updated_at": 1787352882.0731106
+    },
+    {
+      "channel_name": "Madarles - Live Bird Cams",
+      "created_at": 1774215794.552354,
+      "enabled": true,
+      "lat": 46.80663,
+      "lon": 19.01761,
+      "mute_audio": false,
+      "name": "White Stork Nest Cam, Solt, Hungary (YouTube)",
+      "original_yt_title": "LIVE White Stork Nest Cam (S\u00e1gv\u00e1r, Hungary)",
+      "page_url": "https://www.youtube.com/watch?v=AO5I5nNbbnE",
+      "stream_type": "youtube",
+      "updated_at": 1787352910.3919168
+    },
+    {
+      "channel_name": "Rough Riders Show",
+      "created_at": 1772218303.0350478,
+      "enabled": true,
+      "lat": 40.18194,
+      "lon": -83.06369,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam, Powell, Ohio, USA (YouTube)",
+      "original_yt_title": "LIVE: Bird and Wildlife Camera's - Powell, Ohio (Cardinals, Blue Jays, Woodpeckers, Raccoons) 24/7",
+      "page_url": "https://www.youtube.com/watch?v=Q2W9LTGR-U0",
+      "stream_type": "youtube",
+      "updated_at": 1787353537.391388
+    },
+    {
+      "channel_name": "Canadian Bird Nerd",
+      "created_at": 1772217427.7429554,
+      "enabled": true,
+      "lat": 51.49888,
+      "lon": -115.92874,
+      "mute_audio": false,
+      "name": "House Sparrow Nest Cam, Banff National Park, Southern Alberta, Canada (YouTube)",
+      "original_yt_title": "LIVE Mountain View Bird Feeder Cam - CANADA 4K/60fps 2026-05-13 16:31",
+      "page_url": "https://www.youtube.com/watch?v=7JvA7URIUfo",
+      "stream_type": "youtube",
+      "updated_at": 1787353604.8536396
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787354737.0084848,
+      "enabled": true,
+      "lat": -1.27369,
+      "lon": 35.22281,
+      "mute_audio": false,
+      "name": "Mahali Mzuri Landscape, Maasai Mara, Kenya (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=jIh2FYqMOw0",
+      "stream_type": "youtube",
+      "updated_at": 1787354737.008486
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787355787.0081267,
+      "enabled": true,
+      "lat": -20.49557,
+      "lon": 25.18427,
+      "mute_audio": false,
+      "name": "Jack\u2019s Camp, Kalahari Waterhole, Botswana (YouTube)",
+      "original_yt_title": "Live from Jack\u2019s Camp | Kalahari Waterhole Cam - Elephants, Lions & More",
+      "page_url": "https://www.youtube.com/watch?v=jG0uYl5S44E",
+      "stream_type": "youtube",
+      "updated_at": 1787355864.318326
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787356155.928446,
+      "enabled": true,
+      "lat": -1.39057,
+      "lon": 35.02549,
+      "mute_audio": false,
+      "name": "Mara River Main Crossing, Masai Mara, Kenya (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=BaEFc79IMCA",
+      "stream_type": "youtube",
+      "updated_at": 1787356155.9284468
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1787356726.5314813,
+      "enabled": true,
+      "lat": -15.67405,
+      "lon": 29.66128,
+      "mute_audio": false,
+      "name": "Tembo Plains Safari, Zambezi River, Zimbabwe (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=jH3e5w4BWGA",
+      "stream_type": "youtube",
+      "updated_at": 1787356726.5314822
+    },
+    {
+      "channel_name": "DIRECTO NATURA",
+      "created_at": 1787428251.9833152,
+      "enabled": true,
+      "lat": 40.70871,
+      "lon": -2.05067,
+      "mute_audio": false,
+      "name": "An Oasis Amidst the Ashes, Cam 84, Molina de Arag\u00f3n-Alto Tajo Region, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=WOO-v-cxdSs",
+      "stream_type": "youtube",
+      "updated_at": 1787428251.9833164
+    },
+    {
+      "channel_name": "DIRECTO NATURA",
+      "created_at": 1774513466.9915252,
+      "enabled": true,
+      "lat": 40.69216,
+      "lon": -2.05064,
+      "mute_audio": false,
+      "name": "Booted Eagle Nest, Cam 64, Alto Tajo Natura Park, Guadalajara, Spain (YouTube)",
+      "original_yt_title": "\u00c1guila calzada (Hieraaetus pennatus) \ud83d\udd34 DIRECTO (C\u00e1mara 64 | PN Alto Tajo, Guadalajara)",
+      "page_url": "https://www.youtube.com/watch?v=LssZis7XjEA",
+      "stream_type": "youtube",
+      "updated_at": 1787429578.0916924
+    },
+    {
+      "channel_name": "DIRECTO NATURA",
+      "created_at": 1787429465.234457,
+      "enabled": true,
+      "lat": 39.7363,
+      "lon": 3.33526,
+      "mute_audio": false,
+      "name": "Osprey Nest, Cam 76, Mallorca, Llevant Peninsula Natural Park, Balearic Islands, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=KSbpEHC_9bE",
+      "stream_type": "youtube",
+      "updated_at": 1787430134.0452492
+    },
+    {
+      "channel_name": "DIRECTO NATURA",
+      "created_at": 1787428405.7928548,
+      "enabled": true,
+      "lat": 40.82727,
+      "lon": -2.01359,
+      "mute_audio": false,
+      "name": "Vultures and Egyptian Vultures, Cam 82, Molina de Arag\u00f3n-Alto Tajo Region, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=k2pDwJKUeE4",
+      "stream_type": "youtube",
+      "updated_at": 1787430185.0366483
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1772217790.6891532,
+      "enabled": true,
+      "lat": 35.70921,
+      "lon": -93.47592,
+      "mute_audio": false,
+      "name": "Backyard, Bird Feeder, Ozark Mountains, Southern Missouri, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=_wnjeiATFk4",
+      "stream_type": "youtube",
+      "updated_at": 1787626875.8799284
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774017321.7558265,
+      "enabled": true,
+      "lat": 40.40964,
+      "lon": -79.93372,
+      "mute_audio": false,
+      "name": "Bald Eagle Cam, Glen Hazel, Pittsburgh, Pennsylvania, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=yPq9aNukckQ",
+      "stream_type": "youtube",
+      "updated_at": 1787626840.2244291
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1767816302.9527876,
+      "enabled": true,
+      "lat": 54.02968,
+      "lon": -0.72546,
+      "mute_audio": false,
+      "name": "Bird Cam, Fotherdale, Yorkshire, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=1PHylxad21s",
+      "stream_type": "youtube",
+      "updated_at": 1787626857.5167158
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1767878475.5097525,
+      "enabled": true,
+      "lat": 42.79033,
+      "lon": -88.6843,
+      "mute_audio": false,
+      "name": "Bird Cam, Kettle Moraine State Forest, Whitewater, Wisconsin, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=KSbM3x3aJmI",
+      "stream_type": "youtube",
+      "updated_at": 1787626878.5747166
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1772216553.3924086,
+      "enabled": true,
+      "lat": 36.24601,
+      "lon": -86.8922,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam 2, Nashville, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=3uEi1fE7mCY",
+      "stream_type": "youtube",
+      "updated_at": 1787626874.0986867
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1772218781.9243267,
+      "enabled": true,
+      "lat": 52.37053,
+      "lon": 7.71444,
+      "mute_audio": false,
+      "name": "Bird Nest Box1, Recke, Germany (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=on7uHHwZDZQ",
+      "stream_type": "youtube",
+      "updated_at": 1787626889.0884464
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1767499262.420516,
+      "enabled": true,
+      "lat": -25.74237,
+      "lon": 28.23081,
+      "mute_audio": false,
+      "name": "Birds Feeder, Suburban Garden, Pretoria, South Africa (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=MrLVxFR1IbI",
+      "stream_type": "youtube",
+      "updated_at": 1787626865.8677006
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1757806702.2323174,
+      "enabled": true,
+      "lat": 33.4662,
+      "lon": -110.82488,
+      "mute_audio": false,
+      "name": "Central Highlands, Arizona, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=jaGPSAZ_uow",
+      "stream_type": "youtube",
+      "updated_at": 1787626867.7872944
+    },
+    {
+      "channel_name": "Explore Farm Life",
+      "created_at": 1774551697.8985147,
+      "enabled": true,
+      "lat": 37.94355,
+      "lon": -84.5734,
+      "mute_audio": false,
+      "name": "Farm at Kentucky Equine Adoption Center, Nicholasville, Kentucky, USA (YouTube)",
+      "original_yt_title": "Kentucky Equine Adoption Center powered by Explore.org",
+      "page_url": "https://www.youtube.com/watch?v=LA0eX1GXnx0&variant=1787650757",
+      "stream_type": "youtube",
+      "updated_at": 1787650757.1882975
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1757876447.1731424,
+      "enabled": true,
+      "lat": 33.52294,
+      "lon": -86.80934,
+      "mute_audio": false,
+      "name": "Garden and Critter Cam, Birmingham, Alabama, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=LK_MNTYEHR8",
+      "stream_type": "youtube",
+      "updated_at": 1787626880.7818375
+    },
+    {
+      "channel_name": "Africam",
+      "created_at": 1774522718.4983253,
+      "enabled": true,
+      "lat": -24.80157,
+      "lon": 31.40139,
+      "mute_audio": false,
+      "name": "Live Safari from Nkorho Bush Lodge | 24/7 Wildlife in Sabi Sand, South Africa (YouTube)",
+      "original_yt_title": "Live Safari from Nkorho Bush Lodge | 24/7 Wildlife in Sabi Sand, South Africa",
+      "page_url": "https://www.youtube.com/watch?v=sQAhSkjRKGk",
+      "stream_type": "youtube",
+      "updated_at": 1787617260.3811917
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774544474.2752883,
+      "enabled": true,
+      "lat": 54.02968,
+      "lon": -0.72546,
+      "mute_audio": false,
+      "name": "LIVE Tawny Owls, Kestrels , Buzzards, Badgers & More | From Ash Wood, Yorkshire, UK (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=m2M_GBwzrGc",
+      "stream_type": "youtube",
+      "updated_at": 1787626861.9822116
+    },
+    {
+      "channel_name": "Bushtops Safaris",
+      "created_at": 1767842461.4426348,
+      "enabled": true,
+      "lat": -1.50436,
+      "lon": 35.37757,
+      "mute_audio": false,
+      "name": "Mara Bushtops, Kenya (YouTube)",
+      "original_yt_title": "LIVE Safari Webcam | Maasai Mara, Kenya | African Wildlife at Mara Bushtops",
+      "page_url": "https://www.youtube.com/watch?v=xXZqU5vnEug",
+      "stream_type": "youtube",
+      "updated_at": 1787649483.7661238
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774017771.3489113,
+      "enabled": true,
+      "lat": 40.96062,
+      "lon": -80.07899,
+      "mute_audio": false,
+      "name": "Osprey Cam, Moraine State Park, Pittsburgh, Pennsylvania, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=5DlywACQ9qM",
+      "stream_type": "youtube",
+      "updated_at": 1787626841.7397563
+    },
+    {
+      "channel_name": "Brownville's Food Pantry For Deer",
+      "created_at": 1774027332.4740293,
+      "enabled": true,
+      "lat": 45.30319,
+      "lon": -69.04075,
+      "mute_audio": false,
+      "name": "Richard's PTZ Cam, Food Pantry For Deer, Brownville, Maine, USA, (YouTube)",
+      "original_yt_title": "Brownville's Food Pantry For Deer \"Richard's PTZ\"",
+      "page_url": "https://www.youtube.com/watch?v=On2B_GPSXWs&variant=1787649374",
+      "stream_type": "youtube",
+      "updated_at": 1787649374.0588603
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1773537900.0334666,
+      "enabled": true,
+      "lat": 19.72825,
+      "lon": -156.06026,
+      "mute_audio": true,
+      "name": "Underwater Cam, Mega Lab, Off the Coast of Kona, Hawaii, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=jOp_aAXsYmE",
+      "stream_type": "youtube",
+      "updated_at": 1787626863.9473426
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1773520243.385323,
+      "enabled": true,
+      "lat": 40.85605,
+      "lon": -4.762966,
+      "mute_audio": true,
+      "name": "Underwater fauna, Cam 71, Avila, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=WwX7cj_esqo",
+      "stream_type": "youtube",
+      "updated_at": 1787626847.02484
+    },
+    {
+      "channel_name": "Charter Wildlife Cams",
+      "created_at": 1769184370.2417626,
+      "enabled": true,
+      "lat": 32.75437,
+      "lon": 35.01626,
+      "mute_audio": false,
+      "name": "Vulture Feeding Station Cam, Hai-Bar Nature Reserve, Isarel (YouTube)",
+      "original_yt_title": "LIVE Vulture Feeding Station CAM 1|Israel Nat. and Parks Auth.| Charter Group of Wildlife Ecol.",
+      "page_url": "https://www.youtube.com/watch?v=NohHDrlOltA&variant=1787673413",
+      "stream_type": "youtube",
+      "updated_at": 1787674028.8561385
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1757888756.4271512,
+      "enabled": true,
+      "lat": 29.88239,
+      "lon": -81.28859,
+      "mute_audio": false,
+      "name": "Alligator and Spoonbill Swamp, St. Augustine, Florida, USA (YouTube)",
+      "original_yt_title": "LIVE Alligators and Spoonbills - St. Augustine's Alligator Farm Zoological Park | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=qJr5KK6F7Q0",
+      "stream_type": "youtube",
+      "updated_at": 1787626872.1881874
+    },
+    {
+      "channel_name": "Explore Osprey & Peregrine Falcon Cams",
+      "created_at": 1774307607.5297039,
+      "enabled": true,
+      "lat": 47.43171,
+      "lon": -114.16637,
+      "mute_audio": false,
+      "name": "Osprey & Canada Goose Nest, Charlo, Montana, USA (YouTube)",
+      "original_yt_title": "LIVE Osprey & Canada Goose Nest at Rogers Place - Charlo, MT | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=nFgzhiA3WPg&variant=1787620565",
+      "stream_type": "youtube",
+      "updated_at": 1787620565.0568657
+    },
+    {
+      "channel_name": "Explore Osprey & Peregrine Falcon Cams",
+      "created_at": 1774308308.161891,
+      "enabled": true,
+      "lat": 38.97775,
+      "lon": -76.51301,
+      "mute_audio": true,
+      "name": "Peregrine Falcons Nest, Chesapeake Conservancy, Baltimore, Virgina, USA (YouTube)",
+      "original_yt_title": "LIVE Peregrine Falcons Nest - Chesapeake Conservancy - Boh and Barb | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=1_BdSTneH3s",
+      "stream_type": "youtube",
+      "updated_at": 1787621214.831622
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1771107013.6056588,
+      "enabled": true,
+      "lat": 58.76436,
+      "lon": -93.21785,
+      "mute_audio": false,
+      "name": "Polar Bear Cam, Cape Churchill, Wapusk National Park, Canada (YouTube)",
+      "original_yt_title": "LIVE Arctic Tundra: Cape South - Wapusk National Park | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=dF6frKSZZU8",
+      "stream_type": "youtube",
+      "updated_at": 1787626833.4183576
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774321824.9934273,
+      "enabled": true,
+      "lat": 47.44142,
+      "lon": -114.11435,
+      "mute_audio": false,
+      "name": "Mission Mountain Range,Ninepipe Wildlife Management Area, Montana, USA (YouTube)",
+      "original_yt_title": "Mission Mountain Range powered by Explore.org",
+      "page_url": "https://www.youtube.com/watch?v=wDgZkzkOP-s",
+      "stream_type": "youtube",
+      "updated_at": 1787626883.4209075
+    },
+    {
+      "channel_name": "Wildlife of Maine",
+      "created_at": 1768061834.954252,
+      "enabled": true,
+      "lat": 45.90388,
+      "lon": -68.92139,
+      "mute_audio": false,
+      "name": "Pond Camera, Maine, USA (YouTube)",
+      "original_yt_title": "Pond Camera",
+      "page_url": "https://www.youtube.com/watch?v=vtSQZSJ6CQU&variant=1787651213",
+      "stream_type": "youtube",
+      "updated_at": 1787651213.4422872
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1775900568.3815346,
+      "enabled": true,
+      "lat": 44.55054,
+      "lon": -83.42495,
+      "mute_audio": false,
+      "name": "Wildlife Cam, Critter Camp, Rose City, Michigan, USA (YouTube)",
+      "original_yt_title": "\ud83e\udd8c Critter Camp @ Rose City Trails, Live Michigan Wildlife Cam | Deer, Turkeys & More \ud83e\udd9d",
+      "page_url": "https://www.youtube.com/watch?v=_xL29rf3IvA",
+      "stream_type": "youtube",
+      "updated_at": 1787626843.160931
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1775903369.908733,
+      "enabled": true,
+      "lat": 50.38645,
+      "lon": 16.096,
+      "mute_audio": false,
+      "name": "Chicken Coop Cam, Near Reservoir Rozkos, Czech Republic (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=CHd1G_WWb3I",
+      "stream_type": "youtube",
+      "updated_at": 1787626837.0775297
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774317293.2385135,
+      "enabled": true,
+      "lat": 14.47182,
+      "lon": -90.87845,
+      "mute_audio": false,
+      "name": "Fuego volcano, Guatemala (YouTube)",
+      "original_yt_title": "\ud83d\udd34 En directo: 24/7 Erupci\u00f3n del volc\u00e1n de Fuego en 4K Ultra HD (Guatemala)",
+      "page_url": "https://www.youtube.com/watch?v=mRRrJJlO0vg",
+      "stream_type": "youtube",
+      "updated_at": 1787626869.656143
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1768656889.8705359,
+      "enabled": true,
+      "lat": 38.11565,
+      "lon": -3.98485,
+      "mute_audio": false,
+      "name": "Iberian Lynx, Cam 36, Gato Clavo, Sierra Morena Park, Spain (YouTube)",
+      "original_yt_title": "Lince ib\u00e9rico \ud83d\udd34 DIRECTO Sierra Morena (C\u00e1mara 36 | Ja\u00e9n)",
+      "page_url": "https://www.youtube.com/watch?v=JuBKDmfYVk8",
+      "stream_type": "youtube",
+      "updated_at": 1787626852.5378067
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787101084.9561865,
+      "enabled": true,
+      "lat": 34.57256,
+      "lon": -120.50248,
+      "mute_audio": false,
+      "name": "Water Fountain Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=O6uaw8TV19U",
+      "stream_type": "youtube",
+      "updated_at": 1787626838.9089222
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1777671101.1066878,
+      "enabled": true,
+      "lat": 45.86573,
+      "lon": -90.1655,
+      "mute_audio": false,
+      "name": "McCaslin Brook Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
+      "original_yt_title": "\ud83d\udd34 McCaslin Brook flowing water Live 24/7 | Serene Babbling Brook Sounds | Nicolet National Forest.",
+      "page_url": "https://www.youtube.com/watch?v=ZArMGEXF8Fc",
+      "stream_type": "youtube",
+      "updated_at": 1787626830.066017
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1777671148.217705,
+      "enabled": true,
+      "lat": 45.86573,
+      "lon": -90.1655,
+      "mute_audio": false,
+      "name": "Wildlife Feeder Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
+      "original_yt_title": "\ud83d\udd34 24/7 Wildlife Feeder Live | Woodpeckers, deer, otters, bear | Nicolet National Forest, Wisconsin",
+      "page_url": "https://www.youtube.com/watch?v=awy3JXKKoIU",
+      "stream_type": "youtube",
+      "updated_at": 1787626831.0588703
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1774547383.3002193,
+      "enabled": true,
+      "lat": 41.67616,
+      "lon": -86.25342,
+      "mute_audio": false,
+      "name": "Birds, Squirrels & Wildlife Feeder Cam, South Bend, Indiana, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=Y3gnw-v8amU",
+      "stream_type": "youtube",
+      "updated_at": 1787626832.6361947
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787429069.2620928,
+      "enabled": true,
+      "lat": 39.8382,
+      "lon": -6.07976,
+      "mute_audio": false,
+      "name": "Vultures and Birds, Cam 73, Monfrag\u00fce, Tagus River, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=6d6yK8f6qxs",
+      "stream_type": "youtube",
+      "updated_at": 1787591134.316361
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1777393827.5321453,
+      "enabled": true,
+      "lat": 34.78558,
+      "lon": -96.09509,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam, Oklahom, USA (YouTube)",
+      "original_yt_title": "Live Bird Feeder Camera in Oklahoma | Summer Birds Live Stream #CATTV #Birds",
+      "page_url": "https://www.youtube.com/watch?v=5-IozHeMlUA",
+      "stream_type": "youtube",
+      "updated_at": 1787519383.241761
+    },
+    {
+      "channel_name": "EarthCam",
+      "created_at": 1787521099.548601,
+      "enabled": true,
+      "lat": -18.34033,
+      "lon": 25.48677,
+      "mute_audio": false,
+      "name": "Watering Hole, Hideaways Camp, Kuzuma, Chobe, Botswana (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=iqdRLSdSjWI",
+      "stream_type": "youtube",
+      "updated_at": 1787521099.5486016
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1767791049.834826,
+      "enabled": true,
+      "lat": 45.03828,
+      "lon": -84.64266,
+      "mute_audio": false,
+      "name": "Animals and Wildlife Cam, Gaylord, Michigan, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=IU_-Pl9O5jQ",
+      "stream_type": "youtube",
+      "updated_at": 1787626834.2105064
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787522875.8471115,
+      "enabled": true,
+      "lat": 56.17233,
+      "lon": -131.87523,
+      "mute_audio": false,
+      "name": "Bear Cam, Forest View, Anan Creek, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=RjrRz3t5kO4",
+      "stream_type": "youtube",
+      "updated_at": 1787522875.8471127
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787522618.9352834,
+      "enabled": true,
+      "lat": 56.17233,
+      "lon": -131.87523,
+      "mute_audio": false,
+      "name": "Bear Cam, Fishing Hole 4, Anan Creek, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=ypMu3yA7h3s",
+      "stream_type": "youtube",
+      "updated_at": 1787522909.9361322
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787522958.6214561,
+      "enabled": true,
+      "lat": 56.17233,
+      "lon": -131.87523,
+      "mute_audio": false,
+      "name": "Bear Cam, Fishing Hole 3 Anan Creek, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=G839-Yj4Cvo",
+      "stream_type": "youtube",
+      "updated_at": 1787522958.6214569
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787523149.0510256,
+      "enabled": true,
+      "lat": 58.55526,
+      "lon": -155.79115,
+      "mute_audio": false,
+      "name": "Bear Cam, Brooks Falls, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=EwTH5yY7Mks",
+      "stream_type": "youtube",
+      "updated_at": 1787523149.0510266
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787523281.7899287,
+      "enabled": true,
+      "lat": 58.58478,
+      "lon": -154.96164,
+      "mute_audio": false,
+      "name": "River Watch, Katmai National Park, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=wkVLYfU-Kew",
+      "stream_type": "youtube",
+      "updated_at": 1787523281.7899292
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787523499.5760078,
+      "enabled": true,
+      "lat": 58.58478,
+      "lon": -154.96164,
+      "mute_audio": false,
+      "name": "Riffles, Katmai National Park, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=z7_GhJeFxQI",
+      "stream_type": "youtube",
+      "updated_at": 1787523499.5760093
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787523406.8615649,
+      "enabled": true,
+      "lat": 58.58478,
+      "lon": -154.96164,
+      "mute_audio": false,
+      "name": "Kat's River View, Katmai National Park, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=cTsjMtjRLCo",
+      "stream_type": "youtube",
+      "updated_at": 1787523542.2986236
+    },
+    {
+      "channel_name": "Explore Bears",
+      "created_at": 1787523644.4591906,
+      "enabled": true,
+      "lat": 58.58478,
+      "lon": -154.96164,
+      "mute_audio": true,
+      "name": "Underwater Cam, Katmai National Park, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=vu7I315gQpU",
+      "stream_type": "youtube",
+      "updated_at": 1787523644.4591913
+    },
+    {
+      "channel_name": "Explore Whale Walrus & Seal Cams",
+      "created_at": 1787523875.1638389,
+      "enabled": true,
+      "lat": 54.20092,
+      "lon": -164.77687,
+      "mute_audio": false,
+      "name": "Walrus Cam, Main Beach Haul Out, Round Island, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=CbXGBg_kINQ",
+      "stream_type": "youtube",
+      "updated_at": 1787523875.1638405
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1778943287.1242886,
+      "enabled": true,
+      "lat": 50.58096,
+      "lon": -126.77156,
+      "mute_audio": false,
+      "name": "OrcaLab Orca Whale Lookout Main Cam, Hanson Island, British Columbia, Canada (Youtube)",
+      "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=hTOmWcmr2Tc",
+      "stream_type": "youtube",
+      "updated_at": 1787536451.0871925
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787524399.9192693,
+      "enabled": true,
+      "lat": 50.49443,
+      "lon": -126.27997,
+      "mute_audio": false,
+      "name": "Underwater Cam, OrcaLab, Strider Rubbing Beach, Johnstone Strait, British Columbia, Canada (Youtube)",
+      "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=HVzyLMktOVo",
+      "stream_type": "youtube",
+      "updated_at": 1787536459.172056
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787524469.1125789,
+      "enabled": true,
+      "lat": 50.49443,
+      "lon": -126.27997,
+      "mute_audio": false,
+      "name": "Above Water Cam, OrcaLab, Strider Rubbing Beach, Johnstone Strait, British Columbia, Canada (Youtube)",
+      "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=iWyTu_0znB4",
+      "stream_type": "youtube",
+      "updated_at": 1787536468.4247088
+    },
+    {
+      "channel_name": "Explore Whale Walrus & Seal Cams",
+      "created_at": 1787524567.5168507,
+      "enabled": true,
+      "lat": 54.20092,
+      "lon": -164.77687,
+      "mute_audio": false,
+      "name": "Walrus Cam, First Beach View, Round Island, Alaska, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=zVsCxyi47Kk",
+      "stream_type": "youtube",
+      "updated_at": 1787524567.5168512
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1768252720.3369362,
+      "enabled": true,
+      "lat": 33.37673,
+      "lon": -118.42302,
+      "mute_audio": false,
+      "name": "Low Cam, West End Bald Eagle Nest, Catalina Island, USA (YouTube)",
+      "original_yt_title": "West End Bald Eagle Nest Low Cam powered by EXPLORE.org 2026-04-17 22:36",
+      "page_url": "https://www.youtube.com/watch?v=wfuqjSNXZ14",
+      "stream_type": "youtube",
+      "updated_at": 1787526589.3054466
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1773532511.4552593,
+      "enabled": true,
+      "lat": 33.37673,
+      "lon": -118.42302,
+      "mute_audio": false,
+      "name": "High Cam, West End Bald Eagle Nest, Catalina Island, USA (YouTube)",
+      "original_yt_title": "West End Bald Eagle Nest Low Cam powered by EXPLORE.org 2026-05-01 22:55",
+      "page_url": "https://www.youtube.com/watch?v=aT1adgYSfbc",
+      "stream_type": "youtube",
+      "updated_at": 1787626885.9187286
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1774552037.997501,
+      "enabled": true,
+      "lat": 33.37673,
+      "lon": -118.42302,
+      "mute_audio": false,
+      "name": "Two Harbors Overlook, Catalina Island, 22 miles off the coast of Southern California, USA (YouTube)",
+      "original_yt_title": "Two Harbors Overlook powered by EXPLORE.org",
+      "page_url": "https://www.youtube.com/watch?v=2yx7RKxpyzQ",
+      "stream_type": "youtube",
+      "updated_at": 1787526679.1823828
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1774552112.4209096,
+      "enabled": true,
+      "lat": 33.43982,
+      "lon": -118.49966,
+      "mute_audio": false,
+      "name": "Two Harbors Bald Eagle Cam, Catalina Island, 22 miles off the coast of Southern California, USA (YouTube)",
+      "original_yt_title": "Two Harbors Bald Eagle Cam powered by EXPLORE.org",
+      "page_url": "https://www.youtube.com/watch?v=E5T2eHM8tcI",
+      "stream_type": "youtube",
+      "updated_at": 1787526753.4539146
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1758100528.354064,
+      "enabled": true,
+      "lat": 7.37804,
+      "lon": 124.84117,
+      "mute_audio": false,
+      "name": "Philippine Eagles Cam, Mount Apo, Mindanao, Philippines (YouTube)",
+      "original_yt_title": "Philippine Eagles Cam powered by EXPLORE.org",
+      "page_url": "https://www.youtube.com/watch?v=QoKy-rn66og",
+      "stream_type": "youtube",
+      "updated_at": 1787526823.802941
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1772650954.4164982,
+      "enabled": true,
+      "lat": -24.02363,
+      "lon": 30.74824,
+      "mute_audio": false,
+      "name": "Black Eagles, Selati Wilderness Foundation, Gravelotte, South Africa (YouTube)",
+      "original_yt_title": "LIVE Black Eagle Nest Cam: South Africa - Africam | explore.org 2026-05-01 22:53",
+      "page_url": "https://www.youtube.com/watch?v=_xhLV-TJpd8",
+      "stream_type": "youtube",
+      "updated_at": 1787526848.577015
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1776465586.1446579,
+      "enabled": true,
+      "lat": 43.98399,
+      "lon": -69.4192,
+      "mute_audio": false,
+      "name": "Osprey Nest, Audubon, Hog Island, Maine, USA (YouTube)",
+      "original_yt_title": "LIVE Audubon Boat House Osprey Nest | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=O6Ir_sMsTtc",
+      "stream_type": "youtube",
+      "updated_at": 1787626887.552027
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1774552232.0279872,
+      "enabled": true,
+      "lat": 33.99887,
+      "lon": -119.74183,
+      "mute_audio": false,
+      "name": "Sauces Bald Eagle Cam, Channel Islands National Park, California, USA (YouTube)",
+      "original_yt_title": "Sauces Bald Eagle - Channel Islands National Park Cams powered by EXPLORE.org",
+      "page_url": "https://www.youtube.com/watch?v=rnTsOesC6hE",
+      "stream_type": "youtube",
+      "updated_at": 1787526970.8534405
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1768259810.1666963,
+      "enabled": true,
+      "lat": 43.31182,
+      "lon": -91.77277,
+      "mute_audio": false,
+      "name": "Eagles Cam 1, Decorah, Iowa, USA (YouTube)",
+      "original_yt_title": "Decorah Eagles powered by EXPLORE.org 2026-04-17 22:18",
+      "page_url": "https://www.youtube.com/watch?v=IVmL3diwJuw",
+      "stream_type": "youtube",
+      "updated_at": 1787527061.8568928
+    },
+    {
+      "channel_name": "Explore Eagle Nest Cams",
+      "created_at": 1768254261.6108992,
+      "enabled": true,
+      "lat": 34.02145,
+      "lon": -119.78531,
+      "mute_audio": false,
+      "name": "Fraser Point Bald Eagle Nest 2, Santa Cruz Island, California, USA (YouTube)",
+      "original_yt_title": "Fraser Point Bald Eagle Nest 2 powered by EXPLORE.org",
+      "page_url": "https://www.youtube.com/watch?v=OY4V_AppZ6s",
+      "stream_type": "youtube",
+      "updated_at": 1787527116.6824489
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787617012.5369327,
+      "enabled": true,
+      "lat": 29.88239,
+      "lon": -81.28859,
+      "name": "LIVE California Condor Sanctuary - San Simeon California | explore.org",
+      "original_yt_title": "LIVE California Condor Sanctuary - San Simeon California | explore.org",
+      "page_url": "https://www.youtube.com/watch?v=1u6rKUrUot8",
+      "updated_at": 1787617012.536933
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787621335.4691129,
+      "enabled": true,
+      "lat": 47.44142,
+      "lon": -114.11435,
+      "mute_audio": false,
+      "name": "Ground Cam Night Wildlife - Michigan Backyard Feeder (Raccoons, Opossums, Night Visitors)",
+      "original_yt_title": "\ud83d\udd34 Ground Cam Night Wildlife - Michigan Backyard Feeder (Raccoons, Opossums, Night Visitors)",
+      "page_url": "https://www.youtube.com/watch?v=7jWjvq9I74I",
+      "stream_type": "youtube",
+      "updated_at": 1787621574.3470948
+    },
+    {
+      "channel_name": "Unknown Channel",
+      "created_at": 1787649923.046386,
+      "enabled": true,
+      "lat": 45.90388,
+      "lon": -68.92139,
+      "name": "Llyn Clywedog: 1 Osprey Nest\u2600\ufe0f25/08/26",
+      "original_yt_title": "Llyn Clywedog: 1 Osprey Nest\u2600\ufe0f25/08/26",
+      "page_url": "https://www.youtube.com/watch?v=7q_g9J0FMBM",
+      "updated_at": 1787649923.046386
+    },
+    {
+      "channel_name": "American Eagle Foundation",
+      "created_at": 1787651783.7864845,
+      "enabled": true,
+      "lat": 30.21591,
+      "lon": -81.83227,
+      "mute_audio": false,
+      "name": "NEFL Cam 4 - Live Bald Eagle Cam",
+      "original_yt_title": "NEFL Cam 4",
+      "page_url": "https://www.youtube.com/watch?v=OspeW5N_KQI",
+      "stream_type": "youtube",
+      "updated_at": 1787652660.4834635
+    },
+    {
+      "channel_name": "American Eagle Foundation",
+      "created_at": 1787651791.24227,
+      "enabled": true,
+      "lat": 30.21591,
+      "lon": -81.83227,
+      "mute_audio": false,
+      "name": "NEFL Cam 1 - Live Bald Eagle Cam",
+      "original_yt_title": "NEFL Cam 1 - Live Bald Eagle Cam",
+      "page_url": "https://www.youtube.com/watch?v=RXP7Puo6GWU",
+      "stream_type": "youtube",
+      "updated_at": 1787652647.9957347
+    },
+    {
+      "channel_name": "American Eagle Foundation",
+      "created_at": 1787651937.2450483,
+      "enabled": true,
+      "lat": 30.21591,
+      "lon": -81.83227,
+      "mute_audio": false,
+      "name": "NEFL Cam 3 - Live Bald Eagle Cam",
+      "original_yt_title": "NEFL Cam 4",
+      "page_url": "https://www.youtube.com/watch?v=pyZQ_txERtA",
+      "stream_type": "youtube",
+      "updated_at": 1787652633.3311114
+    },
+    {
+      "channel_name": "American Eagle Foundation",
+      "created_at": 1787652066.7894933,
+      "enabled": true,
+      "lat": 30.21591,
+      "lon": -81.83227,
+      "mute_audio": false,
+      "name": "NEFL Cam 2 - Live Bald Eagle Cam",
+      "original_yt_title": "NEFL Cam 4",
+      "page_url": "https://www.youtube.com/watch?v=s1IvO9iObEE",
+      "stream_type": "youtube",
+      "updated_at": 1787652617.3758564
+    },
+    {
+      "channel_name": "Charter Wildlife Cams",
+      "created_at": 1787673427.7342114,
+      "enabled": true,
+      "lat": 39.8382,
+      "lon": -6.07976,
+      "mute_audio": false,
+      "name": "Hula Nature Reserve Bird CAM 2|Israel Nature & Parks Auth.| Charter Group of Wildlife Eco",
+      "original_yt_title": "LIVE Hula Nature Reserve Bird CAM 2|Israel Nature & Parks Auth.| Charter Group of Wildlife Eco",
+      "page_url": "https://www.youtube.com/watch?v=SScdVCuSmPE",
+      "stream_type": "youtube",
+      "updated_at": 1787674266.4140098
+    },
+    {
+      "channel_name": "Charter Wildlife Cams",
+      "created_at": 1787673433.5944612,
+      "enabled": true,
+      "lat": 39.8382,
+      "lon": -6.07976,
+      "mute_audio": false,
+      "name": "Hula Nature Reserve Bird CAM 1|Israel Nature & Parks Auth.|Charter Group of Wildlife Ecol",
+      "original_yt_title": "LIVE Hula Nature Reserve Bird CAM 1|Israel Nature & Parks Auth.|Charter Group of Wildlife Ecol",
+      "page_url": "https://www.youtube.com/watch?v=vUZvvrJe9L0",
+      "stream_type": "youtube",
+      "updated_at": 1787674276.178381
+    },
+    {
+      "channel_name": "Charter Wildlife Cams",
+      "created_at": 1787673943.4887862,
+      "enabled": true,
+      "lat": 32.90565,
+      "lon": 35.74868,
+      "mute_audio": false,
+      "name": "Griffon Vulture Nest, Gamla Nature Reserve, Israel (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=XiEHlD9viro",
+      "stream_type": "youtube",
+      "updated_at": 1787674366.0640543
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787678611.0303395,
+      "enabled": true,
+      "lat": 43.40483,
+      "lon": -3.8273,
+      "mute_audio": false,
+      "name": "Marismas de Astillero Bird Reserve, Santander Bay, Cantabria, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=cYnWjX0Ou2M",
+      "stream_type": "youtube",
+      "updated_at": 1787678611.0303411
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787678796.946303,
+      "enabled": true,
+      "lat": 36.68164,
+      "lon": -6.13345,
+      "mute_audio": false,
+      "name": "Pallid Swift Cam, Jerez de la Frontera, Esclavas de Jerez, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=Qj5wu-a95yo",
+      "stream_type": "youtube",
+      "updated_at": 1787678796.946304
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787678943.7046924,
+      "enabled": true,
+      "lat": 40.65934,
+      "lon": 0.77441,
+      "mute_audio": false,
+      "name": "Bird Cam, Observation Point, Riet Vell Ornithological Reserve, Ebro Delta, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=3w8bVFJUztk",
+      "stream_type": "youtube",
+      "updated_at": 1787678943.7046936
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787679152.0014625,
+      "enabled": true,
+      "lat": 40.65926,
+      "lon": 0.77489,
+      "mute_audio": false,
+      "name": "Bird Cam, Riet Vell Ornithological Reserve, Ebro Delta, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=w-ewRv3SZMo",
+      "stream_type": "youtube",
+      "updated_at": 1787679152.0014634
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787679249.3985674,
+      "enabled": true,
+      "lat": 40.65926,
+      "lon": 0.77489,
+      "mute_audio": false,
+      "name": "Barn Owl Cam, Riet Vell Nature Reserve, Ebro Delta, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=ep0yoSXOHAM",
+      "stream_type": "youtube",
+      "updated_at": 1787679249.3985682
+    },
+    {
+      "channel_name": "SEOBirdLife",
+      "created_at": 1787679446.952637,
+      "enabled": true,
+      "lat": 43.47716,
+      "lon": -3.78934,
+      "mute_audio": false,
+      "name": "European Scops Owl Nest Cam, Santander, Cantabria, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=jjgQ8aHfPfA",
+      "stream_type": "youtube",
+      "updated_at": 1787679446.9526381
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787679576.365308,
+      "enabled": true,
+      "lat": 40.84892,
+      "lon": -3.94628,
+      "mute_audio": false,
+      "name": "Booted Eagle Cam, Sierra de Guadarrama National Park, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=s6DUKvSnLuA",
+      "stream_type": "youtube",
+      "updated_at": 1787679576.365309
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787679688.7512436,
+      "enabled": true,
+      "lat": 40.80323,
+      "lon": -3.90244,
+      "mute_audio": false,
+      "name": "Cinereous Vulture Cam, Sierra de Guadarrama National Park, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=Cf6FO2MiTvc",
+      "stream_type": "youtube",
+      "updated_at": 1787679688.7512448
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787679886.749332,
+      "enabled": true,
+      "lat": 40.66002,
+      "lon": 0.77398,
+      "mute_audio": false,
+      "name": "Barn Owls Cam, Interior, Riet Vell Nature Reserve, Ebro Delta, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=lNw388Ng0QQ",
+      "stream_type": "youtube",
+      "updated_at": 1787679886.7493324
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787679983.367585,
+      "enabled": true,
+      "lat": 39.13858,
+      "lon": -3.69669,
+      "mute_audio": false,
+      "name": "Bird Cam, Tablas de Daimiel National Park, Ciudad Real, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=vtIqnLS5cQU",
+      "stream_type": "youtube",
+      "updated_at": 1787679983.3675854
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787680087.028593,
+      "enabled": true,
+      "lat": 37.04256,
+      "lon": -6.43431,
+      "mute_audio": false,
+      "name": "Wildlife Cam, Do\u00f1ana National Park (marshland), Andalusia, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=RHeNpnJBeHI",
+      "stream_type": "youtube",
+      "updated_at": 1787680087.0285945
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787680201.1379642,
+      "enabled": true,
+      "lat": 41.50188,
+      "lon": -5.74548,
+      "mute_audio": false,
+      "name": "Peregrine Falcon Cam, Zamora, Castile and Le\u00f3n, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=rLeC8ZGMqm0",
+      "stream_type": "youtube",
+      "updated_at": 1787680201.137965
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787680314.1753304,
+      "enabled": true,
+      "lat": 41.08983,
+      "lon": -4.9948,
+      "mute_audio": false,
+      "name": "Stork's Nest No. 3, Madrigal de las Altas Torres, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=q2yn4ISHMJk",
+      "stream_type": "youtube",
+      "updated_at": 1787680314.1753316
+    },
+    {
+      "channel_name": "SEOBirdLife DIRECTO2",
+      "created_at": 1787680373.2893922,
+      "enabled": true,
+      "lat": 41.08983,
+      "lon": -4.9948,
+      "mute_audio": false,
+      "name": "Stork's Nest No. 1, Madrigal de las Altas Torres, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=ho4QuDQWxMU",
+      "stream_type": "youtube",
+      "updated_at": 1787680373.2893934
+    },
+    {
+      "channel_name": "Urdaibai Bird Center",
+      "created_at": 1787682671.1964765,
+      "enabled": true,
+      "lat": 43.39406,
+      "lon": -2.69264,
+      "mute_audio": false,
+      "name": "Wildlife Cam, Urdaibai Basque Country, Spain (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=OPR_vDx6dTY",
+      "stream_type": "youtube",
+      "updated_at": 1787682671.196478
     }
   ],
   "tiered_cooldowns": {
@@ -5387,13 +4881,13 @@
     "target_sidebar_capacity": 75,
     "group_feed_history": true,
     "max_grouping_age_mins": 60,
-    "group_time_gap_mins": 15,
+    "group_time_gap_mins": 20,
     "enable_bursts": true,
-    "burst_elasticity": 15,
-    "spiderify_radius": 0.01,
-    "burst_zoom_level": 13,
+    "burst_elasticity": 49,
+    "spiderify_radius": 0.07,
+    "burst_zoom_level": 10,
     "enable_swarms": true,
-    "swarm_max_distance_km": 750,
+    "swarm_max_distance_km": 1000,
     "swarm_bbox_padding": 1.5,
     "swarm_max_zoom": 6
   },
@@ -5414,140 +4908,140 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1025
+        "usage_count": 1212
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1024
+        "usage_count": 1220
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1049
+        "usage_count": 1243
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1028
+        "usage_count": 1215
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1005
+        "usage_count": 1198
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1039
+        "usage_count": 1228
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1033
+        "usage_count": 1218
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1053
+        "usage_count": 1242
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1040
+        "usage_count": 1224
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1058
+        "usage_count": 1243
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1029
+        "usage_count": 1211
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1009
+        "usage_count": 1193
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1021
+        "usage_count": 1216
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1020
+        "usage_count": 1214
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1026
+        "usage_count": 1211
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1026
+        "usage_count": 1217
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1016
+        "usage_count": 1214
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1046
+        "usage_count": 1230
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1028
+        "usage_count": 1233
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Paid",
-        "usage_count": 27346
+        "usage_count": 29867
       }
     ],
     "cycle_interval_seconds": 60,
@@ -5706,7 +5200,7 @@
       "https://www.youtube.com/watch?v=47dcM4M16Ic",
       "https://www.youtube.com/watch?v=BMQifTcOgts",
       "https://www.youtube.com/watch?v=zh5QHh9prA0",
-      "https://www.youtube.com/watch?v=bZish-38Bbs",
+      "https://www.youtube.com/watch?v=7uYC9ciShOw",
       "https://www.youtube.com/watch?v=S46DdA8Mc4I",
       "https://www.youtube.com/watch?v=MrLVxFR1IbI",
       "https://www.youtube.com/watch?v=gdrNUUf-cQw",
@@ -5891,7 +5385,7 @@
       "https://www.youtube.com/watch?v=tvSzsBStkzQ",
       "https://www.youtube.com/watch?v=69Ynsk258aU",
       "https://www.youtube.com/watch?v=7nUjsBV3ZgM",
-      "https://www.youtube.com/watch?v=1P2IKTcgw6c",
+      "https://www.youtube.com/watch?v=Iu6kH-Dd2Vc",
       "https://www.youtube.com/watch?v=rlt81BfVXi4",
       "https://www.youtube.com/watch?v=FbbHB9ka8Yg",
       "https://www.youtube.com/watch?v=h2GA3zrYeA0",
@@ -6230,7 +5724,37 @@
       "https://www.youtube.com/watch?v=g7x9Baza-aM",
       "https://www.youtube.com/watch?v=YaqRZtYAcGQ",
       "https://www.youtube.com/watch?v=KKjQBAehYzk",
-      "https://www.youtube.com/watch?v=XeeGsmWZW7g"
+      "https://www.youtube.com/watch?v=XeeGsmWZW7g",
+      "https://www.youtube.com/watch?v=O6uaw8TV19U",
+      "https://www.youtube.com/watch?v=Iu6kH-Dd2Vc",
+      "https://www.youtube.com/watch?v=m4cAV-_7YpY",
+      "https://www.youtube.com/watch?v=Njur5IV7icE",
+      "https://www.youtube.com/watch?v=5dhmXmUD1ZE",
+      "https://www.youtube.com/watch?v=-rXriX4SiQk",
+      "https://www.youtube.com/watch?v=BaEFc79IMCA",
+      "https://www.youtube.com/watch?v=jH3e5w4BWGA",
+      "https://www.youtube.com/watch?v=WOO-v-cxdSs",
+      "https://www.youtube.com/watch?v=k2pDwJKUeE4",
+      "https://www.youtube.com/watch?v=6d6yK8f6qxs&variant=1787429069",
+      "https://www.youtube.com/watch?v=KSbpEHC_9bE",
+      "https://www.youtube.com/watch?v=pyZQ_txERtA",
+      "https://www.youtube.com/watch?v=s1IvO9iObEE",
+      "https://www.youtube.com/watch?v=XiEHlD9viro",
+      "https://www.youtube.com/watch?v=cYnWjX0Ou2M",
+      "https://www.youtube.com/watch?v=Qj5wu-a95yo",
+      "https://www.youtube.com/watch?v=3w8bVFJUztk",
+      "https://www.youtube.com/watch?v=w-ewRv3SZMo",
+      "https://www.youtube.com/watch?v=ep0yoSXOHAM",
+      "https://www.youtube.com/watch?v=jjgQ8aHfPfA",
+      "https://www.youtube.com/watch?v=s6DUKvSnLuA",
+      "https://www.youtube.com/watch?v=Cf6FO2MiTvc",
+      "https://www.youtube.com/watch?v=lNw388Ng0QQ",
+      "https://www.youtube.com/watch?v=vtIqnLS5cQU",
+      "https://www.youtube.com/watch?v=RHeNpnJBeHI",
+      "https://www.youtube.com/watch?v=rLeC8ZGMqm0",
+      "https://www.youtube.com/watch?v=q2yn4ISHMJk",
+      "https://www.youtube.com/watch?v=ho4QuDQWxMU",
+      "https://www.youtube.com/watch?v=OPR_vDx6dTY"
     ],
     "auto_sweep_vault_hours": 24,
     "ai_temperature": 0.15,
@@ -6246,7 +5770,7 @@
     "min_depth_flock": "Background",
     "vision_resolution": "1080p",
     "strict_proxy": true,
-    "vision_workers": 2,
+    "vision_workers": 1,
     "predator_reflex_threshold": 35,
     "telegram_alerts": {
       "enabled": true,
@@ -6272,7 +5796,6 @@
     "Sun Prairie Farms | Ozarks Live Bird Cam": "https://www.youtube.com/channel/UC6ut-iMQD37vWRHzlqJKuEg",
     "Cornish Wildlife Watch": "https://www.youtube.com/channel/UC4uK_QRR1OCJH5yYxiz9CCA",
     "PixCams": "https://www.youtube.com/channel/UC5lMzpZvCLpwyvu348B8zYw",
-    "Charter Group Birdcams": "https://www.youtube.com/channel/UCzbydNAcB7jeJGssRFb_dCA",
     "NatureTec": "https://www.youtube.com/channel/UC-HQ-oPvL148RmDxpV4jzlQ",
     "Canadian Bird Nerd": "https://www.youtube.com/channel/UCTSERkvlHx8moI1ggjvcZwg",
     "Alyssa's Nature Sanctuary": "https://www.youtube.com/channel/UCkirg3K9o212uh5BEt100NQ",
@@ -6292,7 +5815,6 @@
     "Devon Wildlife Trust": "https://www.youtube.com/channel/UCFBLgN9dJFwU9qF_Ju8QAAg",
     "chiricahuamountains": "https://www.youtube.com/channel/UCdYF7aURsAAhTjYHovDxQEg",
     "Nature Live Camera": "https://www.youtube.com/channel/UCRPhYF9rd5ov7DNKj99MNIg",
-    "Explore Bears & Bison": "https://www.youtube.com/channel/UC2Sk0aXLq3ADkH_USGPKT_Q",
     "Explore Africa": "https://www.youtube.com/channel/UCiGOIXjFqy5_mUNxQNOMfHw",
     "Cornell Lab Bird Cams": "https://www.youtube.com/channel/UCZXZQxS3d6NpR-eH_gdDwYA",
     "FalconCam Project": "https://www.youtube.com/channel/UCNMulUCdUibAMPnaR1e0kEw",
@@ -6330,7 +5852,6 @@
     "Deer Creek Wildlife Cam": "https://www.youtube.com/channel/UCP0kE61hponI9np6u4_1YlQ",
     "Midaway Atoll NWR WildLife Live Camera": "https://www.youtube.com/channel/UCgDSg8kDhdOO3xwAJ_svtaA",
     "Crow's Nest Live Cams": "https://www.youtube.com/channel/UC9THKyF-k-CYReVjc4rGDSQ",
-    "Live Whale Walruse & Seal Cams": "https://www.youtube.com/channel/UC5RV1g0fRYXfrt75hqvohKw",
     "iPanda": "https://www.youtube.com/channel/UCtEgLf0_j1vJLz0aNEdO2SQ",
     "Live Panda and Polar Bear Cams": "https://www.youtube.com/channel/UCQI1rdPytw4jDAjwqXVSgfA",
     "Royal Free Charity": "https://www.youtube.com/channel/UCdSAAfUXk0_wHAlHlJgFLgg",
@@ -6356,10 +5877,9 @@
     "Unknown Channel": "https://www.youtube.com/channel/UCKqAJfYEVCPLbdgOm8QqSQg",
     "Destin-Fort Walton Beach": "https://www.youtube.com/@DestinFortWaltonBeach",
     "Explore Gorilla & Bonobo Cams: Great Apes": null,
-    "Explore Manatee, River & Wetland Bird Cams": null,
+    "Explore Manatee, River & Wetland Bird Cams": "https://youtube.com/@exploremanateesandrivers",
     "Explore Hummingbird & Bird Migration Cams": null,
-    "Explore Eagle Nest Cams": "https://www.youtube.com/channel/UCiGOIXjFqy5_mUNxQNOMfHw",
-    "Explore Bee Hive & Backyard Cams": null,
+    "Explore Bee Hive & Backyard Cams": "https://youtube.com/@explorebackyardwildlife",
     "Texas Backyard Wildlife": null,
     "RoseCityTrails": "https://www.youtube.com/@RoseCityTrails",
     "Explore African Wildlife": "https://www.youtube.com/channel/UCMfjW-9aZnsR-Rq-Ngo4CpQ",
@@ -6370,7 +5890,6 @@
     "Steve Beckwith Outdoors - Maine Outback": null,
     "Methow Valley Wildlife Cam": null,
     "Explore Northern Lights & Nature Meditation Cams": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
-    "Charter Group Birdcams \u05e6\u05d9\u05e4\u05d5\u05e8\u05d9\u05dd \u05d0\u05d5\u05e0\u05dc\u05d9\u05d9\u05df \u05e7\u05d1\u05d5\u05e6\u05ea \u05e6'\u05e8\u05d8\u05e8": "https://www.youtube.com/channel/UCzbydNAcB7jeJGssRFb_dCA",
     "HANS NATURE CHANNEL": "https://www.youtube.com/channel/UCyC-ZovqS5MD-A9Iz0f8RAw",
     "Explore Big Surf, Beaches and Sunsets": null,
     "Backyard Birding": "https://www.youtube.com/@Backyard-Birding",
@@ -6381,10 +5900,15 @@
     "Newfields": null,
     "Wildlife Rescue of Dade County": null,
     "Steve Wildlife": null,
-    "Explore Owl Nests & California Condors": null,
+    "Explore Owl Nests & California Condors": "https://www.youtube.com/@ExploreOwlsandCondors",
     "Andy's Birds": "https://www.youtube.com/@andysbirds",
     "JJ's Jungle \u2013 Live National Forest Wildlife Cams": "https://www.youtube.com/@jjsjungle69",
-    "North Carolina Bird Cam": null
+    "North Carolina Bird Cam": null,
+    "Explore Bears": "https://www.youtube.com/channel/UC2Sk0aXLq3ADkH_USGPKT_Q",
+    "Explore Eagle Nest Cams": "https://youtube.com/@explorebirds",
+    "CarnyxWild": "https://youtube.com/@carnyxwild",
+    "Explore Wolf & Bison Cams: North American Wildlife": "https://youtube.com/@explorewolvesandbison",
+    "Charter Group Birdcams": "https://www.youtube.com/channel/UCzbydNAcB7jeJGssRFb_dCA"
   },
   "sync_engine_settings": {
     "auto_heal_enabled": true,
@@ -6535,14 +6059,23 @@
       "https://www.youtube.com/watch?v=WLSkgf-dvOI": "PixCams.com Migration Thermal Camera",
       "https://www.youtube.com/watch?v=wpv1SaJbNrk": "\ud83d\udc26 LIVE: Koolmezen NU aan het Bouwen! Nieuwe Nestkast | Lente 2026",
       "https://www.youtube.com/watch?v=i-8AuGHdEoI": "Inside a Bird Box: A Songbird Builds Its Nest - 24/7 LIVE \ud83d\udd34 by Morten Hilmer",
-      "https://www.youtube.com/watch?v=uxzRXhKshow": "USS Bald Eagle Cam 3"
+      "https://www.youtube.com/watch?v=uxzRXhKshow": "USS Bald Eagle Cam 3",
+      "https://www.youtube.com/watch?v=Cq2qCph6Lx8": "Rosie's Pan | Wildlife Live Stream \u2013 Greater Kruger National Park",
+      "https://www.youtube.com/watch?v=ACc7IkdOF-Y": "Mara River LIVE: Fig Tree Crossing Wildebeest Migration Cam",
+      "https://www.youtube.com/watch?v=jH3e5w4BWGA": "LIVE from the Zambezi River | Tembo Plains Safari Cam",
+      "https://www.youtube.com/watch?v=eTZ6ZgI8oG0": "Kruger Shalati \u2013\u00a0Shalati Sunrise",
+      "https://www.youtube.com/watch?v=B5I8GchAu5U": "New Arrival, Meet Mojo! - Kentucky Equine Adoption Center | explore.org",
+      "https://www.youtube.com/watch?v=mfm9cjg6Khw": "LIVE Naknek River Cam - Katmai National Park | explore.org",
+      "https://www.youtube.com/watch?v=cgPcnSJ24Hg": "LIVE Redwood River - Relaxing Forest Background | explore.org",
+      "https://www.youtube.com/watch?v=h8h8tFnpLj4": "LIVE Bison Cam: Watering Hole \u2013 Grasslands National Park | explore.org",
+      "https://www.youtube.com/watch?v=0EzOqlpwcwo": "6 Live Birdcams | One Stream \u2022 Real Wildlife 24/7 \u2013 Charter Group Birdcams"
     }
   },
   "hydra_pid_settings": {
     "ema_alpha": 0.3,
     "soft_lockout_pct": 90,
     "global_brake_pct": 95,
-    "throttling_enabled": false
+    "throttling_enabled": true
   },
   "ignored_channels": []
 }

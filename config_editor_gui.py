@@ -1,7 +1,7 @@
 # FILE: config_editor_gui.py
-# VERSION: 13.2 - "The Black Screen Fix"
+# VERSION: 13.6 - "The Inline Queue Restoration (Typo Fix)"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Injected Nuclear GPU Disable flags to prevent PyQt6 hardware acceleration black screens on Windows 11.
+# UPDATED: Fixed a signal connection typo on the open_url_button.
 
 import sys
 
@@ -216,6 +216,53 @@ class ChannelSyncWorker(QThread):
 # DIALOGS
 # ==============================================================================
 
+class ReviewPromptDialog(QDialog):
+    def __init__(self, channel_name, proposals, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Review Stream Updates")
+        self.resize(650, 450)
+        layout = QVBoxLayout(self)
+        
+        header = QLabel(f"<h2 style='color:#00E5FF; margin-bottom: 2px;'>Updates Found for '{channel_name}'</h2>")
+        layout.addWidget(header)
+        
+        info = QLabel(f"The scanner found <b>{len(proposals)}</b> updates/streams for this channel. They have been sorted by the AI's confidence score. Would you like to review them now in the Resolution Wizard?")
+        info.setWordWrap(True)
+        layout.addWidget(info)
+        
+        self.text_area = QTextEdit()
+        self.text_area.setReadOnly(True)
+        self.text_area.setStyleSheet("background-color: #1e1e1e; color: #ddd; font-size: 13px; padding: 10px; border: 1px solid #444;")
+        
+        html = "<ol>"
+        for p in proposals:
+            name = p.get('friendly_name', 'Unknown Stream')
+            desc = p.get('case_desc', 'Unknown Issue')
+            conf = p.get('confidence', 0.0) * 100.0
+            
+            color = "#00E676" if conf >= 85 else "#FFB74D" if conf > 0 else "#aaa"
+            conf_str = f"<span style='color: {color};'><b>{conf:.1f}% Match</b></span>" if conf > 0 else "<i>N/A</i>"
+            
+            html += f"<li style='margin-bottom: 8px;'><b style='color:#fff;'>{name}</b><br><span style='color:#aaa;'>Issue:</span> {desc}<br><span style='color:#aaa;'>Confidence:</span> {conf_str}</li>"
+        html += "</ol>"
+        
+        self.text_area.setHtml(html)
+        layout.addWidget(self.text_area)
+        
+        btn_layout = QHBoxLayout()
+        self.btn_no = QPushButton("No, Review Later")
+        self.btn_no.clicked.connect(self.reject)
+        
+        self.btn_yes = QPushButton("Yes, Start Wizard")
+        self.btn_yes.setStyleSheet("background-color: #4CAF50; color: white; font-weight: bold; padding: 8px 15px;")
+        self.btn_yes.clicked.connect(self.accept)
+        
+        btn_layout.addStretch()
+        btn_layout.addWidget(self.btn_no)
+        btn_layout.addWidget(self.btn_yes)
+        layout.addLayout(btn_layout)
+
+
 class ChannelManagerDialog(QDialog):
     def __init__(self, editor_ref, parent=None):
         super().__init__(parent)
@@ -356,8 +403,7 @@ class ChannelManagerDialog(QDialog):
             
             btn_scan = QPushButton("▶ Force Scan")
             btn_scan.setStyleSheet("background-color: #00897B; color: white;")
-            btn_scan.clicked.connect(lambda chk, u=url, n=cn: self.force_scan(n, u))
-            if not url: btn_scan.setEnabled(False)
+            btn_scan.clicked.connect(self.force_scan)
             
             btn_rename = QPushButton("✏️ Rename")
             btn_rename.clicked.connect(lambda chk, old_cn=cn: self.rename_channel(old_cn))
@@ -383,17 +429,73 @@ class ChannelManagerDialog(QDialog):
         self.table.blockSignals(False)
         self.filter_table()
 
-    def force_scan(self, channel_name, url):
-        if not url:
-            QMessageBox.warning(self, "No URL", "Please save a URL for this channel first.")
+    def force_scan(self):
+        btn = self.sender()
+        row = -1
+        for i in range(self.table.rowCount()):
+            widget = self.table.cellWidget(i, 5)
+            if widget and (widget == btn or widget.isAncestorOf(btn)):
+                row = i
+                break
+                
+        if row == -1: return
+
+        # Dynamically fetch the latest URL from the exact cell the user is looking at
+        url_item = self.table.item(row, 4)
+        latest_url = url_item.text().strip() if url_item else ""
+        
+        # Dynamically fetch the channel name from the exact cell
+        name_item = self.table.item(row, 0)
+        channel_name = name_item.text() if name_item else "Unknown Channel"
+        
+        # Store for _on_scan_finished to use in the Review Dialog
+        self.last_scanned_channel_name = channel_name
+        
+        # Strip accidental double-pastes and tracking params
+        latest_url = latest_url.split('\n')[0].replace('\r', '').strip()
+        if latest_url.count("http") > 1:
+            parts = latest_url.split("http")
+            latest_url = "http" + parts[1]
+        latest_url = latest_url.split('?si=')[0]
+        
+        if not latest_url:
+            QMessageBox.warning(self, "No URL", "Please enter a valid URL for this channel first.")
             return
             
-        self.progress_dialog = QProgressDialog(f"Scanning {channel_name}...", "Cancel", 0, 100, self)
+        # Visually clean the cell for the user
+        if url_item:
+            self.table.blockSignals(True)
+            url_item.setText(latest_url)
+            self.table.blockSignals(False)
+            
+        # Update the memory state so it doesn't disappear on close
+        self.editor_ref.unsaved_channels[channel_name] = latest_url
+        self.editor_ref._check_and_update_dirty_state()
+            
+        for attempt in range(5):
+            try:
+                if CONFIG_FILE.exists():
+                    cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                    if 'channels' not in cfg:
+                        cfg['channels'] = {}
+                    cfg['channels'][channel_name] = latest_url
+                    tmp_file = CONFIG_FILE.with_suffix('.tmp')
+                    with open(tmp_file, 'w', encoding='utf-8') as f:
+                        json.dump(cfg, f, indent=2)
+                    os.replace(tmp_file, CONFIG_FILE)
+                break
+            except Exception as e:
+                if attempt == 4:
+                    logging.warning(f"Failed to quick-save channel URL for scan after 5 attempts: {e}")
+                else:
+                    time.sleep(0.2)
+            
+        self.progress_dialog = QProgressDialog(f"Surgically Scanning '{channel_name}'...", "Cancel", 0, 100, self)
         self.progress_dialog.setWindowTitle("Surgical Force Scan")
         self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
         self.progress_dialog.setAutoClose(True)
         
-        self.scan_worker = ChannelSyncWorker(url)
+        self.scan_worker = ChannelSyncWorker(latest_url)
         self.scan_worker.progress_update.connect(self._update_scan_progress)
         self.scan_worker.finished.connect(self._on_scan_finished)
         self.scan_worker.start()
@@ -410,20 +512,63 @@ class ChannelManagerDialog(QDialog):
     def _on_scan_finished(self, proposals):
         self.progress_dialog.accept()
         try:
-            existing =[]
+            existing = []
             if SYNC_PROPOSALS_FILE.exists():
                 existing = json.loads(SYNC_PROPOSALS_FILE.read_text(encoding='utf-8'))
             
             target_url = self.scan_worker.target_url
-            filtered =[p for p in existing if p.get('old_channel') != target_url and p.get('new_channel') != target_url]
+            filtered = [p for p in existing if p.get('old_channel') != target_url and p.get('new_channel') != target_url]
             filtered.extend(proposals)
             
             SYNC_PROPOSALS_FILE.write_text(json.dumps(filtered, indent=2), encoding='utf-8')
             
-            QMessageBox.information(self, "Scan Complete", f"Force Scan completed.\nFound {len(proposals)} updates/streams for this channel.\n\nPlease open the Discovery Hub to review them.")
+            if not proposals:
+                QMessageBox.information(self, "Scan Complete", "Force Scan completed.\nNo new updates or streams found for this channel.")
+                self.populate_table()
+                return
+
+            # Sort proposals by confidence (Highest to Lowest)
+            proposals.sort(key=lambda x: x.get('confidence', 0.0), reverse=True)
+
+            c_name = getattr(self, 'last_scanned_channel_name', 'Unknown Channel')
+            dialog = ReviewPromptDialog(c_name, proposals, self)
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                self._process_inline_queue(proposals)
+                
             self.populate_table() 
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to save proposals: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to process scan results: {e}")
+
+    def _process_inline_queue(self, proposals):
+        try:
+            import stream_discovery_gui
+        except ImportError:
+            QMessageBox.critical(self, "Error", "stream_discovery_gui.py not found. Please open the Discovery Hub manually.")
+            return
+
+        # Instantiate a headless hub to reuse its processing methods safely
+        hub = stream_discovery_gui.StreamDiscoveryHub(editor_ref=self.editor_ref)
+        
+        for p in proposals:
+            dialog = stream_discovery_gui.DiffViewerDialog(p, self)
+            if dialog.exec():
+                action = getattr(dialog, 'result_action', 'cancel')
+                
+                if action in ('discard', 'discard_next', 'ignore'):
+                    if action == 'ignore':
+                        hub.bulk_reject_and_ignore([p], skip_confirm=True)
+                    else:
+                        hub._remove_proposal(p)
+                        
+                    if action in ('discard', 'ignore'):
+                        break
+                        
+                elif action in ('accept', 'accept_next'):
+                    hub.execute_sync_proposal(p, dialog)
+                    if action == 'accept':
+                        break
+            else:
+                break # User hit Cancel or 'X' (Keep in Queue and Exit Loop)
 
     def rename_channel(self, old_name):
         new_name, ok = QInputDialog.getText(self, "Rename Channel", f"Enter new name for '{old_name}':", text=old_name)

@@ -1,7 +1,7 @@
 # FILE: stream_discovery_gui.py
-# VERSION: 14.15 - "The Orphaned Proposal Cleanup Patch"
+# VERSION: 14.17 - "The Mother Channel Fallback Patch"
 # RESPONSIBILITY: Triage Ward, Graveyard, Discovery Radar, and the Unified Lifecycle & Sync Engine.
-# UPDATED: Fixed a crash where accepting a proposal for a stream that was already deleted/modified in the main Config Editor caused a hard error. The system now detects the missing stream, informs the user, and safely deletes the obsolete proposal from the queue without crashing.
+# UPDATED: Fixed a bug where new_channel_name defaulted to "Unknown Channel" instead of inheriting the known Mother Channel. Injected plain English issue descriptions into the DiffViewer header.
 
 import sys
 import json
@@ -20,7 +20,7 @@ from PyQt6.QtWidgets import (QApplication, QDialog, QVBoxLayout, QHBoxLayout,
                              QLabel, QPushButton, QTableWidget, QTableWidgetItem, 
                              QHeaderView, QLineEdit, QTabWidget, QWidget, QProgressBar, QProgressDialog,
                              QMessageBox, QFormLayout, QAbstractItemView, QDialogButtonBox,
-                             QCheckBox, QGroupBox, QSizePolicy, QInputDialog, QTreeWidget, QTreeWidgetItem, QSplitter, QComboBox, QSpinBox, QListWidget, QListWidgetItem, QTextEdit, QMenu, QCompleter, QToolButton)
+                             QCheckBox, QGroupBox, QSizePolicy, QInputDialog, QTreeWidget, QTreeWidgetItem, QSplitter, QComboBox, QSpinBox, QListWidget, QListWidgetItem, QTextEdit, QMenu, QCompleter, QToolButton, QScrollArea)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt6.QtGui import QColor, QBrush, QFont, QColorConstants, QAction
 
@@ -459,17 +459,28 @@ class DiffViewerDialog(QDialog):
         self.needs_resolution = False # <--- GUARDRAIL FLAG
         
         case_id = proposal['case']
-        self.setWindowTitle(f"Resolution Center: Case {case_id} ({proposal['case_desc']})")
+        self.setWindowTitle(f"Resolution Center: Case {case_id} ({proposal.get('case_desc', 'Unknown')})")
         self.resize(950, 650)
-        self.layout = QVBoxLayout(self)
+        
+        # --- THE SCROLL AREA PATCH ---
+        self.main_layout = QVBoxLayout(self)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QAbstractItemView.Shape.NoFrame)
+        
+        self.content_widget = QWidget()
+        self.layout = QVBoxLayout(self.content_widget)
 
         is_auto = proposal.get('auto_heal_eligible', False)
         heal_icon = "⚡" if is_auto else "✋"
 
-        header = QLabel(f"<h2 style='margin-bottom: 5px;'>{heal_icon} {proposal['friendly_name']}</h2>")
+        header = QLabel(f"<h2 style='margin-bottom: 5px;'>{heal_icon} {proposal.get('friendly_name', 'Unknown Stream')}</h2>")
         self.layout.addWidget(header)
         
-        info = QLabel("Review the changes below. The system has highlighted the differences. You can test the URLs before confirming.<br>"
+        # --- THE PLAIN ENGLISH ISSUE INJECTION PATCH ---
+        case_desc = proposal.get('case_desc', 'Unknown Issue')
+        info = QLabel(f"<b>Issue Detected:</b> <span style='color: #00E5FF;'>{case_desc}</span><br><br>"
+                      "Review the changes below. The system has highlighted the differences. You can test the URLs before confirming.<br>"
                       "<span style='color: #FFB74D;'><b>Note: Your Friendly Map Name will NOT be changed by this operation.</b></span>")
         info.setStyleSheet("color: #aaa; margin-bottom: 10px;")
         self.layout.addWidget(info)
@@ -493,7 +504,8 @@ class DiffViewerDialog(QDialog):
             orig_desc = self.proposal.get('description', '')
             self.text_orig_desc = QTextEdit(orig_desc if orig_desc else "No description available in payload.")
             self.text_orig_desc.setReadOnly(True)
-            self.text_orig_desc.setMaximumHeight(60)
+            self.text_orig_desc.setMinimumHeight(40)
+            self.text_orig_desc.setMaximumHeight(80) # Bound to prevent screen stretching
             self.text_orig_desc.setStyleSheet("color: #ccc; font-style: italic; font-size: 11px;")
             n_lay.addRow("Original Desc:", self.text_orig_desc)
             
@@ -508,7 +520,8 @@ class DiffViewerDialog(QDialog):
             
             self.text_trans_desc = QTextEdit("Translating...")
             self.text_trans_desc.setReadOnly(True)
-            self.text_trans_desc.setMaximumHeight(80)
+            self.text_trans_desc.setMinimumHeight(60)
+            self.text_trans_desc.setMaximumHeight(150) # Bound to prevent screen stretching
             self.text_trans_desc.setStyleSheet("color: #00E676;")
             n_lay.addRow("Translated Desc:", self.text_trans_desc)
             
@@ -659,8 +672,9 @@ class DiffViewerDialog(QDialog):
             old_title_html, new_title_html = generate_diff_html(self.proposal.get('old_title'), self.proposal.get('new_title'), mode='word')
             old_url_html, new_url_html = generate_diff_html(self.proposal.get('old_url'), self.proposal.get('new_url'), mode='char')
             
-            old_cname_raw = self.proposal.get('old_channel_name') or "Unknown Channel"
-            new_cname_raw = self.proposal.get('new_channel_name') or old_cname_raw
+            old_cname_raw = self.proposal.get('old_channel_name')
+            if not old_cname_raw or old_cname_raw == "Unknown Channel":
+                old_cname_raw = "Unknown Channel"
             
             if CONFIG_FILE.exists():
                 try:
@@ -674,6 +688,11 @@ class DiffViewerDialog(QDialog):
                             break
                 except Exception as e:
                     logging.error(f"Failed live config lookup in Diff Viewer: {e}")
+                    
+            # --- THE MOTHER CHANNEL FALLBACK PATCH ---
+            new_cname_raw = self.proposal.get('new_channel_name')
+            if not new_cname_raw or new_cname_raw == "Unknown Channel":
+                new_cname_raw = old_cname_raw
                     
             old_chan_html, new_chan_html = generate_diff_html(old_cname_raw, new_cname_raw, mode='word')
 
@@ -780,6 +799,10 @@ class DiffViewerDialog(QDialog):
             split.addWidget(new_group)
             self.layout.addLayout(split)
         
+        # --- ASSEMBLE SCROLL AREA ---
+        self.scroll_area.setWidget(self.content_widget)
+        self.main_layout.addWidget(self.scroll_area)
+        
         btn_lay = QHBoxLayout()
         
         self.btn_cancel = QPushButton("Cancel (Keep in Queue)")
@@ -825,8 +848,8 @@ class DiffViewerDialog(QDialog):
         btn_lay.addWidget(self.btn_accept)
         btn_lay.addWidget(self.btn_accept_next)
         
-        self.layout.addSpacing(15)
-        self.layout.addLayout(btn_lay)
+        self.main_layout.addSpacing(15)
+        self.main_layout.addLayout(btn_lay)
 
     def set_needs_resolution(self):
         self.needs_resolution = True
@@ -952,7 +975,7 @@ class DiffViewerDialog(QDialog):
             self.text_trans_desc.setPlainText("N/A")
         else:
             lang = result.get('language', 'Unknown')
-            t_title = result.get('translated_title', '')
+            t_title = result.get('translated_title', '').replace('\n', ' ').replace('\r', '').strip()
             t_desc = result.get('translated_description', '')
             orig_desc = result.get('original_description', '')
             
@@ -2246,7 +2269,7 @@ class StreamDiscoveryHub(QDialog):
             
             parent = QTreeWidgetItem(self.tree_sync)
             
-            # --- THE CONTEXTUAL COUNTS PATCH (ANGLE D) WITH ACCURATE MATH ---
+            # --- THE CONTEXTUAL COUNTS PATCH (ANGLE D) ---
             c_url = items[0].get('new_channel') or items[0].get('old_channel')
             live_cnt = items[0].get('channel_live_count', '?') if items else '?'
             
@@ -2363,15 +2386,11 @@ class StreamDiscoveryHub(QDialog):
                     QTimer.singleShot(100, lambda: self.open_diff_viewer(next_proposal))
 
     def _remove_proposal(self, proposal):
-        # The proposal dict might have been mutated (case changed to M, new_url updated, etc.)
-        # So we match based on the core identity: friendly_name and either old_url or new_url.
         target_name = proposal.get('friendly_name')
         
         filtered_list = []
         for p in self.state['sync_proposals']:
-            # If it's the exact same stream name and represents the same original issue
             if p.get('friendly_name') == target_name:
-                # If old_url matches, or if neither have old_url (Case N) and new_url matches
                 if p.get('old_url') and p.get('old_url') == proposal.get('old_url'):
                     continue
                 if not p.get('old_url') and p.get('new_url') == proposal.get('new_url'):
@@ -2404,7 +2423,6 @@ class StreamDiscoveryHub(QDialog):
                         break
                         
                 if not target_stream:
-                    # NEW LOGIC: Graceful Orphaned Proposal handling
                     QMessageBox.warning(self, "Obsolete Proposal", "This stream could not be found in your active configuration.\n\nIt was likely already deleted or its URL was changed manually in the main window.\n\nThis obsolete proposal will now be removed from the queue.")
                     self._remove_proposal(proposal)
                     self.load_maintenance_data()
@@ -2429,7 +2447,6 @@ class StreamDiscoveryHub(QDialog):
                 if 'stream_type' in proposal:
                     target_stream['stream_type'] = proposal['stream_type']
                 
-                # --- CASE R GRAVEYARD RENAME STRIP ---
                 if case_id == "R":
                     target_stream['name'] = re.sub(r'\s*\[.*?\]', '', target_stream['name'])
                     

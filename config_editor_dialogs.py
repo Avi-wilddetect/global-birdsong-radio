@@ -1,8 +1,9 @@
 # FILE: config_editor_dialogs.py
-# VERSION: 13.2 - "The Advanced Split Patch"
+# VERSION: 13.9 - "The Inline Review Queue Restoration"
 # RESPONSIBILITY: Houses the Core Engine, Cooldowns, and Save Confirm dialogs.
 # AdvancedSettingsDialog has been migrated to config_editor_advanced_gui.py.
 # System and Housekeeping dialogs have been safely migrated to config_editor_sys_dialogs.py.
+# UPDATED: Force Scan now correctly asks the user to review the queue inline, popping up the DiffViewerDialog sequentially without leaving the Channel Manager.
 
 import sys
 import copy
@@ -13,15 +14,16 @@ import json
 import os
 import psutil
 from pathlib import Path
+import time
 
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QPushButton, 
                              QMessageBox, QGroupBox, QCheckBox, QSpinBox, QLabel, 
                              QWidget, QFormLayout, QLineEdit, QDialogButtonBox, 
                              QTableWidget, QTableWidgetItem, QHeaderView, QGridLayout, 
                              QComboBox, QFileDialog, QInputDialog, QApplication, 
-                             QTabWidget, QSlider, QDoubleSpinBox)
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+                             QTabWidget, QSlider, QDoubleSpinBox, QProgressDialog)
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtGui import QColor, QBrush, QPalette
 
 # Import utils and network manager
 from config_editor_utils import ChromeMaintenance
@@ -32,7 +34,43 @@ import db_connector
 ROOT = Path(__file__).resolve().parent
 DATABASE_PATH = ROOT / "detections.db"
 CONFIG_FILE = ROOT / "birdnet_config.json"
+SYNC_PROPOSALS_FILE = ROOT / "sync_proposals.json"
 
+
+# ==============================================================================
+# WORKER THREADS
+# ==============================================================================
+
+try:
+    import yt_sync_engine
+except ImportError:
+    yt_sync_engine = None
+
+class ChannelSyncWorker(QThread):
+    progress_update = pyqtSignal(int, int, str)
+    finished = pyqtSignal(list)
+    
+    def __init__(self, target_url):
+        super().__init__()
+        self.target_url = target_url
+        
+    def run(self):
+        try:
+            if yt_sync_engine:
+                engine = yt_sync_engine.YouTubeSyncEngine()
+                def cb(c, t, m): self.progress_update.emit(c, t, m)
+                engine.run_sync(progress_callback=cb, target_channels=[self.target_url])
+                self.finished.emit(engine.proposals)
+            else:
+                self.finished.emit([])
+        except Exception as e:
+            logging.error(f"ChannelSyncWorker Error: {e}")
+            self.finished.emit([])
+
+
+# ==============================================================================
+# DIALOGS
+# ==============================================================================
 
 class SaveConfirmDialog(QDialog):
     def __init__(self, changes, widths=None, parent=None):
@@ -774,3 +812,385 @@ class EngineConfigDialog(QDialog):
             if val: new_map[lid] = val
             
         return new_conf, new_listeners, new_loop, new_map
+
+
+class ChannelManagerDialog(QDialog):
+    def __init__(self, editor_ref, parent=None):
+        super().__init__(parent)
+        self.editor_ref = editor_ref
+        self.setWindowTitle("Global Channel Manager & Surgical Scanner")
+        self.resize(1100, 500)
+        self.layout = QVBoxLayout(self)
+        
+        info = QLabel("<b>Click a Channel Name</b> to instantly filter the main dashboard's stream list behind this window.<br>"
+                      "<b>Auto-Ignored</b> channels have exceeded the max live stream threshold. Use <b>Force Scan</b> to manually parse them anyway.")
+        self.layout.addWidget(info)
+        
+        self.lbl_totals = QLabel("<b>Total Channels:</b> 0 &nbsp;|&nbsp; <b>Total Streams in Channels:</b> 0")
+        self.lbl_totals.setStyleSheet("font-size: 14px; color: #00E676; padding: 6px; border: 1px solid #444; border-radius: 4px; background-color: #2b2b2b;")
+        self.layout.addWidget(self.lbl_totals)
+        
+        search_layout = QHBoxLayout()
+        search_layout.addWidget(QLabel("<b>Universal Search:</b>"))
+        self.search_box = QLineEdit()
+        self.search_box.setPlaceholderText("Filter by Channel Name, Count, or URL...")
+        self.search_box.textChanged.connect(self.filter_table)
+        search_layout.addWidget(self.search_box)
+        self.layout.addLayout(search_layout)
+        
+        self.table = QTableWidget()
+        self.table.setColumnCount(6)
+        self.table.setHorizontalHeaderLabels(["Channel Name (Click to Filter)", "Configured Streams", "Live on YT", "Sync Status", "Main URL (Editable)", "Action"])
+        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
+        self.table.horizontalHeader().setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
+        self.layout.addWidget(self.table)
+        
+        btn_close = QPushButton("Close")
+        btn_close.clicked.connect(self.accept)
+        self.layout.addWidget(btn_close)
+        
+        self.populate_table()
+        
+        self.table.cellClicked.connect(self.on_cell_clicked)
+        self.table.itemChanged.connect(self.on_item_changed)
+        
+    def filter_table(self):
+        text = self.search_box.text().strip().lower()
+        for i in range(self.table.rowCount()):
+            match = False
+            for j in range(5): 
+                item = self.table.item(i, j)
+                if item and text in item.text().lower():
+                    match = True
+                    break
+            self.table.setRowHidden(i, not match)
+        
+    def populate_table(self):
+        self.table.blockSignals(True)
+        self.table.setSortingEnabled(False)
+        self.table.setRowCount(0)
+        
+        channel_counts = Counter()
+        total_streams_in_channels = 0
+        for i in range(self.editor_ref.stream_list_widget.count()):
+            d = self.editor_ref.stream_list_widget.item(i).data(Qt.ItemDataRole.UserRole)
+            cn = d.get("channel_name", "").strip()
+            if cn:
+                channel_counts[cn] += 1
+                total_streams_in_channels += 1
+                
+        for cn in self.editor_ref.unsaved_channels.keys():
+            if cn not in channel_counts:
+                channel_counts[cn] = 0
+                
+        self.lbl_totals.setText(f"<b>Total Channels:</b> {len(channel_counts)} &nbsp;|&nbsp; <b>Total Streams in Channels:</b> {total_streams_in_channels}")
+        self.table.setRowCount(len(channel_counts))
+        
+        # Pull live counts and ignored status
+        live_counts = {}
+        ignored_channels =[]
+        try:
+            cache_path = ROOT / "youtube_metadata_cache.json"
+            if cache_path.exists():
+                cache = json.loads(cache_path.read_text(encoding='utf-8'))
+                live_counts = cache.get("channel_live_counts", {})
+            if CONFIG_FILE.exists():
+                cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                ignored_channels = cfg.get("ignored_channels",[])
+        except: pass
+        
+        class NumericItem(QTableWidgetItem):
+            def __lt__(self, other):
+                try: 
+                    # Treat "Unknown" as 0 for sorting
+                    sv = int(self.text()) if self.text().isdigit() else 0
+                    ov = int(other.text()) if other.text().isdigit() else 0
+                    return sv < ov
+                except: 
+                    return super().__lt__(other)
+
+        row = 0
+        for cn, count in sorted(channel_counts.items()):
+            item_name = QTableWidgetItem(cn)
+            item_name.setFlags(item_name.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            item_name.setForeground(QBrush(QColor("#00E5FF")))
+            font = item_name.font()
+            font.setUnderline(True)
+            item_name.setFont(font)
+            
+            item_count = NumericItem(str(count))
+            item_count.setFlags(item_count.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            
+            url = self.editor_ref.unsaved_channels.get(cn, "")
+            item_url = QTableWidgetItem(url)
+            
+            # Status / Live
+            live_count = live_counts.get(url, "Unknown")
+            status = "Auto-Ignored" if url in ignored_channels else "Allowed"
+            
+            item_live = NumericItem(str(live_count))
+            item_live.setFlags(item_live.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            
+            item_status = QTableWidgetItem(status)
+            item_status.setFlags(item_status.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            if status == "Auto-Ignored":
+                item_status.setForeground(QBrush(QColor("#FF9800")))
+                font = item_status.font(); font.setBold(True); item_status.setFont(font)
+            else:
+                item_status.setForeground(QBrush(QColor("#00E676")))
+            
+            # Actions
+            action_widget = QWidget()
+            action_layout = QHBoxLayout(action_widget)
+            action_layout.setContentsMargins(2, 2, 2, 2)
+            action_layout.setSpacing(4)
+            
+            btn_open = QPushButton("🌐 Open")
+            btn_open.clicked.connect(lambda chk, u=cn: self.open_url(u))
+            
+            btn_scan = QPushButton("▶ Force Scan")
+            btn_scan.setStyleSheet("background-color: #00897B; color: white;")
+            btn_scan.clicked.connect(self.force_scan)
+            
+            btn_rename = QPushButton("✏️ Rename")
+            btn_rename.clicked.connect(lambda chk, old_cn=cn: self.rename_channel(old_cn))
+            
+            btn_delete = QPushButton("🗑️")
+            btn_delete.setStyleSheet("background-color: #B71C1C; color: white;")
+            btn_delete.clicked.connect(lambda chk, old_cn=cn: self.delete_channel(old_cn))
+            
+            action_layout.addWidget(btn_open)
+            action_layout.addWidget(btn_scan)
+            action_layout.addWidget(btn_rename)
+            action_layout.addWidget(btn_delete)
+            
+            self.table.setItem(row, 0, item_name)
+            self.table.setItem(row, 1, item_count)
+            self.table.setItem(row, 2, item_live)
+            self.table.setItem(row, 3, item_status)
+            self.table.setItem(row, 4, item_url)
+            self.table.setCellWidget(row, 5, action_widget)
+            row += 1
+            
+        self.table.setSortingEnabled(True)
+        self.table.blockSignals(False)
+        self.filter_table()
+
+    def force_scan(self):
+        btn = self.sender()
+        row = -1
+        for i in range(self.table.rowCount()):
+            widget = self.table.cellWidget(i, 5)
+            if widget and (widget == btn or widget.isAncestorOf(btn)):
+                row = i
+                break
+                
+        if row == -1: return
+
+        # Dynamically fetch the latest URL from the exact cell the user is looking at
+        url_item = self.table.item(row, 4)
+        latest_url = url_item.text().strip() if url_item else ""
+        
+        # Dynamically fetch the channel name from the exact cell
+        name_item = self.table.item(row, 0)
+        channel_name = name_item.text() if name_item else "Unknown Channel"
+        
+        # Strip accidental double-pastes and tracking params
+        latest_url = latest_url.split('\n')[0].replace('\r', '').strip()
+        if latest_url.count("http") > 1:
+            parts = latest_url.split("http")
+            latest_url = "http" + parts[1]
+        latest_url = latest_url.split('?si=')[0]
+        
+        if not latest_url:
+            QMessageBox.warning(self, "No URL", "Please enter a valid URL for this channel first.")
+            return
+            
+        # Visually clean the cell for the user
+        if url_item:
+            self.table.blockSignals(True)
+            url_item.setText(latest_url)
+            self.table.blockSignals(False)
+            
+        # Update the memory state so it doesn't disappear on close
+        self.editor_ref.unsaved_channels[channel_name] = latest_url
+        self.editor_ref._check_and_update_dirty_state()
+            
+        for attempt in range(5):
+            try:
+                if CONFIG_FILE.exists():
+                    cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                    if 'channels' not in cfg:
+                        cfg['channels'] = {}
+                    cfg['channels'][channel_name] = latest_url
+                    tmp_file = CONFIG_FILE.with_suffix('.tmp')
+                    with open(tmp_file, 'w', encoding='utf-8') as f:
+                        json.dump(cfg, f, indent=2)
+                    os.replace(tmp_file, CONFIG_FILE)
+                break
+            except Exception as e:
+                if attempt == 4:
+                    logging.warning(f"Failed to quick-save channel URL for scan after 5 attempts: {e}")
+                else:
+                    time.sleep(0.2)
+            
+        self.progress_dialog = QProgressDialog(f"Surgically Scanning '{channel_name}'...", "Cancel", 0, 100, self)
+        self.progress_dialog.setWindowTitle("Surgical Force Scan")
+        self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
+        self.progress_dialog.setAutoClose(True)
+        
+        self.scan_worker = ChannelSyncWorker(latest_url)
+        self.scan_worker.progress_update.connect(self._update_scan_progress)
+        self.scan_worker.finished.connect(self._on_scan_finished)
+        self.scan_worker.start()
+        self.progress_dialog.exec()
+        
+    def _update_scan_progress(self, c, t, msg):
+        if self.progress_dialog.wasCanceled():
+            self.scan_worker.terminate()
+            return
+        self.progress_dialog.setMaximum(t)
+        self.progress_dialog.setValue(c)
+        self.progress_dialog.setLabelText(msg)
+        
+    def _on_scan_finished(self, proposals):
+        self.progress_dialog.accept()
+        try:
+            existing = []
+            if SYNC_PROPOSALS_FILE.exists():
+                existing = json.loads(SYNC_PROPOSALS_FILE.read_text(encoding='utf-8'))
+            
+            target_url = self.scan_worker.target_url
+            filtered = [p for p in existing if p.get('old_channel') != target_url and p.get('new_channel') != target_url]
+            filtered.extend(proposals)
+            
+            SYNC_PROPOSALS_FILE.write_text(json.dumps(filtered, indent=2), encoding='utf-8')
+            
+            if not proposals:
+                QMessageBox.information(self, "Scan Complete", "Force Scan completed.\nNo new updates or streams found for this channel.")
+                self.populate_table()
+                return
+
+            msg = f"Force Scan completed.\nFound {len(proposals)} updates/streams for this channel.\n\nWould you like to review them now?"
+            reply = QMessageBox.question(self, "Review Updates", msg, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            
+            if reply == QMessageBox.StandardButton.Yes:
+                self._process_inline_queue(proposals)
+                
+            self.populate_table() 
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to process scan results: {e}")
+
+    def _process_inline_queue(self, proposals):
+        try:
+            import stream_discovery_gui
+        except ImportError:
+            QMessageBox.critical(self, "Error", "stream_discovery_gui.py not found. Please open the Discovery Hub manually.")
+            return
+
+        # Instantiate a headless hub to reuse its processing methods safely
+        hub = stream_discovery_gui.StreamDiscoveryHub(editor_ref=self.editor_ref)
+        
+        for p in proposals:
+            dialog = stream_discovery_gui.DiffViewerDialog(p, self)
+            if dialog.exec():
+                action = getattr(dialog, 'result_action', 'cancel')
+                
+                if action in ('discard', 'discard_next', 'ignore'):
+                    if action == 'ignore':
+                        hub.bulk_reject_and_ignore([p], skip_confirm=True)
+                    else:
+                        hub._remove_proposal(p)
+                        
+                    if action in ('discard', 'ignore'):
+                        break
+                        
+                elif action in ('accept', 'accept_next'):
+                    hub.execute_sync_proposal(p, dialog)
+                    if action == 'accept':
+                        break
+            else:
+                break # User hit Cancel or 'X' (Keep in Queue and Exit Loop)
+
+    def rename_channel(self, old_name):
+        new_name, ok = QInputDialog.getText(self, "Rename Channel", f"Enter new name for '{old_name}':", text=old_name)
+        if ok and new_name.strip():
+            new_name = new_name.strip()
+            if new_name == old_name: return
+            
+            url = self.editor_ref.unsaved_channels.pop(old_name, "")
+            self.editor_ref.unsaved_channels[new_name] = url
+            
+            for i in range(self.editor_ref.stream_list_widget.count()):
+                item = self.editor_ref.stream_list_widget.item(i)
+                d = item.data(Qt.ItemDataRole.UserRole)
+                if d.get("channel_name", "").strip() == old_name:
+                    d["channel_name"] = new_name
+                    item.setData(Qt.ItemDataRole.UserRole, d)
+                    
+            self.editor_ref._check_and_update_dirty_state()
+            self.editor_ref._populate_channel_dropdown()
+            
+            curr_item = self.editor_ref.stream_list_widget.currentItem()
+            if curr_item:
+                curr_d = curr_item.data(Qt.ItemDataRole.UserRole)
+                if curr_d.get("channel_name", "").strip() == new_name:
+                    self.editor_ref.stream_channel_edit.setCurrentText(new_name)
+            
+            self.populate_table()
+
+    def delete_channel(self, old_name):
+        reply = QMessageBox.question(self, "Confirm Delete", 
+            f"Are you sure you want to delete the channel '{old_name}'?\n\nThis will clear the channel name from all associated streams.", 
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            
+        if reply == QMessageBox.StandardButton.Yes:
+            self.editor_ref.unsaved_channels.pop(old_name, None)
+            
+            for i in range(self.editor_ref.stream_list_widget.count()):
+                item = self.editor_ref.stream_list_widget.item(i)
+                d = item.data(Qt.ItemDataRole.UserRole)
+                if d.get("channel_name", "").strip() == old_name:
+                    d.pop("channel_name", None)
+                    item.setData(Qt.ItemDataRole.UserRole, d)
+                    
+            self.editor_ref._check_and_update_dirty_state()
+            self.editor_ref._populate_channel_dropdown()
+            
+            curr_item = self.editor_ref.stream_list_widget.currentItem()
+            if curr_item:
+                curr_d = curr_item.data(Qt.ItemDataRole.UserRole)
+                if "channel_name" not in curr_d and self.editor_ref.stream_channel_edit.currentText() == old_name:
+                    self.editor_ref.stream_channel_edit.setCurrentText("")
+                    
+            self.populate_table()
+
+    def on_cell_clicked(self, row, col):
+        if col == 0:
+            item = self.table.item(row, 0)
+            if item:
+                self.editor_ref.stream_search_box.setText(item.text())
+                
+    def on_item_changed(self, item):
+        if item.column() == 4:
+            row = item.row()
+            cn_item = self.table.item(row, 0)
+            if cn_item:
+                cn = cn_item.text()
+                new_url = item.text().strip()
+                if new_url:
+                    self.editor_ref.unsaved_channels[cn] = new_url
+                else:
+                    self.editor_ref.unsaved_channels.pop(cn, None)
+                self.editor_ref._check_and_update_dirty_state()
+                
+    def open_url(self, cn):
+        url = self.editor_ref.unsaved_channels.get(cn, "")
+        if url:
+            webbrowser.open(url)
+        else:
+            QMessageBox.warning(self, "No URL", "Please enter and save a Main URL for this channel first.")

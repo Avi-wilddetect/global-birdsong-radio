@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Global Nervous System v41.2 (Hybrid Elasticity Patch)</title>
+    <title>Global Nervous System v41.12 (Hybrid Spatial Patch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -16,7 +16,7 @@
         
         .leaflet-tile-pane { filter: brightness(0.9) contrast(1.1) saturate(1.1); }
         
-        /* Tooltip Styling (TIGHTENED PADDING & INTERACTIVE) */
+        /* Tooltip Styling */
         .leaflet-tooltip { 
             background: rgba(0,0,0,0.95) !important; 
             border: 1px solid #555 !important; 
@@ -26,10 +26,10 @@
             border-radius: 4px; 
             box-shadow: 0 4px 25px rgba(0,0,0,0.8); 
             padding: 6px 10px !important; 
-            pointer-events: auto !important; /* ALLOWS MOUSE HOVER */
-            z-index: 9999 !important; /* KEEPS IT ON TOP */
+            pointer-events: auto !important; 
+            z-index: 9999 !important; 
             white-space: normal !important; 
-			width: max-content !important; 
+            width: max-content !important; 
             max-width: 350px !important;   
             word-wrap: break-word;
             text-align: left; 
@@ -39,7 +39,6 @@
         .leaflet-tooltip-left:before { border-left-color: #333; }
         .leaflet-tooltip-right:before { border-right-color: #333; }
         
-        /* Tooltip Flex Layout for Thumbnail (ENLARGED IMAGE) */
         .tt-layout { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; }
         .tt-info { flex: 1; padding-right: 8px; }
         .tt-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid #444; background-color: #000; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
@@ -60,13 +59,16 @@
             display: none;
             position: absolute;
             top: 0; left: 0; width: 100%;
-            background: rgba(255, 61, 0, 0.9);
+            background: rgba(255, 61, 0, 0.95);
             color: white;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
+            font-size: 14px;
+            font-family: monospace;
             font-weight: bold;
             z-index: 99999;
             pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         #maintenance-banner {
@@ -171,13 +173,13 @@
         .btn:hover { background: #333; color: white; border-color: #00e676; }
         .close-x { position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; z-index: 2005; }
         
-        /* SPIDERIFY MARGIN ANIMATION */
+        /* SPIDERIFY MARGIN ANIMATION (Smooth Gliding) */
         .visible-anchor { 
             position: relative; 
             width: 0px !important; 
             height: 0px !important; 
             overflow: visible !important; 
-            transition: margin 0.3s ease-out; /* Smooth glide when zooming */
+            transition: margin 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
         }
         
         .pulse-core { position: absolute; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; background-size: cover; background-position: center 20%; transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s, transform 0.2s ease-out; box-sizing: border-box; cursor: pointer; }
@@ -195,7 +197,7 @@
             border: 2px solid #fff !important;
         }
 
-        /* MAP ICON THICK STROBE FLARE (ACTIVATED VIA JS) */
+        /* MAP ICON THICK STROBE FLARE */
         .strobe-flare {
             border-width: 3px !important;
             box-shadow: 0 0 14px rgba(255, 255, 255, 1) !important;
@@ -230,7 +232,7 @@
     <div id="map"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v41.2</div>
+    <div class="version-tag">v41.12</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -275,6 +277,25 @@
         <div class="z-btn" onclick="map.zoomOut()" title="Zoom Out">-</div>
     </div>
     <script>
+        // --- GLOBAL FAILSAFE: Catch unhandled promises and rendering errors ---
+        window.addEventListener('unhandledrejection', function(event) {
+            const errBanner = document.getElementById('error-banner');
+            errBanner.innerHTML = "⚠ UNHANDLED PROMISE ERROR: " + event.reason;
+            errBanner.style.display = 'block';
+            console.error(event.reason);
+        });
+        window.onerror = function(message, source, lineno, colno, error) {
+            // SILENT FAILSAFE: Ignore harmless CORS iframe teardown errors from rapid-clicking
+            if (message === "Script error." || message.includes("Script error.")) {
+                return true; 
+            }
+            const errBanner = document.getElementById('error-banner');
+            errBanner.innerHTML = "⚠ GLOBAL JS CRASH [" + lineno + "]: " + message;
+            errBanner.style.display = 'block';
+            console.error(message);
+            return true;
+        };
+
         const map = L.map('map', { zoomControl: false, minZoom: 2.5, attributionControl: false, worldCopyJump: true }).setView([20, 0], 3);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18 }).addTo(map);
         let terminator = null;
@@ -285,10 +306,11 @@
             clearSpotlight(); 
         });
 
-        // RECALCULATE SPIDERIFY HYBRID MATH ON ZOOM
+        // RECALCULATE AGGLOMERATIVE SPIDERIFY MATH ON ZOOM
         map.on('zoomend', () => {
             if (currentData && currentData.nodes) {
-                renderMap(currentData.nodes);
+                calculateOffsets(currentData.nodes);
+                Object.values(markers).forEach(ref => updateMarker(ref, ref.data));
             }
         });
         
@@ -311,33 +333,90 @@
         let currentOpenStreamId = null;
         let lockedCustomNode = null;
         let connectionLostTime = null;
-        let activeRegionBox = null; // Polygon for Idea B Swarms
+        let activeRegionBox = null;
 
-        // --- GLOBAL HOVER Tracking Dictionaries ---
-        const hoverTimeouts = {};     // 4-second persistence delays
-        const strobeIntervals = {};   // 1.5-second rapid strobe loop
-        const strobeTimeouts = {};    // Kills the strobe after 1.5s
-        const activeHighlights = {};  // Tracks if a marker is in ANY part of its highlight cycle
-        const mapHovers = {};         // Tracks if mouse is physically over the map marker itself
-        const tooltipIntentTimers = {}; // 0.5s delay before opening tooltip on hover
-        const gracePeriodTimers = {}; // 50ms transition window from icon to tooltip
-        const tooltipHovers = {};     // Tracks if mouse is inside the actual tooltip box
-        const strobeStates = {};      // Tracks mid-strobe UI state
+        const hoverTimeouts = {};    
+        const strobeIntervals = {};  
+        const strobeTimeouts = {};   
+        const activeHighlights = {}; 
+        const mapHovers = {};        
+        const tooltipIntentTimers = {}; 
+        const gracePeriodTimers = {}; 
+        const tooltipHovers = {};    
+        const strobeStates = {};     
 
-        function getBadgesHtml(method, dist, frameSize) {
-            let m = method || 'audio';
-            let d = dist || 'Unknown';
-            let f = frameSize || 'N/A';
+        function getBadgesHtml(method, dist, frameSize, speciesName) {
+            let m = String(method || 'audio');
+            let d = String(dist || 'Unknown');
+            let f = String(frameSize || 'N/A');
+            let sp = String(speciesName || 'Unknown').toLowerCase();
             
+            let animalEmoji = "";
+            let ctxColor = '#aaa'; 
+            
+            const hasWord = (words) => new RegExp('\\b(' + words.join('|') + ')\\b', 'i').test(sp);
+            
+            if (m === 'vision' || m === 'multimodal') {
+                if (hasWord(['flying fox', 'bat'])) animalEmoji = '🦇';
+                else if (hasWord(['sea lion', 'seal', 'walrus', 'elephant seal'])) animalEmoji = '🦭';
+                else if (hasWord(['panda', 'giant panda', 'red panda'])) animalEmoji = '🐼';
+                else if (hasWord(['dolphin', 'porpoise'])) animalEmoji = '🐬';
+                else if (hasWord(['whale', 'orca', 'beluga', 'narwhal'])) animalEmoji = '🐋';
+                else if (hasWord(['shark', 'great white'])) animalEmoji = '🦈';
+                else if (hasWord(['fish', 'ray', 'manta ray', 'koi', 'trout', 'salmon', 'eel', 'grouper', 'snapper', 'pigfish', 'lionfish', 'catfish', 'dogfish', 'minnow', 'bass'])) animalEmoji = '🐟';
+                else if (hasWord(['eagle', 'falcon', 'hawk', 'osprey', 'vulture', 'kestrel', 'buzzard', 'kite', 'harrier', 'condor'])) animalEmoji = '🦅';
+                else if (hasWord(['owl', 'owlet'])) animalEmoji = '🦉';
+                else if (hasWord(['toucan', 'macaw', 'parrot', 'parakeet', 'cockatoo', 'cockatiel'])) animalEmoji = '🦜';
+                else if (hasWord(['lion', 'lioness'])) animalEmoji = '🦁';
+                else if (hasWord(['tiger', 'tigress'])) animalEmoji = '🐅';
+                else if (hasWord(['leopard', 'cheetah', 'jaguar', 'panther', 'lynx', 'cougar', 'puma', 'bobcat', 'cat', 'feline', 'ocelot'])) animalEmoji = '🐆';
+                else if (hasWord(['elephant'])) animalEmoji = '🐘';
+                else if (hasWord(['rhino', 'rhinoceros'])) animalEmoji = '🦏';
+                else if (hasWord(['hippo', 'hippopotamus'])) animalEmoji = '🦛';
+                else if (hasWord(['giraffe'])) animalEmoji = '🦒';
+                else if (hasWord(['zebra'])) animalEmoji = '🦓';
+                else if (hasWord(['deer', 'elk', 'moose', 'caribou', 'antelope', 'gazelle', 'springbok', 'wildebeest', 'impala', 'waterbuck', 'kudu', 'reindeer', 'roe'])) animalEmoji = '🦌';
+                else if (hasWord(['monkey', 'macaque', 'baboon', 'lemur', 'primate', 'marmoset', 'tamarin', 'capuchin', 'langur'])) animalEmoji = '🐒';
+                else if (hasWord(['gorilla', 'ape', 'chimpanzee', 'chimp', 'gibbon', 'orangutan', 'bonobo'])) animalEmoji = '🦍';
+                else if (hasWord(['wolf', 'coyote', 'hyena', 'jackal'])) animalEmoji = '🐺';
+                else if (hasWord(['fox'])) animalEmoji = '🦊';
+                else if (hasWord(['dog', 'canine', 'canid', 'dingo', 'wolfdog'])) animalEmoji = '🐕';
+                else if (hasWord(['bear', 'grizzly', 'polar bear'])) animalEmoji = '🐻';
+                else if (hasWord(['otter', 'mink', 'weasel', 'ferret', 'stoat'])) animalEmoji = '🦦';
+                else if (hasWord(['duck', 'goose', 'swan', 'waterfowl', 'mallard', 'teal', 'wigeon', 'pintail', 'eider'])) animalEmoji = '🦆';
+                else if (hasWord(['penguin', 'puffin'])) animalEmoji = '🐧';
+                else if (hasWord(['flamingo', 'stork', 'heron', 'egret', 'ibis', 'spoonbill', 'crane', 'pelican'])) animalEmoji = '🦩';
+                else if (hasWord(['frog', 'toad', 'bullfrog', 'treefrog', 'peeper', 'amphibian', 'salamander', 'newt'])) animalEmoji = '🐸';
+                else if (hasWord(['snake', 'python', 'boa', 'viper', 'cobra', 'mamba', 'adder', 'rattlesnake', 'anaconda'])) animalEmoji = '🐍';
+                else if (hasWord(['crocodile', 'alligator', 'gator', 'caiman', 'gharial'])) animalEmoji = '🐊';
+                else if (hasWord(['turtle', 'tortoise', 'terrapin', 'sea turtle'])) animalEmoji = '🐢';
+                else if (hasWord(['lizard', 'iguana', 'monitor', 'gecko', 'chameleon', 'skink', 'dragon'])) animalEmoji = '🦎';
+                else if (hasWord(['squirrel', 'chipmunk', 'marmot', 'groundhog', 'woodchuck', 'prairie dog'])) animalEmoji = '🐿️';
+                else if (hasWord(['rabbit', 'hare', 'bunny', 'jackrabbit'])) animalEmoji = '🐇';
+                else if (hasWord(['raccoon', 'coon'])) animalEmoji = '🦝';
+                else if (hasWord(['badger', 'wolverine'])) animalEmoji = '🦡';
+                else if (hasWord(['mouse', 'rat', 'rodent', 'vole', 'shrew', 'lemming'])) animalEmoji = '🐀';
+                else if (hasWord(['beaver'])) animalEmoji = '🦫';
+                else if (hasWord(['skunk'])) animalEmoji = '🦨';
+                else if (hasWord(['cow', 'cattle', 'bison', 'buffalo', 'yak', 'bull', 'steer', 'calf', 'ox', 'oxen'])) animalEmoji = '🐄';
+                else if (hasWord(['horse', 'pony', 'stallion', 'mare', 'foal', 'mustang', 'donkey', 'mule'])) animalEmoji = '🐎';
+                else if (hasWord(['pig', 'boar', 'warthog', 'swine', 'hog', 'sow', 'piglet'])) animalEmoji = '🐗';
+                else if (hasWord(['sheep', 'goat', 'ram', 'ewe', 'lamb', 'kid', 'bighorn', 'ibex'])) animalEmoji = '🐏';
+                else if (hasWord(['sloth'])) animalEmoji = '🦥';
+                else if (hasWord(['crab', 'lobster', 'crayfish', 'shrimp', 'prawn', 'krill', 'hermit crab'])) animalEmoji = '🦀';
+                else if (hasWord(['squid', 'octopus', 'cuttlefish'])) animalEmoji = '🦑';
+                else if (hasWord(['bug', 'insect', 'cricket', 'cicada', 'grasshopper', 'katydid', 'beetle', 'ant', 'bee', 'wasp', 'butterfly', 'moth', 'fly', 'mosquito', 'mantis', 'roach', 'spider', 'arachnid'])) animalEmoji = '🐛';
+                else if (hasWord(['snail', 'slug'])) animalEmoji = '🐌';
+            }
+
             let modIcon = '🐦'; let modText = 'AUDIO'; let modColor = '#4CAF50';
-            if (m === 'vision') { modIcon = '📷'; modText = 'VISION'; modColor = '#00E676'; }
-            else if (m === 'multimodal') { modIcon = '🔥'; modText = 'MULTIMODAL'; modColor = '#FF9800'; }
+            if (m === 'vision') { modIcon = animalEmoji ? `📷 ${animalEmoji}` : '📷'; modText = 'VISION'; modColor = '#00E676'; }
+            else if (m === 'multimodal') { modIcon = animalEmoji ? `🔥 ${animalEmoji}` : '🔥'; modText = 'MULTIMODAL'; modColor = '#FF9800'; }
             else if (d === 'Bio-Match') { modIcon = '🐘'; modText = 'DSP'; modColor = '#AB47BC'; }
             
             let html = `<div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size:10px; color:${modColor}; border:1px solid ${modColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;">${modIcon} ${modText}</span>`;
             
             if (d !== 'Bio-Match' && d !== 'Unknown' && !d.includes('Multimodal') && !d.includes('Visual')) {
-                let ctxColor = '#aaa';
                 let dUp = d.toUpperCase();
                 if (dUp.includes('VERY NEAR') || dUp.includes('POINT BLANK') || dUp.includes('LARGE')) ctxColor = '#FF3D00';
                 else if (dUp.includes('NEAR') || dUp.includes('MID-GROUND') || dUp.includes('MEDIUM')) ctxColor = '#FFB74D';
@@ -349,37 +428,22 @@
 
             if (f !== 'N/A' && f !== 'NONE' && f !== 'Unknown' && f) {
                 let fUp = f.toUpperCase();
-                html += `<span style="font-size:10px; color:#00E5FF; border:1px solid #00E5FF; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="2D Pixel Footprint">FRAME: ${fUp}</span>`;
+                html += `<span style="font-size:10px; color:#00E5FF; border:1px solid ${ctxColor}; padding:2px 6px; border-radius:3px; font-weight:bold; letter-spacing:0.5px;" title="2D Pixel Footprint">FRAME: ${fUp}</span>`;
             }
             
             html += `</div>`;
             return html;
         }
 
-        // --- DIRECT MAP MARKER HOVER LOGIC ---
         function handleMapMarkerMouseOver(id) {
             mapHovers[id] = true;
+            if (gracePeriodTimers[id]) { clearTimeout(gracePeriodTimers[id]); delete gracePeriodTimers[id]; }
+            if (hoverTimeouts[id]) { clearTimeout(hoverTimeouts[id]); delete hoverTimeouts[id]; }
             
-            // Cancel transition grace periods
-            if (gracePeriodTimers[id]) {
-                clearTimeout(gracePeriodTimers[id]);
-                delete gracePeriodTimers[id];
-            }
-            
-            // Instantly cancel the 4-second decay timer
-            if (hoverTimeouts[id]) {
-                clearTimeout(hoverTimeouts[id]);
-                delete hoverTimeouts[id];
-            }
-            
-            // If it's ALREADY highlighted (from sidebar), keep it on top instantly
             if (activeHighlights[id]) {
-                if (markers[id] && markers[id].marker) {
-                    markers[id].marker.setZIndexOffset(9000);
-                }
+                if (markers[id] && markers[id].marker) markers[id].marker.setZIndexOffset(9000);
             }
 
-            // TOOLTIP & GLOW 0.5s INTENT DELAY
             if (!tooltipIntentTimers[id]) {
                 tooltipIntentTimers[id] = setTimeout(() => {
                     activeHighlights[id] = true;
@@ -391,24 +455,15 @@
                         }
                         markers[id].marker.setZIndexOffset(9000);
                         
-                        // --- THE DYNAMIC TOOLTIP ROUTING PATCH ---
                         let pt = map.latLngToContainerPoint(markers[id].marker.getLatLng());
-                        // Sidebar occupies rightmost 380px. Tooltip is ~350px wide (175px overflow to the right if centered).
-                        // 380 + 175 = 555px. If the icon is within 550px of the right screen edge, push tooltip to the left.
                         let isNearRightEdge = pt.x > (window.innerWidth - 550);
                         let ttDirection = isNearRightEdge ? 'left' : 'top';
                         let ttOffset = isNearRightEdge ? [-20, 0] : [0, -40];
                         
-                        // Open the tooltip perfectly offset to avoid the sidebar
                         markers[id].marker.bindTooltip(markers[id].lastTooltip, { 
-                            direction: ttDirection, 
-                            sticky: false, 
-                            opacity: 1, 
-                            offset: ttOffset, 
-                            interactive: true // Leaflet hook allowing hover
+                            direction: ttDirection, sticky: false, opacity: 1, offset: ttOffset, interactive: true
                         }).openTooltip();
                         
-                        // Explicitly bind to the Tooltip DOM node to catch transitions
                         let tt = markers[id].marker.getTooltip();
                         if (tt) {
                             let ttEl = tt.getElement();
@@ -432,48 +487,26 @@
 
         function handleMapMarkerMouseOut(id) {
             delete mapHovers[id];
-            
-            // CANCEL INTENT IF IT WAS JUST A SWIPE
-            if (tooltipIntentTimers[id]) {
-                clearTimeout(tooltipIntentTimers[id]);
-                delete tooltipIntentTimers[id];
-            }
-
-            // Provide a 50ms window for the mouse to cross the gap from Icon to Tooltip
+            if (tooltipIntentTimers[id]) { clearTimeout(tooltipIntentTimers[id]); delete tooltipIntentTimers[id]; }
             if (gracePeriodTimers[id]) clearTimeout(gracePeriodTimers[id]);
             
             gracePeriodTimers[id] = setTimeout(() => {
-                // If the mouse successfully landed on the tooltip box, DO NOTHING.
                 if (tooltipHovers[id]) return; 
-
-                // Otherwise, the mouse is gone. Close the tooltip.
                 if (markers[id] && markers[id].marker) {
                     markers[id].marker.closeTooltip();
                     markers[id].marker.unbindTooltip();
                 }
-
-                // ONLY start the 4-second decay if the icon was actually highlighted
                 if (activeHighlights[id]) {
-                    if (hoverTimeouts[id]) {
-                        clearTimeout(hoverTimeouts[id]);
-                    }
-                    
+                    if (hoverTimeouts[id]) clearTimeout(hoverTimeouts[id]);
                     hoverTimeouts[id] = setTimeout(() => {
                         delete activeHighlights[id]; 
-                        
                         if (markers[id] && markers[id].marker) {
                             let el = markers[id].marker.getElement();
                             if (el) {
                                 let core = el.querySelector('.pulse-core');
-                                if (core) {
-                                    core.classList.remove('hover-glow');
-                                    core.classList.remove('strobe-flare'); // Safety catch
-                                }
+                                if (core) { core.classList.remove('hover-glow'); core.classList.remove('strobe-flare'); }
                             }
-                            // Revert to normal z-index logic if not actively fully focused via map click
-                            if(!activeFocusIds.includes(id)) {
-                                markers[id].marker.setZIndexOffset(getZIndex(markers[id].data.status));
-                            }
+                            if(!activeFocusIds.includes(id)) markers[id].marker.setZIndexOffset(getZIndex(markers[id].data.status));
                         }
                         delete hoverTimeouts[id];
                     }, 4000);
@@ -481,69 +514,44 @@
             }, 50);
         }
 
-        // --- MAP ICON HOVER EFFECT (SIDEBAR JAVASCRIPT DRIVEN STROBE) ---
         function setMarkerHover(idOrIds, isHover) {
             let ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
-            
             ids.forEach(id => {
                 if (isHover) {
-                    // Instantly cancel any pending 4-second cleanup timers because we are actively hovering
-                    if (hoverTimeouts[id]) { 
-                        clearTimeout(hoverTimeouts[id]); 
-                        delete hoverTimeouts[id]; 
-                    }
-
-                    // ALWAYS RESTART THE STROBE ON MOUSE ENTER
+                    if (hoverTimeouts[id]) { clearTimeout(hoverTimeouts[id]); delete hoverTimeouts[id]; }
                     activeHighlights[id] = true;
-                    
-                    // Apply the baseline white hover-glow and pop to top layer immediately
                     if (markers[id] && markers[id].marker) {
                         let el = markers[id].marker.getElement();
                         if (el) {
                             let core = el.querySelector('.pulse-core');
-                            if (core) {
-                                core.classList.add('hover-glow');
-                            }
+                            if (core) core.classList.add('hover-glow');
                         }
-                        markers[id].marker.setZIndexOffset(9000); // Pure Leaflet Z-Index forcing
+                        markers[id].marker.setZIndexOffset(9000); 
                     }
-
-                    // Clear old strobe tracking just in case
                     if(strobeIntervals[id]) clearInterval(strobeIntervals[id]);
                     if(strobeTimeouts[id]) clearTimeout(strobeTimeouts[id]);
                     
-                    // Start the 150ms Strobe Interval
                     let isFlare = false;
                     strobeIntervals[id] = setInterval(() => {
                         isFlare = !isFlare;
                         strobeStates[id] = isFlare;
                         if (markers[id] && markers[id].marker) {
                             let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
-                            if (core) {
-                                if (isFlare) core.classList.add('strobe-flare');
-                                else core.classList.remove('strobe-flare');
-                            }
+                            if (core) { if (isFlare) core.classList.add('strobe-flare'); else core.classList.remove('strobe-flare'); }
                         }
-                    }, 150); // 150ms toggle -> ~5 flashes in 1.5s
+                    }, 150);
 
-                    // Automatically kill the strobe after 1.5s and settle into solid glow
                     strobeTimeouts[id] = setTimeout(() => {
                         clearInterval(strobeIntervals[id]);
                         delete strobeIntervals[id];
                         delete strobeStates[id];
-                        
-                        // Ensure the flare class is removed cleanly
                         if (markers[id] && markers[id].marker) {
                             let core = markers[id].marker.getElement()?.querySelector('.pulse-core');
                             if (core) core.classList.remove('strobe-flare');
                         }
                     }, 1500);
                 } else {
-                    // Mouse Left Sidebar Item
-                    // Delegate to the exact same logic as leaving the map marker directly
-                    if (!mapHovers[id] && !tooltipHovers[id]) {
-                        handleMapMarkerMouseOut(id);
-                    }
+                    if (!mapHovers[id] && !tooltipHovers[id]) handleMapMarkerMouseOut(id);
                 }
             });
         }
@@ -569,16 +577,54 @@
                 const banner = document.getElementById('error-banner'); 
                 if (data.error) { 
                     banner.innerHTML = "⚠ SYSTEM ERROR: " + data.error; banner.style.display = 'block'; 
-                } else if (data.nodes.length === 0) { 
+                } else if (data.nodes.length === 0 && data.feed.length === 0) { 
                     banner.innerHTML = "⚠ NO ACTIVE STREAMS DETECTED<br><span style='font-size:11px; font-weight:normal'>Check Control GUI configuration.</span>"; banner.style.display = 'block'; 
                 } else { 
                     banner.style.display = 'none'; 
                 } 
                 
-                currentData = data; 
-                if (!currentData.map_settings) {
-                    currentData.map_settings = {}; // Failsafe
+                if (data.nodes && data.feed) {
+                    const existingNodeIds = new Set(data.nodes.map(n => n.id));
+                    data.feed.forEach(f => {
+                        if (!existingNodeIds.has(f.target_id) && f.lat !== undefined && f.lon !== undefined) {
+                            const diff = (Date.now() / 1000) - f.timestamp;
+                            const liveWindow = (data.map_settings && data.map_settings.live_window_seconds) ? data.map_settings.live_window_seconds : 120;
+                            
+                            let status = 'dormant';
+                            let time_ago_str = Math.floor(diff/3600) + 'h ago';
+                            if (diff < liveWindow) { status = 'live'; time_ago_str = 'LIVE NOW'; }
+                            else if (diff < 3600) { status = 'recent'; time_ago_str = Math.floor(diff/60) + 'm ago'; }
+
+                            data.nodes.push({
+                                id: f.target_id,
+                                camera_id: f.camera_id,
+                                name: f.stream,
+                                lat: parseFloat(f.lat) || 0.0,
+                                lon: parseFloat(f.lon) || 0.0,
+                                yt_id: null,
+                                audio_url: null,
+                                page_url: null,
+                                external_url: null,
+                                stream_type: f.stream_type,
+                                species: f.species,
+                                audio_id: f.audio_id,
+                                detection_method: f.detection_method,
+                                dist: f.dist,
+                                frame_size: f.frame_size,
+                                filter_reason: f.filter_reason || '',
+                                ai_notes: f.ai_notes || '',
+                                status: status,
+                                time_ago_str: time_ago_str,
+                                image: '/api/image/' + encodeURIComponent(String(f.species || 'Unknown')),
+                                links: { wiki: '#', secondary: '#' }
+                            });
+                            existingNodeIds.add(f.target_id);
+                        }
+                    });
                 }
+                
+                currentData = data; 
+                if (!currentData.map_settings) currentData.map_settings = {};
                 
                 renderMap(data.nodes); 
                 if (document.getElementById('search-input').value === '') { 
@@ -586,9 +632,7 @@
                 } 
             } catch (e) { 
                 console.error("Link Failure", e); 
-                if (!connectionLostTime) { 
-                    connectionLostTime = Date.now(); 
-                }
+                if (!connectionLostTime) connectionLostTime = Date.now(); 
                 if (Date.now() - connectionLostTime > 30000) {
                     document.getElementById('error-banner').innerHTML = "⚠ CONNECTION LOST<br><span style='font-size:11px; font-weight:normal'>Attempting to reconnect...</span>"; 
                     document.getElementById('error-banner').style.display = 'block'; 
@@ -598,64 +642,165 @@
         
         function getZIndex(status) { if (status === 'live') return 1000; if (status === 'recent') return 500; if (status === 'dormant') return 100; return 50; }
         
-        function renderMap(nodes) {
+        // --- AGGLOMERATIVE SPATIAL CLUSTERING PATCH (v41.12) ---
+        function calculateOffsets(nodes) {
             const mapSettings = currentData.map_settings || {};
             const enableBursts = mapSettings.enable_bursts !== false;
-            
-            // RESET ALL OFFSETS
-            nodes.forEach(node => { 
-                node.offsetX = 0; 
-                node.offsetY = 0; 
-            });
 
-            // HYBRID SPIDERIFY ALGORITHM (Pixel Offset + Zoom Elasticity)
+            nodes.forEach(node => { node.offsetX = 0; node.offsetY = 0; });
+
+            // CLEAN MAP PATCH: Disable Spiderify entirely on global zoom levels
+            if (map.getZoom() < 7) {
+                return; 
+            }
+
             if (enableBursts) {
-                const locMap = {};
-                nodes.forEach(node => {
-                    const k = node.lat.toFixed(4) + ',' + node.lon.toFixed(4);
-                    if (!locMap[k]) locMap[k] = [];
-                    locMap[k].push(node);
+                // 1. Project all nodes to exact Screen Pixels
+                const projected = nodes.map(node => {
+                    const safeLat = parseFloat(node.lat) || 0.0;
+                    const safeLon = parseFloat(node.lon) || 0.0;
+                    const pt = map.project([safeLat, safeLon], map.getZoom());
+                    return { node, pt, clusterId: null };
                 });
-
-                // Extract elasticity (0.0 to 1.0). Default to 0.5 (50%)
+                
+                // 2. Determine Required Pixel Separation
                 const elasticity = (mapSettings.burst_elasticity !== undefined ? mapSettings.burst_elasticity : 50) / 100.0;
-                
-                // Base calculation variables
                 const baseZoom = 8;
-                const baseRadius = 45; // 45 pixels apart at zoom level 8
-                
-                // Hybrid Math Formula
+                const baseRadius = (mapSettings.spiderify_radius !== undefined ? mapSettings.spiderify_radius : 0.025) * 1800; 
                 let radiusPx = baseRadius * Math.pow(2, (map.getZoom() - baseZoom) * elasticity);
                 
                 // Hard Caps so it never completely collapses or flies off screen
-                radiusPx = Math.max(20, Math.min(radiusPx, 150));
-
-                for (let k in locMap) {
-                    let items = locMap[k];
-                    if (items.length > 1) {
-                        items.forEach((node, i) => {
-                            let angle = (i / items.length) * 2 * Math.PI;
-                            // Shift phase by -90 degrees (-PI/2) so the first icon points straight up
-                            angle -= Math.PI / 2;
-                            node.offsetX = radiusPx * Math.cos(angle);
-                            node.offsetY = radiusPx * Math.sin(angle);
+                radiusPx = Math.max(60, Math.min(radiusPx, 400)); 
+                
+                // Set the collision threshold exactly to the radius so ring items never overlap un-clustered items
+                const THRESHOLD = radiusPx; 
+                
+                // 3. Agglomerative (Sweeping) Clustering
+                let clusters = [];
+                projected.forEach(p => {
+                    let touchingClusterIndices = [];
+                    clusters.forEach((cluster, cIdx) => {
+                        let isClose = cluster.some(member => Math.hypot(member.pt.x - p.pt.x, member.pt.y - p.pt.y) < THRESHOLD);
+                        if (isClose) touchingClusterIndices.push(cIdx);
+                    });
+                    
+                    if (touchingClusterIndices.length === 0) {
+                        clusters.push([p]);
+                    } else if (touchingClusterIndices.length === 1) {
+                        clusters[touchingClusterIndices[0]].push(p);
+                    } else {
+                        // Merge multiple clusters together if they touch
+                        let mergedCluster = [p];
+                        touchingClusterIndices.reverse().forEach(cIdx => {
+                            mergedCluster = mergedCluster.concat(clusters.splice(cIdx, 1)[0]);
                         });
+                        clusters.push(mergedCluster);
                     }
-                }
-            }
+                });
 
-            // Standard render loop using new offsets
-            nodes.forEach(node => { 
-                if (markers[node.id]) { updateMarker(markers[node.id], node); } 
-                else { createMarker(node); } 
-            }); 
+                // 4. Calculate Orbital Positions via CSS Offsets
+                let angleOffset = Math.PI / 6; // 30 degrees tilt to prevent vertical stacking
+                
+                clusters.forEach(cluster => {
+                    if (cluster.length <= 1) return;
+                    
+                    let items = cluster.map(c => c.node);
+                    let focusedItemIndex = -1;
+                    
+                    // Center-Snap Check
+                    if (activeFocusIds.length === 1) { 
+                        for (let i = 0; i < items.length; i++) {
+                            if (activeFocusIds.includes(items[i].id)) {
+                                focusedItemIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (focusedItemIndex !== -1 && activeFocusIds.length === 1) {
+                        // The single clicked target stays perfectly anchored at its TRUE GPS
+                        let centerMember = cluster[focusedItemIndex];
+                        centerMember.node.offsetX = 0;
+                        centerMember.node.offsetY = 0;
+                        
+                        let centerPt = centerMember.pt;
+                        
+                        // Form the ring around the TRUE GPS of the focused item
+                        let ringCluster = cluster.filter((_, idx) => idx !== focusedItemIndex);
+                        if (ringCluster.length > 0) {
+                            ringCluster.forEach((member, i) => {
+                                let angle = (i / ringCluster.length) * 2 * Math.PI;
+                                angle = angle - (Math.PI / 2) + angleOffset;
+                                
+                                let targetScreenX = centerPt.x + radiusPx * Math.cos(angle);
+                                let targetScreenY = centerPt.y + radiusPx * Math.sin(angle);
+                                
+                                // member.pt is its true geographic screen point
+                                // CSS offset is Visual Shift = Target Screen Point - True Geographic Screen Point
+                                member.node.offsetX = targetScreenX - member.pt.x;
+                                member.node.offsetY = targetScreenY - member.pt.y;
+                            });
+                        }
+                    } else {
+                        // Swarm or Unfocused: Calculate the Visual Centroid of the cluster
+                        let sumX = 0, sumY = 0;
+                        cluster.forEach(member => { 
+                            sumX += member.pt.x; 
+                            sumY += member.pt.y; 
+                        });
+                        let centroidX = sumX / cluster.length;
+                        let centroidY = sumY / cluster.length;
+                        
+                        // Force everything into a ring around the centroid
+                        if (cluster.length > 1) {
+                            cluster.forEach((member, i) => {
+                                let angle = (i / cluster.length) * 2 * Math.PI;
+                                angle = angle - (Math.PI / 2) + angleOffset;
+                                
+                                let targetScreenX = centroidX + radiusPx * Math.cos(angle);
+                                let targetScreenY = centroidY + radiusPx * Math.sin(angle);
+                                
+                                member.node.offsetX = targetScreenX - member.pt.x;
+                                member.node.offsetY = targetScreenY - member.pt.y;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderMap(nodes) {
+            try {
+                calculateOffsets(nodes);
+                
+                const currentMarkerIds = new Set(Object.keys(markers));
+                nodes.forEach(node => { 
+                    currentMarkerIds.delete(node.id); 
+                    if (markers[node.id]) { 
+                        updateMarker(markers[node.id], node); 
+                    } else { 
+                        createMarker(node); 
+                    } 
+                }); 
+                
+                currentMarkerIds.forEach(id => {
+                    map.removeLayer(markers[id].marker);
+                    delete markers[id];
+                });
+            } catch(e) {
+                document.getElementById('error-banner').innerHTML = "⚠ MAP RENDER ERROR: " + e.message; 
+                document.getElementById('error-banner').style.display = 'block'; 
+                console.error("Map Rendering Error:", e);
+            }
         }
 
         function createMarker(node) { 
-            const htmlContent = buildIconHtml(node);
-            const classContent = 'visible-anchor';
+            // CROSSHAIR PATCH: Only apply target-active if exactly 1 item is focused
+            const isTarget = activeFocusIds.includes(node.id) && activeFocusIds.length === 1;
+            const classContent = 'visible-anchor' + (isTarget ? ' target-active' : '');
             
-            // Apply new pixel offsets to the Anchor
+            const htmlContent = buildIconHtml(node);
+            
             const icon = L.divIcon({ 
                 className: classContent, 
                 html: htmlContent, 
@@ -663,32 +808,39 @@
                 iconAnchor: [-node.offsetX || 0, -node.offsetY || 0] 
             }); 
             
-            const m = L.marker([node.lat, node.lon], { icon: icon, zIndexOffset: getZIndex(node.status) }).addTo(map); 
+            const safeLat = parseFloat(node.lat) || 0.0;
+            const safeLon = parseFloat(node.lon) || 0.0;
+            const m = L.marker([safeLat, safeLon], { icon: icon, zIndexOffset: getZIndex(node.status) }).addTo(map); 
             
-            // --- THE DIRECT HOVER PATCH ---
             m.on('mouseover', () => handleMapMarkerMouseOver(node.id));
             m.on('mouseout', () => handleMapMarkerMouseOut(node.id));
             
-            const badgesHtml = getBadgesHtml(node.detection_method, node.dist, node.frame_size);
+            const badgesHtml = getBadgesHtml(node.detection_method, node.dist, node.frame_size, node.species);
             const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${node.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${node.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${node.time_ago_str}</div></div></div>${node.image ? `<img class="tt-thumb" src="${node.image}" />` : ''}</div>`; 
             
-            // Stash tooltip content for dynamic binding
             m.lastTooltip = tooltipContent;
             
             m.on('click', (e) => { 
-                L.DomEvent.stopPropagation(e); 
-                lockedCustomNode = null; 
-                engageSpotlight([node.id], null, true); // Map click is always full focus
+                try {
+                    L.DomEvent.stopPropagation(e); 
+                    lockedCustomNode = null; 
+                    engageSpotlight([node.id], null, true); 
+                } catch(clickE) {
+                    console.error("Marker Click Error:", clickE);
+                }
             }); 
             
             markers[node.id] = { marker: m, data: node, lastHtml: htmlContent, lastClass: classContent, lastTooltip: tooltipContent }; 
         }
         
         function updateMarker(ref, newNode) { 
-            const isTarget = activeFocusIds.includes(newNode.id); 
-            const newLatLng = L.latLng(newNode.lat, newNode.lon);
+            // CROSSHAIR PATCH: Only apply target-active if exactly 1 item is focused
+            const isTarget = activeFocusIds.includes(newNode.id) && activeFocusIds.length === 1; 
             
-            // Only update geographic position if the camera physically moved
+            const safeLat = parseFloat(newNode.lat) || 0.0;
+            const safeLon = parseFloat(newNode.lon) || 0.0;
+            const newLatLng = L.latLng(safeLat, safeLon);
+            
             if (ref.marker.getLatLng().lat !== newLatLng.lat || ref.marker.getLatLng().lng !== newLatLng.lng) {
                 ref.marker.setLatLng(newLatLng);
             }
@@ -697,7 +849,6 @@
             const newHtml = buildIconHtml(newNode);
             const newClass = 'visible-anchor ' + (isTarget ? 'target-active' : '');
             
-            // Update the icon definition (This handles the Spiderify expansion)
             const newIcon = L.divIcon({ 
                 className: newClass, 
                 html: newHtml, 
@@ -708,10 +859,9 @@
             ref.lastHtml = newHtml;
             ref.lastClass = newClass;
             
-            // --- THE Z-INDEX PROTECTION PATCH ---
             ref.marker.setZIndexOffset(isTarget ? 9999 : (activeHighlights[newNode.id] ? 9000 : getZIndex(newNode.status))); 
             
-            const badgesHtml = getBadgesHtml(newNode.detection_method, newNode.dist, newNode.frame_size);
+            const badgesHtml = getBadgesHtml(newNode.detection_method, newNode.dist, newNode.frame_size, newNode.species);
             const tooltipContent = `<div class="tt-layout"><div class="tt-info"><div class="tt-title">${newNode.name}</div><div style="text-align:left;"><div style="color:#fff; font-weight:bold; margin-bottom:8px; font-size:15px; letter-spacing:0.5px;">${newNode.species}</div><div style="margin-bottom:8px;">${badgesHtml}</div><div style="color:#aaa; font-size:11px; margin-top:8px;">${newNode.time_ago_str}</div></div></div>${newNode.image ? `<img class="tt-thumb" src="${newNode.image}" />` : ''}</div>`; 
             
             if (ref.lastTooltip !== tooltipContent) {
@@ -721,7 +871,6 @@
                 }
             }
 
-            // Only update Intel Metadata if it's the solitary focus and the panel is currently doing something
             if (isTarget && !lockedCustomNode && activeFocusIds.length === 1 && document.getElementById('intel-panel').classList.contains('open')) {
                 updateIntelMetadata(newNode);
             }
@@ -730,18 +879,17 @@
         function buildIconHtml(node) { 
             const bgStyle = node.image ? `background-image: url('${node.image}');` : ''; 
             const noImgClass = node.image ? '' : 'no-img'; 
+            
             const focusClass = activeFocusIds.includes(node.id) ? 'target-focus' : ''; 
             let shapeClass = 'shape-circle'; 
             if (node.stream_type === 'hls' || node.stream_type === 'direct_stream' || node.stream_type === 'mjpeg') { shapeClass = 'shape-square'; } 
             
-            // Check global tracking dictionaries to inject hover/strobe classes immune to DOM refreshes
             let glowClass = activeHighlights[node.id] ? 'hover-glow' : '';
             let flareClass = strobeStates[node.id] ? 'strobe-flare' : '';
             
             return `<div class="pulse-core status-${node.status} ${shapeClass} ${noImgClass} ${focusClass} ${glowClass} ${flareClass}" style="${bgStyle}"></div>`; 
         }
 
-        // --- CLEARS ALL HIGHLIGHTS WHEN MAP IS CLICKED ---
         function clearSpotlight() {
             activeFocusIds = [];
             activeFeedDomId = null;
@@ -752,14 +900,12 @@
             document.querySelectorAll('.feed-group').forEach(el => el.classList.remove('active-group'));
             document.querySelectorAll('.feed-item').forEach(el => el.classList.remove('active-item'));
             
-            // Instantly destroy all hover and strobe state timers
             for (let id in hoverTimeouts) clearTimeout(hoverTimeouts[id]);
             for (let id in strobeIntervals) clearInterval(strobeIntervals[id]);
             for (let id in strobeTimeouts) clearTimeout(strobeTimeouts[id]);
             for (let id in tooltipIntentTimers) clearTimeout(tooltipIntentTimers[id]);
             for (let id in gracePeriodTimers) clearTimeout(gracePeriodTimers[id]);
             
-            // Clear tracking dictionaries
             Object.keys(hoverTimeouts).forEach(k => delete hoverTimeouts[k]);
             Object.keys(strobeIntervals).forEach(k => delete strobeIntervals[k]);
             Object.keys(strobeTimeouts).forEach(k => delete strobeTimeouts[k]);
@@ -770,11 +916,14 @@
             Object.keys(tooltipIntentTimers).forEach(k => delete tooltipIntentTimers[k]);
             Object.keys(gracePeriodTimers).forEach(k => delete gracePeriodTimers[k]);
             
+            if (currentData && currentData.nodes) {
+                calculateOffsets(currentData.nodes);
+            }
+
             Object.values(markers).forEach(ref => {
                 let el = ref.marker.getElement();
                 if(el) {
                     let core = el.querySelector('.pulse-core');
-                    // Aggressively strip any residual visual classes
                     if(core) {
                         core.classList.remove('hover-glow');
                         core.classList.remove('strobe-flare');
@@ -794,71 +943,72 @@
             closePanel();
         }
         
-        // --- RESTORED ORIGINAL SINGLE-CLICK BEHAVIOR WITH MEMORY FALLBACK ---
         function focusFeedTarget(id, feedSpecies, feedAudioId, feedTimestamp, feedMethod, feedDist, feedFrame, feedDomId, fullFocus = true) { 
-            if (window.event) window.event.stopPropagation();
-            
-            let targetMarker = markers[id];
-            
-            // FALLBACK: If the specific species node dropped off the map to save memory, 
-            // find ANY marker belonging to the same camera so we can still zoom to the location.
-            if (!targetMarker) {
-                let feedItem = currentData.feed.find(f => f.target_id === id);
-                if (feedItem) {
-                    for (let mId in markers) {
-                        if (markers[mId].data.camera_id === feedItem.camera_id) {
-                            targetMarker = markers[mId];
-                            break;
+            try {
+                if (window.event) window.event.stopPropagation();
+                
+                let targetMarker = markers[id];
+                
+                if (!targetMarker) {
+                    let feedItem = currentData.feed.find(f => f.target_id === id);
+                    if (feedItem) {
+                        for (let mId in markers) {
+                            if (markers[mId].data.camera_id === feedItem.camera_id) {
+                                targetMarker = markers[mId];
+                                break;
+                            }
                         }
                     }
                 }
+                
+                if (targetMarker) { 
+                    let customNode = JSON.parse(JSON.stringify(targetMarker.data));
+                    
+                    let rawSpecies = String(feedSpecies || 'Unknown');
+                    customNode.species = rawSpecies;
+                    customNode.audio_id = feedAudioId;
+                    customNode.detection_method = feedMethod;
+                    customNode.dist = feedDist;
+                    customNode.frame_size = feedFrame;
+                    
+                    if (feedTimestamp) {
+                        const diff = (new Date().getTime() / 1000) - feedTimestamp;
+                        const liveWindow = currentData.map_settings.live_window_seconds || 120;
+                        if (diff < liveWindow) { customNode.time_ago_str = 'LIVE NOW'; customNode.status = 'live'; }
+                        else if (diff < 3600) { customNode.time_ago_str = Math.floor(diff/60) + 'm ago'; customNode.status = 'recent'; }
+                        else { customNode.time_ago_str = Math.floor(diff/3600) + 'h ago'; customNode.status = 'dormant'; }
+                    }
+                    
+                    customNode.image = '/api/image/' + encodeURIComponent(rawSpecies);
+                    
+                    const bioKw =["elephant", "rhinoceros", "hippopotamus", "wolf", "coyote", "hyena", "fox", "bear", "lion", "tiger", "leopard", "jaguar", "panther", "panda", "monkey", "gorilla", "ape", "chimpanzee", "gibbon", "baboon", "macaque", "lemur", "cow", "cattle", "sheep", "goat", "yak", "camel", "bovid", "zebra", "horse", "pig", "boar", "elk", "deer", "moose", "caribou", "antelope", "squirrel", "chipmunk", "bat", "mouse", "rat", "hare", "rabbit", "sea lion", "seal", "otter", "walrus", "whale", "dolphin", "porpoise", "frog", "toad", "peeper", "amphibian", "reptile", "snake", "alligator", "crocodile", "cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"];
+                    const birdExc =["heron", "frogmouth", "cowbird", "egret", "finch", "dove", "tyrant", "woodpecker", "duck", "goose", "swan", "sparrow", "weaver", "bunting", "warbler", "thrush", "hawk", "eagle", "falcon", "owl", "gull", "tern", "wren", "bird"];
+                    
+                    let isBird = true;
+                    let lowerSp = rawSpecies.toLowerCase();
+                    if (birdExc.some(e => lowerSp.includes(e))) {
+                        isBird = true;
+                    } else if (bioKw.some(e => lowerSp.includes(e))) {
+                        isBird = false;
+                    }
+                    
+                    let secUrl = isBird ? 'https://www.allaboutbirds.org/guide/' + encodeURIComponent(rawSpecies) : 'https://www.inaturalist.org/search?q=' + encodeURIComponent(rawSpecies);
+                    let secName = isBird ? 'ALL ABOUT BIRDS' : 'INATURALIST DATABASE';
+                    
+                    customNode.links = {
+                        wiki: 'https://en.wikipedia.org/wiki/' + rawSpecies.replace(/ /g, "_"),
+                        secondary: secUrl,
+                        secondary_name: secName
+                    };
+                    
+                    lockedCustomNode = customNode;
+                    engageSpotlight([targetMarker.data.id], feedDomId, fullFocus); 
+                } 
+            } catch(e) {
+                console.error("Focus Target Error:", e);
             }
-            
-            if (targetMarker) { 
-                let customNode = JSON.parse(JSON.stringify(targetMarker.data));
-                customNode.species = feedSpecies;
-                customNode.audio_id = feedAudioId;
-                customNode.detection_method = feedMethod;
-                customNode.dist = feedDist;
-                customNode.frame_size = feedFrame;
-                
-                if (feedTimestamp) {
-                    const diff = (new Date().getTime() / 1000) - feedTimestamp;
-                    const liveWindow = currentData.map_settings.live_window_seconds || 120;
-                    if (diff < liveWindow) { customNode.time_ago_str = 'LIVE NOW'; customNode.status = 'live'; }
-                    else if (diff < 3600) { customNode.time_ago_str = Math.floor(diff/60) + 'm ago'; customNode.status = 'recent'; }
-                    else { customNode.time_ago_str = Math.floor(diff/3600) + 'h ago'; customNode.status = 'dormant'; }
-                }
-                
-                customNode.image = '/api/image/' + encodeURIComponent(feedSpecies);
-                
-                const bioKw =["elephant", "rhinoceros", "hippopotamus", "wolf", "coyote", "hyena", "fox", "bear", "lion", "tiger", "leopard", "jaguar", "panther", "panda", "monkey", "gorilla", "ape", "chimpanzee", "gibbon", "baboon", "macaque", "lemur", "cow", "cattle", "sheep", "goat", "yak", "camel", "bovid", "zebra", "horse", "pig", "boar", "elk", "deer", "moose", "caribou", "antelope", "squirrel", "chipmunk", "bat", "mouse", "rat", "hare", "rabbit", "sea lion", "seal", "otter", "walrus", "whale", "dolphin", "porpoise", "frog", "toad", "peeper", "amphibian", "reptile", "snake", "alligator", "crocodile", "cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"];
-                const birdExc =["heron", "frogmouth", "cowbird", "egret", "finch", "dove", "tyrant", "woodpecker", "duck", "goose", "swan", "sparrow", "weaver", "bunting", "warbler", "thrush", "hawk", "eagle", "falcon", "owl", "gull", "tern", "wren", "bird"];
-                
-                let isBird = true;
-                let lowerSp = feedSpecies.toLowerCase();
-                if (birdExc.some(e => lowerSp.includes(e))) {
-                    isBird = true;
-                } else if (bioKw.some(e => lowerSp.includes(e))) {
-                    isBird = false;
-                }
-                
-                let secUrl = isBird ? 'https://www.allaboutbirds.org/guide/' + encodeURIComponent(feedSpecies) : 'https://www.inaturalist.org/search?q=' + encodeURIComponent(feedSpecies);
-                let secName = isBird ? 'ALL ABOUT BIRDS' : 'INATURALIST DATABASE';
-                
-                customNode.links = {
-                    wiki: 'https://en.wikipedia.org/wiki/' + feedSpecies.replace(/ /g, "_"),
-                    secondary: secUrl,
-                    secondary_name: secName
-                };
-                
-                lockedCustomNode = customNode;
-                // Single click = TRUE for full focus (zooms map AND opens side panel)
-                engageSpotlight([targetMarker.data.id], feedDomId, fullFocus); 
-            } 
         }
 
-        // FOCUS ARRAYS AND SPOTLIGHT
         function engageSpotlight(nodeIds, specificFeedId = null, fullFocus = true) { 
             activeFocusIds = nodeIds; 
             
@@ -879,6 +1029,11 @@
             }
             
             L.DomUtil.addClass(map.getContainer(), 'map-spotlight-active'); 
+            
+            if (currentData && currentData.nodes) {
+                calculateOffsets(currentData.nodes);
+            }
+            
             Object.values(markers).forEach(ref => updateMarker(ref, ref.data)); 
             
             if(nodeIds.length === 1 && markers[nodeIds[0]]) {
@@ -907,159 +1062,167 @@
             } 
         }
         
-        // FOCUS GROUP A (BIODIVERSITY BURST)
         function focusGroupA(cameraId, domId) {
-            let ids = [];
-            
-            // Re-use grouping criteria
-            const mapSettings = currentData.map_settings || {};
-            const groupHistory = mapSettings.group_feed_history === true;
-            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
-            const maxAgeSecs = maxAgeMins * 60;
-            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
-            const now = Date.now() / 1000;
-            
-            // We must find the EXACT cluster that was clicked on
-            // This requires scanning the feed chronologically and identifying the gap
-            let eligibleItems = currentData.feed.filter(f => {
-                const diff = now - f.timestamp;
-                return groupHistory || diff <= maxAgeSecs;
-            }).sort((a, b) => b.timestamp - a.timestamp); // Newest first
+            try {
+                let ids = [];
+                const mapSettings = currentData.map_settings || {};
+                const groupHistory = mapSettings.group_feed_history === true;
+                const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+                const maxAgeSecs = maxAgeMins * 60;
+                const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+                const now = Date.now() / 1000;
+                
+                let eligibleItems = currentData.feed.filter(f => {
+                    const diff = now - f.timestamp;
+                    return groupHistory || diff <= maxAgeSecs;
+                }).sort((a, b) => b.timestamp - a.timestamp);
 
-            let clusters = [];
-            eligibleItems.forEach(item => {
-                if (item.camera_id === cameraId) {
-                    let placed = false;
-                    for (let c of clusters) {
-                        let cTs = c.items[c.items.length - 1].timestamp; // Compare to the tail of the cluster
-                        if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs) {
-                            c.items.push(item);
-                            placed = true;
-                            break;
+                let clusters = [];
+                eligibleItems.forEach(item => {
+                    if (item.camera_id === cameraId) {
+                        let placed = false;
+                        for (let c of clusters) {
+                            let cTs = c.items[c.items.length - 1].timestamp;
+                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs) {
+                                c.items.push(item);
+                                placed = true;
+                                break;
+                            }
+                        }
+                        if (!placed) {
+                            clusters.push({ items: [item] });
                         }
                     }
-                    if (!placed) {
-                        clusters.push({ items: [item] });
-                    }
-                }
-            });
-
-            // Find the cluster that corresponds to this DOM ID
-            // The DOM ID is encoded with the max timestamp of the cluster
-            for (let c of clusters) {
-                let maxTs = Math.max(...c.items.map(i => i.timestamp));
-                let expectedDomId = `group-a-${cameraId}-${maxTs}`;
-                if (expectedDomId === domId) {
-                    ids = c.items.map(i => i.target_id);
-                    break;
-                }
-            }
-
-            if (ids.length === 0) {
-                // Failsafe: Just grab everything for that camera if the cluster lookup fails
-                currentData.feed.forEach(f => {
-                    const diff = now - f.timestamp;
-                    if (f.camera_id === cameraId && (groupHistory || diff <= maxAgeSecs)) {
-                        ids.push(f.target_id); 
-                    }
                 });
-            }
-            
-            engageSpotlight(ids, domId, false); // Groups don't do full focus panel
-            
-            const zoomLevel = mapSettings.burst_zoom_level || 13;
-            
-            if (ids.length > 0 && markers[ids[0]]) {
-                map.flyTo([markers[ids[0]].data.lat, markers[ids[0]].data.lon], zoomLevel, { duration: 1.5 });
+
+                for (let c of clusters) {
+                    let maxTs = Math.max(...c.items.map(i => i.timestamp));
+                    let expectedDomId = `group-a-${cameraId}-${maxTs}`;
+                    if (expectedDomId === domId) {
+                        ids = c.items.map(i => i.target_id);
+                        break;
+                    }
+                }
+
+                if (ids.length === 0) {
+                    currentData.feed.forEach(f => {
+                        const diff = now - f.timestamp;
+                        if (f.camera_id === cameraId && (groupHistory || diff <= maxAgeSecs)) {
+                            ids.push(f.target_id); 
+                        }
+                    });
+                }
+                
+                engageSpotlight(ids, domId, false); 
+                
+                const zoomLevel = mapSettings.burst_zoom_level || 13;
+                
+                if (ids.length > 0 && markers[ids[0]]) {
+                    const currentZoom = map.getZoom();
+                    const targetZoom = Math.max(currentZoom, zoomLevel);
+                    const safeLat = parseFloat(markers[ids[0]].data.lat) || 0.0;
+                    const safeLon = parseFloat(markers[ids[0]].data.lon) || 0.0;
+                    map.flyTo([safeLat, safeLon], targetZoom, { duration: 1.5 });
+                }
+            } catch (e) {
+                console.error("Focus Group A Error:", e);
             }
         }
         
-        // FOCUS GROUP B (REGIONAL SWARM)
         function focusGroupB(speciesName, domId) {
-            let ids = [];
-            let lats = [];
-            let lons = [];
-            
-            // Re-use grouping criteria
-            const mapSettings = currentData.map_settings || {};
-            const groupHistory = mapSettings.group_feed_history === true;
-            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
-            const maxAgeSecs = maxAgeMins * 60;
-            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
-            const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
-            const now = Date.now() / 1000;
-            
-            let eligibleItems = currentData.feed.filter(f => {
-                const diff = now - f.timestamp;
-                return groupHistory || diff <= maxAgeSecs;
-            }).sort((a, b) => b.timestamp - a.timestamp); // Newest first
+            try {
+                let ids = [];
+                let lats = [];
+                let lons = [];
+                
+                const mapSettings = currentData.map_settings || {};
+                const groupHistory = mapSettings.group_feed_history === true;
+                const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+                const maxAgeSecs = maxAgeMins * 60;
+                const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+                const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
+                const now = Date.now() / 1000;
+                
+                let eligibleItems = currentData.feed.filter(f => {
+                    const diff = now - f.timestamp;
+                    return groupHistory || diff <= maxAgeSecs;
+                }).sort((a, b) => b.timestamp - a.timestamp);
 
-            let clusters = [];
-            eligibleItems.forEach(item => {
-                if (item.species === speciesName) {
-                    let placed = false;
-                    for (let c of clusters) {
-                        let cTs = c.items[c.items.length - 1].timestamp; // Compare to the tail of the cluster
-                        let dist = getDistanceKm(item.lat, item.lon, c.items[0].lat, c.items[0].lon); // Compare geo to the head of the cluster
-                        
-                        if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
-                            c.items.push(item);
-                            placed = true;
-                            break;
+                let clusters = [];
+                eligibleItems.forEach(item => {
+                    if (item.species === speciesName) {
+                        let placed = false;
+                        for (let c of clusters) {
+                            let cTs = c.items[c.items.length - 1].timestamp;
+                            
+                            let itemLat = parseFloat(item.lat) || 0.0;
+                            let itemLon = parseFloat(item.lon) || 0.0;
+                            let baseLat = parseFloat(c.items[0].lat) || 0.0;
+                            let baseLon = parseFloat(c.items[0].lon) || 0.0;
+                            
+                            let dist = getDistanceKm(itemLat, itemLon, baseLat, baseLon); 
+                            
+                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                                c.items.push(item);
+                                placed = true;
+                                break;
+                            }
+                        }
+                        if (!placed) {
+                            clusters.push({ items: [item] });
                         }
                     }
-                    if (!placed) {
-                        clusters.push({ items: [item] });
-                    }
-                }
-            });
-
-            // Find the cluster that corresponds to this DOM ID
-            for (let c of clusters) {
-                let maxTs = Math.max(...c.items.map(i => i.timestamp));
-                const safeSpId = speciesName.replace(/[^a-zA-Z0-9]/g, '_');
-                let expectedDomId = `group-b-${safeSpId}-${maxTs}`;
-                
-                if (expectedDomId === domId) {
-                    c.items.forEach(i => {
-                        ids.push(i.target_id);
-                        lats.push(i.lat);
-                        lons.push(i.lon);
-                    });
-                    break;
-                }
-            }
-            
-            if (ids.length === 0) {
-                 // Failsafe
-                 currentData.feed.forEach(f => {
-                    const diff = now - f.timestamp;
-                    if (f.species === speciesName && (groupHistory || diff <= maxAgeSecs)) {
-                        ids.push(f.target_id);
-                        lats.push(f.lat);
-                        lons.push(f.lon);
-                    }
                 });
-            }
-            
-            engageSpotlight(ids, domId, false); // Groups don't do full focus panel
-            
-            if (lats.length > 0) {
-                let minLat = Math.min(...lats);
-                let maxLat = Math.max(...lats);
-                let minLon = Math.min(...lons);
-                let maxLon = Math.max(...lons);
+
+                const rawSpecies = String(speciesName || 'Unknown');
+                const safeSpId = rawSpecies.replace(/[^a-zA-Z0-9]/g, '_');
                 
-                let padding = mapSettings.swarm_bbox_padding !== undefined ? parseFloat(mapSettings.swarm_bbox_padding) : 1.5; 
-                let bounds = [
-                    [minLat - padding, minLon - padding],
-                    [maxLat + padding, maxLon + padding]
-                ];
+                for (let c of clusters) {
+                    let maxTs = Math.max(...c.items.map(i => i.timestamp));
+                    let expectedDomId = `group-b-${safeSpId}-${maxTs}`;
+                    
+                    if (expectedDomId === domId) {
+                        c.items.forEach(i => {
+                            ids.push(i.target_id);
+                            lats.push(parseFloat(i.lat) || 0.0);
+                            lons.push(parseFloat(i.lon) || 0.0);
+                        });
+                        break;
+                    }
+                }
                 
-                let maxZoom = mapSettings.swarm_max_zoom || 6;
+                if (ids.length === 0) {
+                     currentData.feed.forEach(f => {
+                        const diff = now - f.timestamp;
+                        if (f.species === speciesName && (groupHistory || diff <= maxAgeSecs)) {
+                            ids.push(f.target_id);
+                            lats.push(parseFloat(f.lat) || 0.0);
+                            lons.push(parseFloat(f.lon) || 0.0);
+                        }
+                    });
+                }
                 
-                activeRegionBox = L.rectangle(bounds, {color: "#00E5FF", weight: 3, fillOpacity: 0.1, dashArray: "10, 10"}).addTo(map);
-                map.fitBounds(bounds, {padding: [50, 50], maxZoom: maxZoom});
+                engageSpotlight(ids, domId, false); 
+                
+                if (lats.length > 0) {
+                    let minLat = Math.min(...lats);
+                    let maxLat = Math.max(...lats);
+                    let minLon = Math.min(...lons);
+                    let maxLon = Math.max(...lons);
+                    
+                    let padding = mapSettings.swarm_bbox_padding !== undefined ? parseFloat(mapSettings.swarm_bbox_padding) : 1.5; 
+                    let bounds = [
+                        [minLat - padding, minLon - padding],
+                        [maxLat + padding, maxLon + padding]
+                    ];
+                    
+                    let maxZoom = mapSettings.swarm_max_zoom || 6;
+                    
+                    activeRegionBox = L.rectangle(bounds, {color: "#00E5FF", weight: 3, fillOpacity: 0.1, dashArray: "10, 10"}).addTo(map);
+                    map.fitBounds(bounds, {padding: [50, 50], maxZoom: maxZoom});
+                }
+            } catch (e) {
+                console.error("Focus Group B Error:", e);
             }
         }
 
@@ -1085,7 +1248,21 @@
                 loadIntelVideo(node);
             }
             p.classList.add('open');
-            map.flyTo([node.lat, node.lon], 6, { duration: 1.5 });
+            
+            const currentZoom = map.getZoom();
+            const currentCenter = map.getCenter();
+            
+            const safeLat = parseFloat(node.lat) || 0.0;
+            const safeLon = parseFloat(node.lon) || 0.0;
+            const targetLatLng = L.latLng(safeLat, safeLon);
+            
+            const distKm = currentCenter.distanceTo(targetLatLng) / 1000;
+            
+            if (distKm > 500 || currentZoom < 6) {
+                map.flyTo(targetLatLng, Math.max(currentZoom, 6), { duration: 1.5 });
+            } else {
+                map.panTo(targetLatLng, { animate: true, duration: 1.0 });
+            }
         }
 
         function updateIntelMetadata(node) {
@@ -1097,7 +1274,7 @@
             
             document.getElementById('i-status').innerText = `${node.time_ago_str} • ${node.status.toUpperCase()} • ${typeLabel}`;
             
-            document.getElementById('i-badges').innerHTML = getBadgesHtml(node.detection_method, node.dist, node.frame_size);
+            document.getElementById('i-badges').innerHTML = getBadgesHtml(node.detection_method, node.dist, node.frame_size, node.species);
             
             document.getElementById('i-loc').innerText = node.name;
             
@@ -1194,7 +1371,6 @@
             if (activeAudio) { activeAudio.pause(); activeAudio = null; } 
         }
 
-        // GENERATE A SINGLE ROW HTML
         function generateFeedItemHtml(item) {
             const urgencyClass = item.is_close ? `urgency-${item.urgency}` : ''; 
             let typeIcon = '❓'; 
@@ -1208,28 +1384,30 @@
                 localTimeStr = new Intl.DateTimeFormat(navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }).format(dateObj);
             }
             
+            const rawSpecies = String(item.species || 'Unknown');
             const timeArgStr = item.timestamp ? item.timestamp : '0';
-            const safeIdSpecies = item.species.replace(/[^a-zA-Z0-9]/g, '_');
+            const safeIdSpecies = rawSpecies.replace(/[^a-zA-Z0-9]/g, '_');
             const uniqueFeedId = `feed-item-${item.target_id}-${timeArgStr}-${safeIdSpecies}`;
             const activeClass = (uniqueFeedId === activeFeedDomId) ? 'active-item' : ''; 
             
-            const safeSpecies = item.species.replace(/'/g, "\\'");
+            const safeSpecies = rawSpecies.replace(/'/g, "");
             const audioIdArg = item.audio_id ? item.audio_id : 'null';
             const timeArg = item.timestamp ? item.timestamp : 'null';
-            const methodArg = item.detection_method ? `'${item.detection_method}'` : `'audio'`;
-            const distArg = item.dist ? `'${item.dist}'` : `'Unknown'`;
-            const frameArg = item.frame_size ? `'${item.frame_size}'` : `'N/A'`;
             
-            const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size);
+            const safeMethod = String(item.detection_method || 'audio').replace(/'/g, "");
+            const safeDist = String(item.dist || 'Unknown').replace(/'/g, "");
+            const safeFrame = String(item.frame_size || 'N/A').replace(/'/g, "");
+            
+            const badgesHtml = getBadgesHtml(item.detection_method, item.dist, item.frame_size, rawSpecies);
             
             return `<div class="feed-item ${urgencyClass} ${activeClass}" id="${uniqueFeedId}" data-target-id="${item.target_id}" 
                          onmouseenter="setMarkerHover('${item.target_id}', true)" 
                          onmouseleave="setMarkerHover('${item.target_id}', false)"
-                         onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, ${methodArg}, ${distArg}, ${frameArg}, '${uniqueFeedId}', true)">
+                         onclick="focusFeedTarget('${item.target_id}', '${safeSpecies}', ${audioIdArg}, ${timeArg}, '${safeMethod}', '${safeDist}', '${safeFrame}', '${uniqueFeedId}', true)">
                         <div class="dot bg-${item.urgency}"></div>
                         <div style="flex:1">
                             <div style="display:flex; justify-content:space-between">
-                                <span class="f-sp">${item.species}</span>
+                                <span class="f-sp">${rawSpecies}</span>
                                 <span class="f-meta">${localTimeStr}</span>
                             </div>
                             <div style="margin-bottom: 6px;">${badgesHtml}</div>
@@ -1238,202 +1416,198 @@
                     </div>`;
         }
         
-        // ECOLOGICAL GROUPING RENDERER (Idea A & B)
         function renderFeed(items) { 
-            const con = document.getElementById('feed-container'); 
-            const currentScroll = con.scrollTop; 
-            if (items.length === 0) { con.innerHTML = '<div style="padding:20px;color:#666;text-align:center;">NO RECENT SIGNALS</div>'; return; } 
-            
-            // --- GRAB SETTINGS FROM PAYLOAD ---
-            const mapSettings = currentData.map_settings || {};
-            const enableBursts = mapSettings.enable_bursts !== false;
-            const enableSwarms = mapSettings.enable_swarms !== false;
-            
-            const groupHistory = mapSettings.group_feed_history === true;
-            const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
-            const maxAgeSecs = maxAgeMins * 60;
-            const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
-            const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
-            const now = Date.now() / 1000;
-            
-            let groupedItems = [];
-            let ungroupedItems = [];
-            
-            // Sort ALL items chronologically FIRST to ensure time-gaps calculate correctly
-            let sortedItems = [...items].sort((a, b) => b.timestamp - a.timestamp); // Newest first
-            
-            sortedItems.forEach(item => {
-                const diff = now - item.timestamp;
-                // If groupHistory is true, everything is eligible. If false, only items younger than maxAge qualify.
-                if (groupHistory || diff <= maxAgeSecs) {
-                    groupedItems.push(item);
-                } else {
-                    ungroupedItems.push(item);
-                }
-            });
-
-            // Idea A: Group by Camera (Biodiversity Burst) with Temporal Clustering
-            let ideaA_Groups = [];
-            let standaloneEligibleItems = [];
-            
-            if (enableBursts) {
-                // Group by camera first
-                let cameraBuckets = {};
-                groupedItems.forEach(item => {
-                    if(!cameraBuckets[item.camera_id]) cameraBuckets[item.camera_id] = [];
-                    cameraBuckets[item.camera_id].push(item);
-                });
+            try {
+                const con = document.getElementById('feed-container'); 
+                const currentScroll = con.scrollTop; 
                 
-                // Now apply the Time Gap splitting inside each camera bucket
-                for (let cam in cameraBuckets) {
-                    let camItems = cameraBuckets[cam]; // already sorted newest first
-                    let clusters = [];
-                    
-                    camItems.forEach(item => {
-                        let placed = false;
-                        // Try to place the item in an existing cluster based on time gap
-                        for (let c of clusters) {
-                            let lastItemTs = c.items[c.items.length - 1].timestamp; // Oldest item currently in this cluster
-                            if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs) {
-                                c.items.push(item);
-                                placed = true;
-                                break;
-                            }
-                        }
-                        // If it doesn't fit within the time gap of ANY cluster, start a new one
-                        if (!placed) {
-                            clusters.push({ type: 'IdeaA', camera_id: cam, items: [item] });
-                        }
-                    });
-                    
-                    // Separate the true clusters from the singletons
-                    clusters.forEach(c => {
-                        if (c.items.length > 1) {
-                            ideaA_Groups.push(c);
-                        } else {
-                            standaloneEligibleItems.push(c.items[0]);
-                        }
-                    });
-                }
-            } else {
-                // If disabled, just pretend everything is a singleton
-                standaloneEligibleItems = [...groupedItems];
-            }
-
-            // Idea B: Group by Species across Region (Swarms) with Temporal Clustering
-            let ideaB_Groups = [];
-            let finalStandalone = [];
-            
-            if (enableSwarms) {
-                // Group by species first
-                let speciesBuckets = {};
-                standaloneEligibleItems.forEach(item => {
-                    if(!speciesBuckets[item.species]) speciesBuckets[item.species] = [];
-                    speciesBuckets[item.species].push(item);
-                });
+                if (!items || !Array.isArray(items) || items.length === 0) { 
+                    con.innerHTML = '<div style="padding:20px;color:#666;text-align:center;">NO RECENT SIGNALS</div>'; 
+                    return; 
+                } 
                 
-                // Apply Time Gap and Geography splitting inside each species bucket
-                for (let sp in speciesBuckets) {
-                    let spItems = speciesBuckets[sp];
-                    let clusters = [];
+                const mapSettings = currentData.map_settings || {};
+                const enableBursts = mapSettings.enable_bursts !== false;
+                const enableSwarms = mapSettings.enable_swarms !== false;
+                
+                const groupHistory = mapSettings.group_feed_history === true;
+                const maxAgeMins = mapSettings.max_grouping_age_mins || 60;
+                const maxAgeSecs = maxAgeMins * 60;
+                const maxTimeGapSecs = (mapSettings.group_time_gap_mins || 15) * 60;
+                const maxSwarmDist = mapSettings.swarm_max_distance_km !== undefined ? parseFloat(mapSettings.swarm_max_distance_km) : 500;
+                const now = Date.now() / 1000;
+                
+                let groupedItems = [];
+                let ungroupedItems = [];
+                
+                let sortedItems = [...items].sort((a, b) => b.timestamp - a.timestamp); 
+                
+                sortedItems.forEach(item => {
+                    const diff = now - item.timestamp;
+                    if (groupHistory || diff <= maxAgeSecs) {
+                        groupedItems.push(item);
+                    } else {
+                        ungroupedItems.push(item);
+                    }
+                });
+
+                let ideaA_Groups = [];
+                let standaloneEligibleItems = [];
+                
+                if (enableBursts) {
+                    let cameraBuckets = {};
+                    groupedItems.forEach(item => {
+                        if(!cameraBuckets[item.camera_id]) cameraBuckets[item.camera_id] = [];
+                        cameraBuckets[item.camera_id].push(item);
+                    });
                     
-                    spItems.forEach(item => {
-                        let placed = false;
-                        for (let c of clusters) {
-                            let lastItemTs = c.items[c.items.length - 1].timestamp;
-                            let baseLat = c.items[0].lat;
-                            let baseLon = c.items[0].lon;
-                            let dist = getDistanceKm(item.lat, item.lon, baseLat, baseLon);
-                            
-                            // Must be within BOTH the time gap AND the physical distance limit
-                            if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
-                                c.items.push(item);
-                                placed = true;
-                                break;
+                    for (let cam in cameraBuckets) {
+                        let camItems = cameraBuckets[cam]; 
+                        let clusters = [];
+                        
+                        camItems.forEach(item => {
+                            let placed = false;
+                            for (let c of clusters) {
+                                let lastItemTs = c.items[c.items.length - 1].timestamp; 
+                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs) {
+                                    c.items.push(item);
+                                    placed = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!placed) {
-                            clusters.push({ type: 'IdeaB', species: sp, items: [item] });
-                        }
-                    });
-                    
-                    clusters.forEach(c => {
-                        if (c.items.length > 1) {
-                            ideaB_Groups.push(c);
-                        } else {
-                            finalStandalone.push(c.items[0]);
-                        }
-                    });
-                }
-            } else {
-                finalStandalone = [...standaloneEligibleItems];
-            }
-
-            // Sort all blocks chronologically by max timestamp
-            let allFeedBlocks = [...ideaA_Groups, ...ideaB_Groups, ...finalStandalone, ...ungroupedItems];
-            allFeedBlocks.sort((a, b) => {
-                let tsA = a.type ? Math.max(...a.items.map(i => i.timestamp)) : a.timestamp;
-                let tsB = b.type ? Math.max(...b.items.map(i => i.timestamp)) : b.timestamp;
-                return tsB - tsA; 
-            });
-
-            let html = ''; 
-            
-            // Render Everything Top-to-Bottom
-            allFeedBlocks.forEach(block => {
-                if (block.type === 'IdeaA') {
-                    const streamName = block.items[0].stream;
-                    const maxTs = Math.max(...block.items.map(i => i.timestamp));
-                    const domId = `group-a-${block.camera_id}-${maxTs}`;
-                    const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
-                    
-                    // Create JSON string array for hover IDs
-                    const targetIds = block.items.map(i => i.target_id);
-                    const hoverIds = JSON.stringify(targetIds).replace(/"/g, "'");
-
-                    html += `
-                    <div class="feed-group group-a ${activeClass}" id="${domId}">
-                        <div class="group-header" 
-                             onmouseenter="setMarkerHover(${hoverIds}, true)" 
-                             onmouseleave="setMarkerHover(${hoverIds}, false)"
-                             onclick="focusGroupA('${block.camera_id}', '${domId}')">
-                            <span style="font-size:13px;">🌍 BIODIVERSITY BURST</span>
-                            <span class="group-subtext">${block.items.length} species detected simultaneously on '${streamName}'</span>
-                        </div>
-                        <div class="group-items">`;
-                    block.items.forEach(i => html += generateFeedItemHtml(i));
-                    html += `</div></div>`;
-                } else if (block.type === 'IdeaB') {
-                    const spName = block.species;
-                    const safeSpId = spName.replace(/[^a-zA-Z0-9]/g, '_');
-                    const maxTs = Math.max(...block.items.map(i => i.timestamp));
-                    const domId = `group-b-${safeSpId}-${maxTs}`;
-                    const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
-                    
-                    // Create JSON string array for hover IDs
-                    const targetIds = block.items.map(i => i.target_id);
-                    const hoverIds = JSON.stringify(targetIds).replace(/"/g, "'");
-
-                    html += `
-                    <div class="feed-group group-b ${activeClass}" id="${domId}">
-                        <div class="group-header" 
-                             onmouseenter="setMarkerHover(${hoverIds}, true)" 
-                             onmouseleave="setMarkerHover(${hoverIds}, false)"
-                             onclick="focusGroupB('${spName.replace(/'/g, "\\'")}', '${domId}')">
-                            <span style="font-size:13px;">🗺️ REGIONAL SWARM</span>
-                            <span class="group-subtext">${block.items.length} '${spName}' detected across region</span>
-                        </div>
-                        <div class="group-items">`;
-                    block.items.forEach(i => html += generateFeedItemHtml(i));
-                    html += `</div></div>`;
+                            if (!placed) {
+                                clusters.push({ type: 'IdeaA', camera_id: cam, items: [item] });
+                            }
+                        });
+                        
+                        clusters.forEach(c => {
+                            if (c.items.length > 1) {
+                                ideaA_Groups.push(c);
+                            } else {
+                                standaloneEligibleItems.push(c.items[0]);
+                            }
+                        });
+                    }
                 } else {
-                    // Render Standalone Single Item
-                    html += generateFeedItemHtml(block);
+                    standaloneEligibleItems = [...groupedItems];
                 }
-            });
 
-            con.innerHTML = html; 
-            con.scrollTop = currentScroll; 
+                let ideaB_Groups = [];
+                let finalStandalone = [];
+                
+                if (enableSwarms) {
+                    let speciesBuckets = {};
+                    standaloneEligibleItems.forEach(item => {
+                        const spStr = String(item.species || 'Unknown');
+                        if(!speciesBuckets[spStr]) speciesBuckets[spStr] = [];
+                        speciesBuckets[spStr].push(item);
+                    });
+                    
+                    for (let sp in speciesBuckets) {
+                        let spItems = speciesBuckets[sp];
+                        let clusters = [];
+                        
+                        spItems.forEach(item => {
+                            let placed = false;
+                            for (let c of clusters) {
+                                let lastItemTs = c.items[c.items.length - 1].timestamp;
+                                
+                                let itemLat = parseFloat(item.lat) || 0;
+                                let itemLon = parseFloat(item.lon) || 0;
+                                let baseLat = parseFloat(c.items[0].lat) || 0;
+                                let baseLon = parseFloat(c.items[0].lon) || 0;
+                                
+                                let dist = getDistanceKm(itemLat, itemLon, baseLat, baseLon);
+                                
+                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                                    c.items.push(item);
+                                    placed = true;
+                                    break;
+                                }
+                            }
+                            if (!placed) {
+                                clusters.push({ type: 'IdeaB', species: sp, items: [item] });
+                            }
+                        });
+                        
+                        clusters.forEach(c => {
+                            if (c.items.length > 1) {
+                                ideaB_Groups.push(c);
+                            } else {
+                                finalStandalone.push(c.items[0]);
+                            }
+                        });
+                    }
+                } else {
+                    finalStandalone = [...standaloneEligibleItems];
+                }
+
+                let allFeedBlocks = [...ideaA_Groups, ...ideaB_Groups, ...finalStandalone, ...ungroupedItems];
+                allFeedBlocks.sort((a, b) => {
+                    let tsA = a.type ? Math.max(...a.items.map(i => i.timestamp)) : a.timestamp;
+                    let tsB = b.type ? Math.max(...b.items.map(i => i.timestamp)) : b.timestamp;
+                    return tsB - tsA; 
+                });
+
+                let html = ''; 
+                
+                allFeedBlocks.forEach(block => {
+                    if (block.type === 'IdeaA') {
+                        const streamName = block.items[0].stream;
+                        const maxTs = Math.max(...block.items.map(i => i.timestamp));
+                        const domId = `group-a-${block.camera_id}-${maxTs}`;
+                        const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                        
+                        const targetIds = block.items.map(i => i.target_id);
+                        const hoverIdsStr = "['" + targetIds.join("','") + "']";
+
+                        html += `
+                        <div class="feed-group group-a ${activeClass}" id="${domId}">
+                            <div class="group-header" 
+                                 onmouseenter="setMarkerHover(${hoverIdsStr}, true)" 
+                                 onmouseleave="setMarkerHover(${hoverIdsStr}, false)"
+                                 onclick="focusGroupA('${block.camera_id}', '${domId}')">
+                                <span style="font-size:13px;">🌍 BIODIVERSITY BURST</span>
+                                <span class="group-subtext">${block.items.length} species detected simultaneously on '${streamName}'</span>
+                            </div>
+                            <div class="group-items">`;
+                        block.items.forEach(i => html += generateFeedItemHtml(i));
+                        html += `</div></div>`;
+                    } else if (block.type === 'IdeaB') {
+                        const spName = String(block.species || 'Unknown');
+                        const safeSpId = spName.replace(/[^a-zA-Z0-9]/g, '_');
+                        const maxTs = Math.max(...block.items.map(i => i.timestamp));
+                        const domId = `group-b-${safeSpId}-${maxTs}`;
+                        const activeClass = (domId === activeFeedDomId) ? 'active-group' : '';
+                        
+                        const safeOnClickSp = spName.replace(/'/g, "");
+                        const targetIds = block.items.map(i => i.target_id);
+                        const hoverIdsStr = "['" + targetIds.join("','") + "']";
+
+                        html += `
+                        <div class="feed-group group-b ${activeClass}" id="${domId}">
+                            <div class="group-header" 
+                                 onmouseenter="setMarkerHover(${hoverIdsStr}, true)" 
+                                 onmouseleave="setMarkerHover(${hoverIdsStr}, false)"
+                                 onclick="focusGroupB('${safeOnClickSp}', '${domId}')">
+                                <span style="font-size:13px;">🗺️ REGIONAL SWARM</span>
+                                <span class="group-subtext">${block.items.length} '${spName}' detected across region</span>
+                            </div>
+                            <div class="group-items">`;
+                        block.items.forEach(i => html += generateFeedItemHtml(i));
+                        html += `</div></div>`;
+                    } else {
+                        html += generateFeedItemHtml(block);
+                    }
+                });
+
+                con.innerHTML = html; 
+                con.scrollTop = currentScroll; 
+            } catch (e) {
+                document.getElementById('error-banner').innerHTML = "⚠ FEED RENDER ERROR: " + e.message; 
+                document.getElementById('error-banner').style.display = 'block'; 
+                console.error("Feed Rendering Error:", e);
+            }
         }
         
         function handleSearch() { const input = document.getElementById('search-input'); const clearBtn = document.getElementById('clear-search'); const term = input.value.toLowerCase(); clearBtn.style.display = term ? 'block' : 'none'; const items = document.querySelectorAll('.feed-item, .feed-group'); items.forEach(item => { const text = item.innerText.toLowerCase(); item.style.display = text.includes(term) ? 'flex' : 'none'; }); }

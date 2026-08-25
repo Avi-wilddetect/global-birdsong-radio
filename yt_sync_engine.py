@@ -1,7 +1,7 @@
 # FILE: yt_sync_engine.py
-# VERSION: 6.7 - "The Bulletproof Scraper Patch"
+# VERSION: 6.11 - "The Variant Tag Fix"
 # PURPOSE: Compares local YouTube stream metadata against live channel data to detect URL changes, Title/Description changes, new streams, and resurrect dead streams.
-# UPDATED: Fixed a critical bug where yt-dlp flat extraction omitted the 'live_status' flag, causing all live streams to be dropped. Tier 1 now checks 'duration' (which is None for live streams). Tier 2 HTML fallback now uses a Session with injected CONSENT cookies to smash through Google's consent wall.
+# UPDATED: Injected aggressive variant tag stripping for config_stream_by_url dictionary builder to prevent dead variant streams from being falsely flagged as unknown and proposed repeatedly as Case A.
 
 import json
 import logging
@@ -149,7 +149,20 @@ class YouTubeSyncEngine:
 
     def _scrape_channel_live_tab(self, channel_url):
         if not channel_url: return []
-        target_url = channel_url if channel_url.endswith("/streams") else channel_url.rstrip("/") + "/streams"
+        
+        # --- ROBUST URL SANITIZATION PATCH ---
+        # 1. Extract only the first line if the URL contains accidental line-breaks
+        clean_channel_url = channel_url.split('\n')[0].replace('\r', '').strip()
+        
+        # 2. If the URL was accidentally pasted twice (e.g., http...http...), isolate the first one
+        if clean_channel_url.count("http") > 1:
+            parts = clean_channel_url.split("http")
+            clean_channel_url = "http" + parts[1]
+            
+        # 3. Strip ?si= or any other tracking parameters before appending /streams
+        clean_channel_url = clean_channel_url.split('?')[0].strip()
+        
+        target_url = clean_channel_url if clean_channel_url.endswith("/streams") else clean_channel_url.rstrip("/") + "/streams"
         live_streams = []
         seen_urls = set()
         
@@ -361,8 +374,12 @@ class YouTubeSyncEngine:
             raise e  
 
     def _run_sync_internal(self, progress_callback, target_channels):
+        self._debug_log(f"--- ENGINE STARTING _run_sync_internal ---")
+        self._debug_log(f"Explicit target_channels passed: {target_channels}")
+        
         if not self.config:
             msg = "Missing config."
+            self._debug_log(f"ERROR: {msg}")
             logging.error(msg)
             if progress_callback: progress_callback(0, 1, msg)
             return
@@ -379,10 +396,18 @@ class YouTubeSyncEngine:
 
         channels_to_scan = {}
         if target_channels:
-            for c_name, c_url in self.known_channels.items():
-                if c_url in target_channels: channels_to_scan[c_name] = c_url
+            # Force inclusion of all target_channels even if not in known_channels yet
+            for t_url in target_channels:
+                found_name = "Unknown Channel"
+                for c_name, c_url in self.known_channels.items():
+                    if c_url == t_url:
+                        found_name = c_name
+                        break
+                channels_to_scan[found_name] = t_url
         else:
-            channels_to_scan = self.known_channels
+            channels_to_scan = self.known_channels.copy()
+            
+        self._debug_log(f"Channels determined for scanning: {channels_to_scan}")
 
         streams_to_evaluate = self.cache.get("streams", {}).copy()
         for s in self.config.get("streams", []):
@@ -413,7 +438,9 @@ class YouTubeSyncEngine:
         total_steps = total_channels + total_streams
 
         if total_steps == 0:
-            if progress_callback: progress_callback(1, 1, "No valid channels or streams to sync.")
+            msg = "No valid channels or streams to sync."
+            self._debug_log(f"ABORTING: {msg}")
+            if progress_callback: progress_callback(1, 1, msg)
             return
 
         start_time = time.time()
@@ -470,12 +497,21 @@ class YouTubeSyncEngine:
             
         self._save_cache()
 
-        config_stream_by_url = {s.get("page_url", ""): s for s in self.config.get("streams", [])}
-        config_stream_by_name = {s.get("name", ""): s for s in self.config.get("streams", [])}
-        
+        # --- THE VARIANT TAG FIX ---
+        config_stream_by_url = {}
+        config_stream_by_name = {}
         global_known_urls = set()
-        for u in config_stream_by_url.keys():
-            if u: global_known_urls.add(re.sub(r'[\?&]variant=\d+', '', u))
+        
+        for s in self.config.get("streams", []):
+            u = s.get("page_url", "")
+            if u:
+                clean_u = re.sub(r'[\?&]variant=\d+', '', u).strip()
+                config_stream_by_url[clean_u] = s
+                global_known_urls.add(clean_u)
+                
+            n = s.get("name", "")
+            if n:
+                config_stream_by_name[n] = s
 
         for db_url, db_meta in streams_to_evaluate.items():
             old_channel_url = db_meta.get("channel_url", "")
@@ -493,8 +529,11 @@ class YouTubeSyncEngine:
             if not target_channels and old_channel_url in skipped_channels: 
                 self._debug_log("SKIPPED: Channel is in skipped_channels list.")
                 continue
-                
-            config_stream = config_stream_by_url.get(db_url) or config_stream_by_name.get(friendly_name, {})
+            
+            # Use clean URL for config lookup to recognize existing variant streams
+            clean_db_url = re.sub(r'[\?&]variant=\d+', '', db_url).strip()
+            config_stream = config_stream_by_url.get(clean_db_url) or config_stream_by_name.get(friendly_name, {})
+            
             old_channel_name = config_stream.get("channel_name")
             if not old_channel_name: old_channel_name = db_meta.get("channel_name", "Unknown Channel")
             
@@ -538,7 +577,7 @@ class YouTubeSyncEngine:
                 
                 found_match = False
                 for live_s in expected_channel_live_streams:
-                    if db_url == live_s['url']:
+                    if clean_db_url == live_s['url']:
                         sim = self._calculate_similarity(old_title, live_s['title'])
                         self._debug_log(f"Exact URL Match Found! Similarity to old title: {sim:.2f}")
                         
@@ -633,7 +672,6 @@ class YouTubeSyncEngine:
                     if sim > best_sim: best_sim = sim; best_candidate = f_res
                         
                 if best_candidate and best_sim >= 0.80:
-                    clean_db_url = re.sub(r'[\?&]variant=\d+', '', db_url).strip()
                     clean_new_url = re.sub(r'[\?&]variant=\d+', '', best_candidate['url']).strip()
                     
                     if clean_db_url != clean_new_url:
@@ -653,7 +691,7 @@ class YouTubeSyncEngine:
                 
             emit_progress(f"Direct Failsafe Ping: {friendly_name[:40]}...")
             
-            is_live, ping_reason = self._check_if_actually_live(db_url)
+            is_live, ping_reason = self._check_if_actually_live(clean_db_url)
             self._debug_log(f"Direct Failsafe Ping Result: {is_live} ({ping_reason})")
             
             if is_live: 

@@ -18073,6 +18073,299 @@
       "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
+    },
+    "Black Drum": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Bottom-Dwelling Fish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Gray Snapper (Mangrove Snapper)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Common Greenshank": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Pig": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Platy": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Monterey Sea Lemon Nudibranch": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Bald Eagle (Chicks)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Green Tree Snake": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Pigfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Iberian Barbel (Juvenile)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Freshwater Leech": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Staghorn Coral": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Sucker Fish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Yellow-Billed Duck": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "African Black Duck": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Hoffmann'S Woodpecker": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Beisa Oryx": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Brown-Headed Thrush": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Milk Snake": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Jack Crevalle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Dark-Bodied Fish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Black-Chinned Hummingbird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Secretarybird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Senorita Fish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Atlantic Thread Herring": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Magpie-Lark": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Guitarfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Meyer'S Parrot": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Carmine Bee-Eater": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Arrow-Marked Babbler": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Cooper'S Hawk": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "White-Crowned Lapwing": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Juvenile Bird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "California Quail": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
     }
   },
   "assignments": {
@@ -21781,6 +22074,13 @@
         "Barn Owl": {
           "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=6d6yK8f6qxs": {
+      "species_rules": {
+        "Polar Bear": {
+          "prompt": "If there are regrigirators near a polar bear it is not a real polar bear but a commercial animation for refrigirators and you should reject it."
         }
       }
     }

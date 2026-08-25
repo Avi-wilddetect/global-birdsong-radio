@@ -240,7 +240,7 @@ class AdvancedSettingsDialog(QDialog):
         
         burst_form = QFormLayout()
         self.spin_spiderify_radius = QDoubleSpinBox()
-        self.spin_spiderify_radius.setRange(0.001, 0.100)
+        self.spin_spiderify_radius.setRange(0.001, 0.500)
         self.spin_spiderify_radius.setDecimals(3)
         self.spin_spiderify_radius.setSingleStep(0.005)
         self.spin_spiderify_radius.setToolTip("The geographic radius used to push overlapping map icons apart into a visible ring (Only visible if Elasticity > 0%).")
