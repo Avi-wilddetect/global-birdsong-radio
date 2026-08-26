@@ -1,7 +1,6 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Global Nervous System v41.12 (Hybrid Spatial Patch)</title>
+    <title>Global Nervous System v41.16 (Edge-Pinning & Color Patch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -190,17 +189,26 @@
         .pulse-core.status-dormant { width: 26px; height: 26px; border: 1px solid #90A4AE; box-shadow: 0 0 3px rgba(144, 164, 174, 0.3); z-index: 100; animation: breath-dormant 5s infinite ease-in-out; }
         .pulse-core.status-listening { width: 14px; height: 14px; background-color: #00E5FF; border: 1px solid #fff; box-shadow: 0 0 10px #00E5FF; z-index: 50; animation: radar-ping 2.5s infinite; }
         
-        /* MAP ICON HOVER EFFECT (BASE GLOW) */
+        /* REGULAR GREEN MAP ICON HOVER EFFECT */
         .hover-glow {
             transform: translate(-50%, -50%) scale(1.15) !important;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7) !important;
-            border: 2px solid #fff !important;
+            box-shadow: 0 0 12px #3CB043 !important;
+            border: 2px solid #3CB043 !important;
         }
 
-        /* MAP ICON THICK STROBE FLARE */
+        /* REGULAR GREEN MAP ICON THICK STROBE FLARE */
         .strobe-flare {
             border-width: 3px !important;
-            box-shadow: 0 0 14px rgba(255, 255, 255, 1) !important;
+            box-shadow: 0 0 16px #3CB043 !important;
+        }
+
+        /* CONTEXTUAL RED OVERRIDES FOR LIVE ICONS */
+        .status-live.hover-glow {
+            box-shadow: 0 0 12px #FF3D00 !important;
+            border-color: #FF3D00 !important;
+        }
+        .status-live.strobe-flare {
+            box-shadow: 0 0 16px #FF3D00 !important;
         }
 
         .visible-anchor.target-active { z-index: 9999 !important; }
@@ -226,13 +234,39 @@
         .modal-close { position: absolute; top: 15px; right: 15px; color: #666; cursor: pointer; font-size: 20px; }
         .modal-close:hover { color: #fff; }
         .modal-note { font-size: 11px; color: #666; margin-top: 10px; text-align: center; }
+
+        /* REGULAR GREEN OFF-SCREEN POINTER CSS (SVG Arrow, Z-Index 1999) */
+        /* Note: Removed 'transform' from @keyframes so it doesn't overwrite Javascript rotation */
+        #offscreen-pointer {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233CB043'%3E%3Cpath d='M2,10 L16,10 L10,4 L13,2 L24,12 L13,22 L10,20 L16,14 L2,14 Z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: drop-shadow(0 0 10px #3CB043);
+            z-index: 1999;
+            display: none;
+            pointer-events: none;
+            transform-origin: center center;
+            opacity: 0.8;
+            animation: pulse-arrow 1s infinite alternate;
+        }
+        @keyframes pulse-arrow {
+            0% { opacity: 0.4; filter: drop-shadow(0 0 5px #3CB043); }
+            100% { opacity: 1.0; filter: drop-shadow(0 0 15px #3CB043); }
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div id="offscreen-pointer"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v41.12</div>
+    <div class="version-tag">v41.16</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -516,6 +550,78 @@
 
         function setMarkerHover(idOrIds, isHover) {
             let ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+            const pointer = document.getElementById('offscreen-pointer');
+            
+            if (!isHover) {
+                pointer.style.display = 'none';
+            } else {
+                let pointed = false;
+                
+                const intelPanel = document.getElementById('intel-panel');
+                const isPanelOpen = intelPanel && intelPanel.classList.contains('open');
+                
+                for (let i = 0; i < ids.length; i++) {
+                    let id = ids[i];
+                    if (markers[id]) {
+                        const safeLat = parseFloat(markers[id].data.lat) || 0.0;
+                        const safeLon = parseFloat(markers[id].data.lon) || 0.0;
+                        const targetLatLng = L.latLng(safeLat, safeLon);
+                        
+                        const targetPt = map.latLngToContainerPoint(targetLatLng);
+                        
+                        // Define the safe "visible" boundaries with 30px padding so arrow doesn't clip
+                        const leftBoundary = (isPanelOpen ? 390 : 0) + 30;
+                        const rightBoundary = window.innerWidth - 380 - 30;
+                        const topBoundary = 30;
+                        const bottomBoundary = window.innerHeight - 30;
+                        
+                        const isOffScreen = (targetPt.x < leftBoundary || targetPt.x > rightBoundary || targetPt.y < topBoundary || targetPt.y > bottomBoundary);
+
+                        if (isOffScreen) {
+                            // Visual center of the remaining map space
+                            const mapCenterX = leftBoundary + ((rightBoundary - leftBoundary) / 2);
+                            const mapCenterY = topBoundary + ((bottomBoundary - topBoundary) / 2);
+                            
+                            const dx = targetPt.x - mapCenterX;
+                            const dy = targetPt.y - mapCenterY;
+                            const angle = Math.atan2(dy, dx);
+                            
+                            // RAYCASTING: Find intersection with the padded bounding box
+                            let tX = Infinity, tY = Infinity;
+
+                            if (Math.cos(angle) > 0) {
+                                tX = (rightBoundary - mapCenterX) / Math.cos(angle);
+                            } else if (Math.cos(angle) < 0) {
+                                tX = (leftBoundary - mapCenterX) / Math.cos(angle);
+                            }
+
+                            if (Math.sin(angle) > 0) {
+                                tY = (bottomBoundary - mapCenterY) / Math.sin(angle);
+                            } else if (Math.sin(angle) < 0) {
+                                tY = (topBoundary - mapCenterY) / Math.sin(angle);
+                            }
+
+                            const t = Math.min(tX, tY);
+                            
+                            // Exact pixel coordinate at the edge of the visible map
+                            const pointerX = mapCenterX + t * Math.cos(angle);
+                            const pointerY = mapCenterY + t * Math.sin(angle);
+
+                            pointer.style.display = 'block';
+                            pointer.style.left = pointerX + 'px';
+                            pointer.style.top = pointerY + 'px';
+                            
+                            // Only Javascript handles the transform to avoid CSS keyframe overwrites
+                            pointer.style.transform = `translate(-50%, -50%) rotate(${angle}rad)`;
+                            
+                            pointed = true;
+                            break; // We only need one pointer per group
+                        }
+                    }
+                }
+                if (!pointed) pointer.style.display = 'none';
+            }
+            
             ids.forEach(id => {
                 if (isHover) {
                     if (hoverTimeouts[id]) { clearTimeout(hoverTimeouts[id]); delete hoverTimeouts[id]; }
@@ -891,6 +997,7 @@
         }
 
         function clearSpotlight() {
+            document.getElementById('offscreen-pointer').style.display = 'none';
             activeFocusIds = [];
             activeFeedDomId = null;
             if (activeRegionBox) { 
