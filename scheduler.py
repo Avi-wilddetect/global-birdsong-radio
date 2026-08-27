@@ -1,7 +1,7 @@
 # FILE: scheduler.py
-# VERSION: 13.7 - "The Unshackled Patch (Telemetry Display Fix)"
+# VERSION: 13.8 - "The Zombie Eradication Patch"
 # RESPONSIBILITY: Manages Proxies, Launches Workers, Sends Reports, Syncs Config, Cleans Logs, Enforces SIM Data Limits, and Auto-Heals Dead Links.
-# UPDATED: Corrected the text written to the hydra_heat_state.json file so the GUI accurately reflects when Throttling is disabled (shows "Bypassed" instead of "BLOCKED").
+# UPDATED: Completely refactored the process management loop to extract TASKKILL logic into a guaranteed cleanup_fleet() function. Fixes a catastrophic memory leak where broken loops orphaned Python processes.
 
 import sys
 import json
@@ -54,8 +54,16 @@ PROXY_MAP_FILE = ROOT / "proxy_map.json"
 # --- Process Management ---
 child_processes = set()
 
-def terminate_handler(signum, frame):
-    logging.info(f"Termination signal received. Shutting down...")
+def cleanup_fleet():
+    """
+    Guarantees all child processes are forcefully terminated to prevent 
+    zombie processes from eating up RAM and Virtual Memory.
+    """
+    global child_processes
+    if not child_processes:
+        return
+        
+    logging.info(f"Cleaning up {len(child_processes)} orphaned worker processes...")
     for p in list(child_processes):
         try:
             if p.poll() is None:
@@ -64,8 +72,16 @@ def terminate_handler(signum, frame):
                 else:
                     p.terminate()
         except: pass
-    proxy_manager.stop_all_proxies()
+    child_processes.clear()
+
+def terminate_handler(signum, frame):
+    logging.info(f"Termination signal received. Shutting down...")
+    cleanup_fleet()
+    try:
+        proxy_manager.stop_all_proxies()
+    except: pass
     sys.exit(0)
+
 
 # --- AUTO-SYNC THREAD (DRIP-FEED CHANNEL SCANNER) ---
 class AutoSyncThread(threading.Thread):
@@ -922,18 +938,13 @@ def main(show_windows_flag: str):
                                 break
                     except: pass
                 
-                if not running:
-                    for p in child_processes:
-                        try:
-                            if sys.platform == "win32":
-                                subprocess.run(f"TASKKILL /F /T /PID {p.pid}", check=True, capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
-                            else:
-                                p.terminate()
-                        except: pass
-                    time.sleep(5) 
+            # THE FIX: Put the cleanup here, OUTSIDE the while running loop
+            cleanup_fleet()
+            time.sleep(5) 
 
         except Exception as e:
             logging.error(f"Scheduler Error: {e}", exc_info=True)
+            cleanup_fleet()
             time.sleep(30)
 
 if __name__ == "__main__":

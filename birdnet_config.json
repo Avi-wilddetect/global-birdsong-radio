@@ -14,7 +14,7 @@
   "capture_seconds": 12,
   "interval_seconds": 300,
   "score_threshold": 0.3,
-  "parallel_listeners": 3,
+  "parallel_listeners": 4,
   "interval_jitter": 15,
   "batch_size": 3,
   "hiccup_penalty_minutes": 5,
@@ -284,10 +284,10 @@
       "lat": -1.48207,
       "lon": 35.12971,
       "mute_audio": false,
-      "name": "Beautiful Place Lodge Live Cam | Maasai Mara, Kenya (YouTube)",
+      "name": "Mahali Mzuri Lodge, Maasai Mara, Kenya (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=ZWhvO6R37ck",
       "stream_type": "youtube",
-      "updated_at": 1777668586.41615
+      "updated_at": 1787785940.229293
     },
     {
       "channel_name": "National Trust",
@@ -1969,13 +1969,13 @@
       "channel_name": "Africam",
       "created_at": 1774523094.7391977,
       "enabled": true,
-      "lat": -24.20948,
-      "lon": 30.9133,
+      "lat": -24.70796,
+      "lon": 26.20553,
       "mute_audio": false,
-      "name": "Safari Cam | Watch Lions, Elephants & More, Olifants West Game Reserve, South Africa (YouTube)",
+      "name": "Tau Game Lodge, Mmadikwe, South Africa (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=qpukdDslCjk",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4235966
+      "updated_at": 1787785498.1681406
     },
     {
       "channel_name": "Explore Oceans",
@@ -1990,7 +1990,7 @@
       "updated_at": 1777668586.4236317
     },
     {
-      "channel_name": "Explore African Wildlife",
+      "channel_name": "Unknown Channel",
       "created_at": 1774399473.7776937,
       "enabled": true,
       "lat": 0.29228,
@@ -1998,9 +1998,9 @@
       "mute_audio": false,
       "name": "Savannah View, Watering Hole, Mpala Research Centre, Laikipia County, Kenya (YouTube)",
       "original_yt_title": "LIVE African Animal Lookout - Kenya Savannah View - MPALA | explore.org",
-      "page_url": "https://www.youtube.com/watch?v=5BvAb1ux-Sg",
+      "page_url": "https://www.youtube.com/watch?v=AaIUo_jTlxo",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4236805
+      "updated_at": 1787752116.102887
     },
     {
       "channel_name": "Wildlife of Maine",
@@ -3734,16 +3734,16 @@
       "updated_at": 1787430134.0452492
     },
     {
-      "channel_name": "DIRECTO NATURA",
+      "channel_name": "Unknown Channel",
       "created_at": 1787428405.7928548,
       "enabled": true,
       "lat": 40.82727,
       "lon": -2.01359,
       "mute_audio": false,
       "name": "Vultures and Egyptian Vultures, Cam 82, Molina de Arag\u00f3n-Alto Tajo Region, Spain (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=k2pDwJKUeE4",
+      "page_url": "https://www.youtube.com/watch?v=_JiLp5XU_6k",
       "stream_type": "youtube",
-      "updated_at": 1787430185.0366483
+      "updated_at": 1787752093.2118506
     },
     {
       "channel_name": "Unknown Channel",
@@ -3755,7 +3755,7 @@
       "name": "Backyard, Bird Feeder, Ozark Mountains, Southern Missouri, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=_wnjeiATFk4",
       "stream_type": "youtube",
-      "updated_at": 1787699528.327405
+      "updated_at": 1787752041.8860514
     },
     {
       "channel_name": "Unknown Channel",
@@ -3767,7 +3767,7 @@
       "name": "Bald Eagle Cam, Glen Hazel, Pittsburgh, Pennsylvania, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=yPq9aNukckQ",
       "stream_type": "youtube",
-      "updated_at": 1787699517.937685
+      "updated_at": 1787751989.5660155
     },
     {
       "channel_name": "Unknown Channel",
@@ -3777,9 +3777,9 @@
       "lon": -0.72546,
       "mute_audio": false,
       "name": "Bird Cam, Fotherdale, Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=1PHylxad21s",
+      "page_url": "https://www.youtube.com/watch?v=q28Q9_qzqyg",
       "stream_type": "youtube",
-      "updated_at": 1787699536.1062486
+      "updated_at": 1787752055.0062633
     },
     {
       "channel_name": "Unknown Channel",
@@ -3791,7 +3791,7 @@
       "name": "Bird Cam, Kettle Moraine State Forest, Whitewater, Wisconsin, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=KSbM3x3aJmI",
       "stream_type": "youtube",
-      "updated_at": 1787699640.3796554
+      "updated_at": 1787752147.2174838
     },
     {
       "channel_name": "Unknown Channel",
@@ -3803,7 +3803,7 @@
       "name": "Bird Feeder Cam 2, Nashville, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=3uEi1fE7mCY",
       "stream_type": "youtube",
-      "updated_at": 1787699527.274672
+      "updated_at": 1787752037.6775265
     },
     {
       "channel_name": "Unknown Channel",
@@ -3815,7 +3815,7 @@
       "name": "Bird Nest Box1, Recke, Germany (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=on7uHHwZDZQ",
       "stream_type": "youtube",
-      "updated_at": 1787699618.8745298
+      "updated_at": 1787752121.6434453
     },
     {
       "channel_name": "Unknown Channel",
@@ -3827,7 +3827,7 @@
       "name": "Birds Feeder, Suburban Garden, Pretoria, South Africa (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=MrLVxFR1IbI",
       "stream_type": "youtube",
-      "updated_at": 1787699604.9592083
+      "updated_at": 1787752105.9795408
     },
     {
       "channel_name": "Unknown Channel",
@@ -3839,7 +3839,7 @@
       "name": "Central Highlands, Arizona, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=jaGPSAZ_uow",
       "stream_type": "youtube",
-      "updated_at": 1787699613.5042756
+      "updated_at": 1787752110.8348489
     },
     {
       "channel_name": "Explore Farm Life",
@@ -3864,7 +3864,7 @@
       "name": "Garden and Critter Cam, Birmingham, Alabama, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=LK_MNTYEHR8",
       "stream_type": "youtube",
-      "updated_at": 1787699532.0566568
+      "updated_at": 1787752051.0223396
     },
     {
       "channel_name": "Africam",
@@ -3873,11 +3873,11 @@
       "lat": -24.80157,
       "lon": 31.40139,
       "mute_audio": false,
-      "name": "Live Safari from Nkorho Bush Lodge | 24/7 Wildlife in Sabi Sand, South Africa (YouTube)",
+      "name": "Live Safari from Nkorho Bush Lodge, Sabi Sand, South Africa (YouTube)",
       "original_yt_title": "Live Safari from Nkorho Bush Lodge | 24/7 Wildlife in Sabi Sand, South Africa",
       "page_url": "https://www.youtube.com/watch?v=sQAhSkjRKGk",
       "stream_type": "youtube",
-      "updated_at": 1787617260.3811917
+      "updated_at": 1787785008.6874297
     },
     {
       "channel_name": "Unknown Channel",
@@ -3887,9 +3887,9 @@
       "lon": -0.72546,
       "mute_audio": false,
       "name": "LIVE Tawny Owls, Kestrels , Buzzards, Badgers & More | From Ash Wood, Yorkshire, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=m2M_GBwzrGc",
+      "page_url": "https://www.youtube.com/watch?v=bnQloTGd3OY",
       "stream_type": "youtube",
-      "updated_at": 1787699544.376246
+      "updated_at": 1787752059.209085
     },
     {
       "channel_name": "Bushtops Safaris",
@@ -3914,7 +3914,7 @@
       "name": "Osprey Cam, Moraine State Park, Pittsburgh, Pennsylvania, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=5DlywACQ9qM",
       "stream_type": "youtube",
-      "updated_at": 1787699520.0097878
+      "updated_at": 1787752005.6872544
     },
     {
       "channel_name": "Brownville's Food Pantry For Deer",
@@ -3939,7 +3939,7 @@
       "name": "Underwater Cam, Mega Lab, Off the Coast of Kona, Hawaii, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=jOp_aAXsYmE",
       "stream_type": "youtube",
-      "updated_at": 1787699529.93184
+      "updated_at": 1787752046.530255
     },
     {
       "channel_name": "Unknown Channel",
@@ -3951,7 +3951,7 @@
       "name": "Underwater fauna, Cam 71, Avila, Spain (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=WwX7cj_esqo",
       "stream_type": "youtube",
-      "updated_at": 1787699576.1810136
+      "updated_at": 1787752087.6869047
     },
     {
       "channel_name": "Charter Wildlife Cams",
@@ -3977,7 +3977,7 @@
       "original_yt_title": "LIVE Alligators and Spoonbills - St. Augustine's Alligator Farm Zoological Park | explore.org",
       "page_url": "https://www.youtube.com/watch?v=qJr5KK6F7Q0",
       "stream_type": "youtube",
-      "updated_at": 1787699526.211068
+      "updated_at": 1787752033.790649
     },
     {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
@@ -4016,7 +4016,7 @@
       "original_yt_title": "LIVE Arctic Tundra: Cape South - Wapusk National Park | explore.org",
       "page_url": "https://www.youtube.com/watch?v=dF6frKSZZU8",
       "stream_type": "youtube",
-      "updated_at": 1787699523.5097685
+      "updated_at": 1787752029.5437
     },
     {
       "channel_name": "Unknown Channel",
@@ -4029,7 +4029,7 @@
       "original_yt_title": "Mission Mountain Range powered by Explore.org",
       "page_url": "https://www.youtube.com/watch?v=wDgZkzkOP-s",
       "stream_type": "youtube",
-      "updated_at": 1787699635.2336078
+      "updated_at": 1787752136.9642978
     },
     {
       "channel_name": "Wildlife of Maine",
@@ -4053,9 +4053,9 @@
       "mute_audio": false,
       "name": "Wildlife Cam, Critter Camp, Rose City, Michigan, USA (YouTube)",
       "original_yt_title": "\ud83e\udd8c Critter Camp @ Rose City Trails, Live Michigan Wildlife Cam | Deer, Turkeys & More \ud83e\udd9d",
-      "page_url": "https://www.youtube.com/watch?v=_xL29rf3IvA",
+      "page_url": "https://www.youtube.com/watch?v=KLXqn27RUj0",
       "stream_type": "youtube",
-      "updated_at": 1787626843.160931
+      "updated_at": 1787752078.0795305
     },
     {
       "channel_name": "Unknown Channel",
@@ -4067,7 +4067,7 @@
       "name": "Chicken Coop Cam, Near Reservoir Rozkos, Czech Republic (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=CHd1G_WWb3I",
       "stream_type": "youtube",
-      "updated_at": 1787699651.7787242
+      "updated_at": 1787752161.783039
     },
     {
       "channel_name": "Unknown Channel",
@@ -4080,7 +4080,7 @@
       "original_yt_title": "\ud83d\udd34 En directo: 24/7 Erupci\u00f3n del volc\u00e1n de Fuego en 4K Ultra HD (Guatemala)",
       "page_url": "https://www.youtube.com/watch?v=mRRrJJlO0vg",
       "stream_type": "youtube",
-      "updated_at": 1787699521.4458494
+      "updated_at": 1787752020.565043
     },
     {
       "channel_name": "Unknown Channel",
@@ -4093,7 +4093,7 @@
       "original_yt_title": "Lince ib\u00e9rico \ud83d\udd34 DIRECTO Sierra Morena (C\u00e1mara 36 | Ja\u00e9n)",
       "page_url": "https://www.youtube.com/watch?v=JuBKDmfYVk8",
       "stream_type": "youtube",
-      "updated_at": 1787699585.3833468
+      "updated_at": 1787752090.540936
     },
     {
       "channel_name": "Unknown Channel",
@@ -4105,7 +4105,7 @@
       "name": "Water Fountain Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=O6uaw8TV19U",
       "stream_type": "youtube",
-      "updated_at": 1787699551.2406979
+      "updated_at": 1787752063.8993254
     },
     {
       "channel_name": "Unknown Channel",
@@ -4116,9 +4116,9 @@
       "mute_audio": false,
       "name": "McCaslin Brook Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
       "original_yt_title": "\ud83d\udd34 McCaslin Brook flowing water Live 24/7 | Serene Babbling Brook Sounds | Nicolet National Forest.",
-      "page_url": "https://www.youtube.com/watch?v=QUTRiSUzYtY",
+      "page_url": "https://www.youtube.com/watch?v=kK-nTVxvs3k",
       "stream_type": "youtube",
-      "updated_at": 1787699592.440711
+      "updated_at": 1787752096.616946
     },
     {
       "channel_name": "Unknown Channel",
@@ -4129,9 +4129,9 @@
       "mute_audio": false,
       "name": "Wildlife Feeder Cam, Nicolet National Forest, northern Oconto County, Wisconsin, USA (YouTube)",
       "original_yt_title": "\ud83d\udd34 24/7 Wildlife Feeder Live | Woodpeckers, deer, otters, bear | Nicolet National Forest, Wisconsin",
-      "page_url": "https://www.youtube.com/watch?v=wp71jaC4_SA",
+      "page_url": "https://www.youtube.com/watch?v=KBlwQf3NrLY",
       "stream_type": "youtube",
-      "updated_at": 1787699598.8136249
+      "updated_at": 1787752101.3899827
     },
     {
       "channel_name": "Unknown Channel",
@@ -4141,9 +4141,9 @@
       "lon": -86.25342,
       "mute_audio": false,
       "name": "Birds, Squirrels & Wildlife Feeder Cam, South Bend, Indiana, USA (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=HiwT5x0i8QY",
+      "page_url": "https://www.youtube.com/watch?v=0Ev2wgh1hc4",
       "stream_type": "youtube",
-      "updated_at": 1787699563.5620928
+      "updated_at": 1787752072.6172473
     },
     {
       "channel_name": "Unknown Channel",
@@ -4192,7 +4192,7 @@
       "name": "Animals and Wildlife Cam, Gaylord, Michigan, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=IU_-Pl9O5jQ",
       "stream_type": "youtube",
-      "updated_at": 1787699627.104156
+      "updated_at": 1787752130.7787485
     },
     {
       "channel_name": "Explore Bears",
@@ -4891,6 +4891,133 @@
     "swarm_bbox_padding": 1.5,
     "swarm_max_zoom": 6
   },
+  "maintenance_mode": false,
+  "channels": {
+    "Live Nature Meditations - Rivers": "https://www.youtube.com/channel/UC7q505iPfTehVJUDYEm1jWw",
+    "Explore Oceans": "https://www.youtube.com/channel/UCSyg9cb3Iq-NtlbxqNB9wGw",
+    "DIRECTO NATURA": "https://www.youtube.com/channel/UCKqAJfYEVCPLbdgOm8QqSQg",
+    "EarthCam": "https://www.youtube.com/channel/UC6qrG3W8SMK0jior2olka3g",
+    "Hummingbird Spot": "https://www.youtube.com/channel/UCK9WO9hqKmaAccZqCgeOw4w",
+    "Eastern Backwoods Outdoors": "https://www.youtube.com/channel/UCwKZbPPsC3feAft_2CXLzRQ",
+    "Explore Birds Bats Bees": "https://www.youtube.com/channel/UC8NnosPOvXnm0O1u5YnLQiw",
+    "Bird Watching HQ": "https://www.youtube.com/channel/UCuL60_Ko4m9xCaa4QDNgJrw",
+    "Sun Prairie Farms | Ozarks Live Bird Cam": "https://www.youtube.com/channel/UC6ut-iMQD37vWRHzlqJKuEg",
+    "Cornish Wildlife Watch": "https://www.youtube.com/channel/UC4uK_QRR1OCJH5yYxiz9CCA",
+    "PixCams": "https://www.youtube.com/channel/UC5lMzpZvCLpwyvu348B8zYw",
+    "NatureTec": "https://www.youtube.com/channel/UC-HQ-oPvL148RmDxpV4jzlQ",
+    "Canadian Bird Nerd": "https://www.youtube.com/channel/UCTSERkvlHx8moI1ggjvcZwg",
+    "Alyssa's Nature Sanctuary": "https://www.youtube.com/channel/UCkirg3K9o212uh5BEt100NQ",
+    "Ken Little": "https://www.youtube.com/channel/UC-0uK90U1sH5A_2dHYVVm5Q",
+    "Robert E Fuller": "https://www.youtube.com/channel/UCU0LJ9et5Tb3m7COFzShgLg",
+    "Mister Lou": "https://www.youtube.com/channel/UClLrjLCI7A9xnDI7saKIB3A",
+    "UW-Whitewater Biology Nature Cam": "https://www.youtube.com/channel/UC5bPx5f_XljnDBEC5J-Gt7w",
+    "Charter Wildlife Cams": "https://www.youtube.com/channel/UCPg9n8m6dycxSnqm8zgo_zA",
+    "Nashville Bird Cam": "https://www.youtube.com/channel/UClOWy1mPxNB1D3cpmmxqGEg",
+    "Tracy Aviary": "https://www.youtube.com/channel/UCML4yufj2lrcqRnGfxP6g_g",
+    "FL Birds Live Cam": "https://www.youtube.com/channel/UCa7884YxDhXFhtPH5cQ6zMg",
+    "Kristen Martyn": "https://www.youtube.com/channel/UC9WvAuNxo9AHloubiweuPiw",
+    "Rough Riders Show": "https://www.youtube.com/channel/UCqvTqoeYYlvDCWMa7FuGFiQ",
+    "RSPB": "https://www.youtube.com/channel/UCl8QdQ9ZaBT65tF1yOmbMBQ",
+    "Gettysburg LiveCam": "https://www.youtube.com/channel/UCx8KaDsE0B4HsQdNBCsvyaA",
+    "Mustang Run Feeder": "https://www.youtube.com/channel/UCGB7D5KEPvVgrUaPHv5Is3g",
+    "Devon Wildlife Trust": "https://www.youtube.com/channel/UCFBLgN9dJFwU9qF_Ju8QAAg",
+    "chiricahuamountains": "https://www.youtube.com/channel/UCdYF7aURsAAhTjYHovDxQEg",
+    "Nature Live Camera": "https://www.youtube.com/channel/UCRPhYF9rd5ov7DNKj99MNIg",
+    "Explore Africa": "https://www.youtube.com/channel/UCiGOIXjFqy5_mUNxQNOMfHw",
+    "Cornell Lab Bird Cams": "https://www.youtube.com/channel/UCZXZQxS3d6NpR-eH_gdDwYA",
+    "FalconCam Project": "https://www.youtube.com/channel/UCNMulUCdUibAMPnaR1e0kEw",
+    "Birdcam.it": "https://www.youtube.com/channel/UCFacr2MPJtsimiLeuU0mcaA",
+    "Africam": "https://www.youtube.com/channel/UCuoNAKa3P0QR1Lw9QdpmoVg",
+    "Window To Wildlife": "https://www.youtube.com/channel/UCjkONCANClnUQ44Oy4BMrCw",
+    "Explore Farm Life": "https://www.youtube.com/channel/UCMWAvusUV2eeVVHZDKiMKrw",
+    "Vojtech Andres": "https://www.youtube.com/channel/UCn8-zofq3dDFlYaXcwjUIWQ",
+    "Madarles - Live Bird Cams": "https://www.youtube.com/channel/UCU31-9qcY1RDuMad67dbuhw",
+    "Allen Birdcam": "https://www.youtube.com/channel/UCFzY3MF-rYrexk1be3gnTRw",
+    "Live Osprey & Falcons": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
+    "CritterVision": "https://www.youtube.com/channel/UCbOFo3LkOSKMN1-0lEMqB5Q",
+    "Southwest Florida Eagle Cam": "https://www.youtube.com/channel/UC0aJpP4DgTL96qnQE5BA1Sw",
+    "Wildlife of Maine": "https://www.youtube.com/channel/UCRjLyQ6YQm5JOG5aMQJyMkQ",
+    "FOBBV CAM": "https://www.youtube.com/channel/UCsFgbVuhRrPV5FqyN7kOD8g",
+    "Trempealeau Eagles": "https://www.youtube.com/channel/UC3eg-I1rE3_SIo2gJhV4Bhg",
+    "Explore Live Nature Cams": "https://www.youtube.com/channel/UC-2KSeUU5SMCX6XLRD-AEvw",
+    "Dulles Greenway Eagle Cam": "https://www.youtube.com/channel/UCBdE_d2jwA2vineJ5Ix2bgw",
+    "Marine Biological Laboratory": "https://www.youtube.com/channel/UCR3z9aGvNECUL6EabcSUk3A",
+    "Zachranna stanice zivocichu Makov": "https://www.youtube.com/channel/UCFgH1S3UesjjQypQ-g5OB8Q",
+    "Wildlife Pulse": "https://www.youtube.com/channel/UCkN99tb9rDWsS3c5mKwWsJw",
+    "afarTV": "https://www.youtube.com/channel/UCaG0IHN1RMOZ4-U3wDXAkwA",
+    "Indiana Department of Natural Resources": "https://www.youtube.com/channel/UCSIcyI6c9I57XehZ6Y5124Q",
+    "Gracegorillas": "https://www.youtube.com/channel/UCK2iQu8NDbxtkxEd4xqaMag",
+    "Explore Zen Den": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
+    "American Eagle Foundation": "https://www.youtube.com/channel/UCWl9BI3rn0-YVCuWS_g2FUw",
+    "Monterey Bay Aquarium": "https://www.youtube.com/channel/UCnM5iMGiKsZg-iOlIO2ZkdQ",
+    "LIVE Stream Maine": "https://www.youtube.com/channel/UCskO9qw7iM4Cgu5wAUbaX5g",
+    "Woodlands Critter Quest": "https://www.youtube.com/channel/UCaLACDf5aXquc4-i89vfyqg",
+    "HANS NATUURKANAAL": "https://www.youtube.com/channel/UCyC-ZovqS5MD-A9Iz0f8RAw",
+    "Northeast College Events": "https://www.youtube.com/channel/UCbKszM_IyiDuNXQxoHNqxng",
+    "Live African Wildlife": "https://www.youtube.com/channel/UCMfjW-9aZnsR-Rq-Ngo4CpQ",
+    "Bushtops Safaris": "https://www.youtube.com/channel/UCpYmJpK_TSk8imQsZ8A9LNA",
+    "chi s": "https://www.youtube.com/channel/UCknCiFBy4pQTphwgyj2aa7A",
+    "Deer Creek Wildlife Cam": "https://www.youtube.com/channel/UCP0kE61hponI9np6u4_1YlQ",
+    "Midaway Atoll NWR WildLife Live Camera": "https://www.youtube.com/channel/UCgDSg8kDhdOO3xwAJ_svtaA",
+    "Crow's Nest Live Cams": "https://www.youtube.com/channel/UC9THKyF-k-CYReVjc4rGDSQ",
+    "iPanda": "https://www.youtube.com/channel/UCtEgLf0_j1vJLz0aNEdO2SQ",
+    "Live Panda and Polar Bear Cams": "https://www.youtube.com/channel/UCQI1rdPytw4jDAjwqXVSgfA",
+    "Royal Free Charity": "https://www.youtube.com/channel/UCdSAAfUXk0_wHAlHlJgFLgg",
+    "Brownville's Food Pantry For Deer": "https://www.youtube.com/channel/UCdmPhiIJ-s7MJG2WtM7nbUw",
+    "Relaxing Wildlife": "https://www.youtube.com/channel/UCm-LBntCVU2cmS6-G3Ea6zA",
+    "Just Bill Bird Live Stream": "https://www.youtube.com/channel/UCG1uo50XHSYJXArjRdENvfA",
+    "MEGA Lab": "https://www.youtube.com/channel/UCTLF36lXVM7uiR-VolWHv0Q",
+    "Viva The Keys": "https://www.youtube.com/channel/UCtzYRypg21-R2suTVCetlbg",
+    "Deerfield Beach Live": "https://www.youtube.com/channel/UCGOxU-8iNOeoG3a337shXoA",
+    "Wahoo Bay": "https://www.youtube.com/channel/UCcCXppxPeV4-xBKIwZXCQMQ",
+    "NamibiaCam": "https://www.youtube.com/channel/UC9X6gGKDv2yhMoofoeS7-Gg",
+    "The Friends of Algonquin Park": "https://www.youtube.com/channel/UCWnud9RdFRc8VXmVkHQrFxg",
+    "Scottish Wildlife Garden": "https://www.youtube.com/channel/UCbk8aByq7psiAKx41MQTnzQ",
+    "Determined To Explore": "https://www.youtube.com/channel/UC4xa0Ep5fw-xSo9H8tgphVQ",
+    "Urdaibai Bird Center": "https://www.youtube.com/channel/UCBeIuQX299e1MxFuSszHxtQ",
+    "Destin Fort Walton Beach": "https://www.youtube.com/@DestinFortWaltonBeach",
+    "Live Manatee, River & Wetland Bird Cams": "https://www.youtube.com/channel/UC7q505iPfTehVJUDYEm1jWw",
+    "Live Osprey & Peregrine Falcon Cams": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
+    "Vojt\u011bch Andres": "https://www.youtube.com/channel/UCn8-zofq3dDFlYaXcwjUIWQ",
+    "GRACEgorillas": "https://www.youtube.com/channel/UCK2iQu8NDbxtkxEd4xqaMag",
+    "Friends of Midway Atoll NWR": "https://www.youtube.com/channel/UCgDSg8kDhdOO3xwAJ_svtaA",
+    "Z\u00e1chrann\u00e1 stanice \u017eivo\u010dich\u016f Makov": "https://www.youtube.com/channel/UCFgH1S3UesjjQypQ-g5OB8Q",
+    "Unknown Channel": "https://www.youtube.com/channel/UCKqAJfYEVCPLbdgOm8QqSQg",
+    "Destin-Fort Walton Beach": "https://www.youtube.com/@DestinFortWaltonBeach",
+    "Explore Gorilla & Bonobo Cams: Great Apes": null,
+    "Explore Manatee, River & Wetland Bird Cams": "https://youtube.com/@exploremanateesandrivers",
+    "Explore Hummingbird & Bird Migration Cams": null,
+    "Explore Bee Hive & Backyard Cams": "https://youtube.com/@explorebackyardwildlife",
+    "Texas Backyard Wildlife": null,
+    "RoseCityTrails": "https://www.youtube.com/@RoseCityTrails",
+    "Explore African Wildlife": "https://www.youtube.com/channel/UCMfjW-9aZnsR-Rq-Ngo4CpQ",
+    "Explore Osprey & Peregrine Falcon Cams": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
+    "Explore Panda and Polar Bear Cams": "https://www.youtube.com/channel/UCQI1rdPytw4jDAjwqXVSgfA",
+    "Explore Whale Walrus & Seal Cams": "https://www.youtube.com/channel/UC5RV1g0fRYXfrt75hqvohKw",
+    "Tennessee Wildlife Livestream": null,
+    "Steve Beckwith Outdoors - Maine Outback": null,
+    "Methow Valley Wildlife Cam": null,
+    "Explore Northern Lights & Nature Meditation Cams": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
+    "HANS NATURE CHANNEL": "https://www.youtube.com/channel/UCyC-ZovqS5MD-A9Iz0f8RAw",
+    "Explore Big Surf, Beaches and Sunsets": null,
+    "Backyard Birding": "https://www.youtube.com/@Backyard-Birding",
+    "Home by the Hedgerow": "https://www.youtube.com/@homebythehedgerow",
+    "Norm Hughes": "https://www.youtube.com/@Norm.Hughes",
+    "Finch Research Network (FiRN)": null,
+    "Birds in Ukraine": null,
+    "Newfields": null,
+    "Wildlife Rescue of Dade County": null,
+    "Steve Wildlife": null,
+    "Explore Owl Nests & California Condors": "https://www.youtube.com/@ExploreOwlsandCondors",
+    "Andy's Birds": "https://www.youtube.com/@andysbirds",
+    "JJ's Jungle \u2013 Live National Forest Wildlife Cams": "https://www.youtube.com/@jjsjungle69",
+    "North Carolina Bird Cam": null,
+    "Explore Bears": "https://www.youtube.com/channel/UC2Sk0aXLq3ADkH_USGPKT_Q",
+    "Explore Eagle Nest Cams": "https://youtube.com/@explorebirds",
+    "CarnyxWild": "https://youtube.com/@carnyxwild",
+    "Explore Wolf & Bison Cams: North American Wildlife": "https://youtube.com/@explorewolvesandbison",
+    "Charter Group Birdcams": "https://www.youtube.com/channel/UCzbydNAcB7jeJGssRFb_dCA"
+  },
   "database_cloud": {
     "enabled": true,
     "host": "YOUR_SERVER_IP",
@@ -4908,35 +5035,28 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1213
+        "usage_count": 1233
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1221
+        "usage_count": 1249
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1245
+        "usage_count": 1269
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1218
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1200
+        "usage_count": 1247
       },
       {
         "exhausted_until": 0,
@@ -4950,98 +5070,105 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1220
+        "usage_count": 1254
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1245
+        "usage_count": 1248
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1226
+        "usage_count": 1276
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1245
+        "usage_count": 1253
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1212
+        "usage_count": 1272
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1195
+        "usage_count": 1240
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1218
+        "usage_count": 1225
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1215
+        "usage_count": 1244
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1213
+        "usage_count": 1241
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1219
+        "usage_count": 1240
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1216
+        "usage_count": 1247
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1232
+        "usage_count": 1242
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1234
+        "usage_count": 1260
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1264
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Paid",
-        "usage_count": 29901
+        "usage_count": 30145
       }
     ],
     "cycle_interval_seconds": 60,
@@ -5770,7 +5897,7 @@
     "min_depth_flock": "Background",
     "vision_resolution": "1080p",
     "strict_proxy": true,
-    "vision_workers": 1,
+    "vision_workers": 3,
     "predator_reflex_threshold": 35,
     "telegram_alerts": {
       "enabled": true,
@@ -5782,133 +5909,6 @@
     },
     "vision_dormancy_threshold_mins": 60,
     "vision_dormant_interval_mins": 20
-  },
-  "maintenance_mode": false,
-  "channels": {
-    "Live Nature Meditations - Rivers": "https://www.youtube.com/channel/UC7q505iPfTehVJUDYEm1jWw",
-    "Explore Oceans": "https://www.youtube.com/channel/UCSyg9cb3Iq-NtlbxqNB9wGw",
-    "DIRECTO NATURA": "https://www.youtube.com/channel/UCKqAJfYEVCPLbdgOm8QqSQg",
-    "EarthCam": "https://www.youtube.com/channel/UC6qrG3W8SMK0jior2olka3g",
-    "Hummingbird Spot": "https://www.youtube.com/channel/UCK9WO9hqKmaAccZqCgeOw4w",
-    "Eastern Backwoods Outdoors": "https://www.youtube.com/channel/UCwKZbPPsC3feAft_2CXLzRQ",
-    "Explore Birds Bats Bees": "https://www.youtube.com/channel/UC8NnosPOvXnm0O1u5YnLQiw",
-    "Bird Watching HQ": "https://www.youtube.com/channel/UCuL60_Ko4m9xCaa4QDNgJrw",
-    "Sun Prairie Farms | Ozarks Live Bird Cam": "https://www.youtube.com/channel/UC6ut-iMQD37vWRHzlqJKuEg",
-    "Cornish Wildlife Watch": "https://www.youtube.com/channel/UC4uK_QRR1OCJH5yYxiz9CCA",
-    "PixCams": "https://www.youtube.com/channel/UC5lMzpZvCLpwyvu348B8zYw",
-    "NatureTec": "https://www.youtube.com/channel/UC-HQ-oPvL148RmDxpV4jzlQ",
-    "Canadian Bird Nerd": "https://www.youtube.com/channel/UCTSERkvlHx8moI1ggjvcZwg",
-    "Alyssa's Nature Sanctuary": "https://www.youtube.com/channel/UCkirg3K9o212uh5BEt100NQ",
-    "Ken Little": "https://www.youtube.com/channel/UC-0uK90U1sH5A_2dHYVVm5Q",
-    "Robert E Fuller": "https://www.youtube.com/channel/UCU0LJ9et5Tb3m7COFzShgLg",
-    "Mister Lou": "https://www.youtube.com/channel/UClLrjLCI7A9xnDI7saKIB3A",
-    "UW-Whitewater Biology Nature Cam": "https://www.youtube.com/channel/UC5bPx5f_XljnDBEC5J-Gt7w",
-    "Charter Wildlife Cams": "https://www.youtube.com/channel/UCPg9n8m6dycxSnqm8zgo_zA",
-    "Nashville Bird Cam": "https://www.youtube.com/channel/UClOWy1mPxNB1D3cpmmxqGEg",
-    "Tracy Aviary": "https://www.youtube.com/channel/UCML4yufj2lrcqRnGfxP6g_g",
-    "FL Birds Live Cam": "https://www.youtube.com/channel/UCa7884YxDhXFhtPH5cQ6zMg",
-    "Kristen Martyn": "https://www.youtube.com/channel/UC9WvAuNxo9AHloubiweuPiw",
-    "Rough Riders Show": "https://www.youtube.com/channel/UCqvTqoeYYlvDCWMa7FuGFiQ",
-    "RSPB": "https://www.youtube.com/channel/UCl8QdQ9ZaBT65tF1yOmbMBQ",
-    "Gettysburg LiveCam": "https://www.youtube.com/channel/UCx8KaDsE0B4HsQdNBCsvyaA",
-    "Mustang Run Feeder": "https://www.youtube.com/channel/UCGB7D5KEPvVgrUaPHv5Is3g",
-    "Devon Wildlife Trust": "https://www.youtube.com/channel/UCFBLgN9dJFwU9qF_Ju8QAAg",
-    "chiricahuamountains": "https://www.youtube.com/channel/UCdYF7aURsAAhTjYHovDxQEg",
-    "Nature Live Camera": "https://www.youtube.com/channel/UCRPhYF9rd5ov7DNKj99MNIg",
-    "Explore Africa": "https://www.youtube.com/channel/UCiGOIXjFqy5_mUNxQNOMfHw",
-    "Cornell Lab Bird Cams": "https://www.youtube.com/channel/UCZXZQxS3d6NpR-eH_gdDwYA",
-    "FalconCam Project": "https://www.youtube.com/channel/UCNMulUCdUibAMPnaR1e0kEw",
-    "Birdcam.it": "https://www.youtube.com/channel/UCFacr2MPJtsimiLeuU0mcaA",
-    "Africam": "https://www.youtube.com/channel/UCuoNAKa3P0QR1Lw9QdpmoVg",
-    "Window To Wildlife": "https://www.youtube.com/channel/UCjkONCANClnUQ44Oy4BMrCw",
-    "Explore Farm Life": "https://www.youtube.com/channel/UCMWAvusUV2eeVVHZDKiMKrw",
-    "Vojtech Andres": "https://www.youtube.com/channel/UCn8-zofq3dDFlYaXcwjUIWQ",
-    "Madarles - Live Bird Cams": "https://www.youtube.com/channel/UCU31-9qcY1RDuMad67dbuhw",
-    "Allen Birdcam": "https://www.youtube.com/channel/UCFzY3MF-rYrexk1be3gnTRw",
-    "Live Osprey & Falcons": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
-    "CritterVision": "https://www.youtube.com/channel/UCbOFo3LkOSKMN1-0lEMqB5Q",
-    "Southwest Florida Eagle Cam": "https://www.youtube.com/channel/UC0aJpP4DgTL96qnQE5BA1Sw",
-    "Wildlife of Maine": "https://www.youtube.com/channel/UCRjLyQ6YQm5JOG5aMQJyMkQ",
-    "FOBBV CAM": "https://www.youtube.com/channel/UCsFgbVuhRrPV5FqyN7kOD8g",
-    "Trempealeau Eagles": "https://www.youtube.com/channel/UC3eg-I1rE3_SIo2gJhV4Bhg",
-    "Explore Live Nature Cams": "https://www.youtube.com/channel/UC-2KSeUU5SMCX6XLRD-AEvw",
-    "Dulles Greenway Eagle Cam": "https://www.youtube.com/channel/UCBdE_d2jwA2vineJ5Ix2bgw",
-    "Marine Biological Laboratory": "https://www.youtube.com/channel/UCR3z9aGvNECUL6EabcSUk3A",
-    "Zachranna stanice zivocichu Makov": "https://www.youtube.com/channel/UCFgH1S3UesjjQypQ-g5OB8Q",
-    "Wildlife Pulse": "https://www.youtube.com/channel/UCkN99tb9rDWsS3c5mKwWsJw",
-    "afarTV": "https://www.youtube.com/channel/UCaG0IHN1RMOZ4-U3wDXAkwA",
-    "Indiana Department of Natural Resources": "https://www.youtube.com/channel/UCSIcyI6c9I57XehZ6Y5124Q",
-    "Gracegorillas": "https://www.youtube.com/channel/UCK2iQu8NDbxtkxEd4xqaMag",
-    "Explore Zen Den": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
-    "American Eagle Foundation": "https://www.youtube.com/channel/UCWl9BI3rn0-YVCuWS_g2FUw",
-    "Monterey Bay Aquarium": "https://www.youtube.com/channel/UCnM5iMGiKsZg-iOlIO2ZkdQ",
-    "LIVE Stream Maine": "https://www.youtube.com/channel/UCskO9qw7iM4Cgu5wAUbaX5g",
-    "Woodlands Critter Quest": "https://www.youtube.com/channel/UCaLACDf5aXquc4-i89vfyqg",
-    "HANS NATUURKANAAL": "https://www.youtube.com/channel/UCyC-ZovqS5MD-A9Iz0f8RAw",
-    "Northeast College Events": "https://www.youtube.com/channel/UCbKszM_IyiDuNXQxoHNqxng",
-    "Live African Wildlife": "https://www.youtube.com/channel/UCMfjW-9aZnsR-Rq-Ngo4CpQ",
-    "Bushtops Safaris": "https://www.youtube.com/channel/UCpYmJpK_TSk8imQsZ8A9LNA",
-    "chi s": "https://www.youtube.com/channel/UCknCiFBy4pQTphwgyj2aa7A",
-    "Deer Creek Wildlife Cam": "https://www.youtube.com/channel/UCP0kE61hponI9np6u4_1YlQ",
-    "Midaway Atoll NWR WildLife Live Camera": "https://www.youtube.com/channel/UCgDSg8kDhdOO3xwAJ_svtaA",
-    "Crow's Nest Live Cams": "https://www.youtube.com/channel/UC9THKyF-k-CYReVjc4rGDSQ",
-    "iPanda": "https://www.youtube.com/channel/UCtEgLf0_j1vJLz0aNEdO2SQ",
-    "Live Panda and Polar Bear Cams": "https://www.youtube.com/channel/UCQI1rdPytw4jDAjwqXVSgfA",
-    "Royal Free Charity": "https://www.youtube.com/channel/UCdSAAfUXk0_wHAlHlJgFLgg",
-    "Brownville's Food Pantry For Deer": "https://www.youtube.com/channel/UCdmPhiIJ-s7MJG2WtM7nbUw",
-    "Relaxing Wildlife": "https://www.youtube.com/channel/UCm-LBntCVU2cmS6-G3Ea6zA",
-    "Just Bill Bird Live Stream": "https://www.youtube.com/channel/UCG1uo50XHSYJXArjRdENvfA",
-    "MEGA Lab": "https://www.youtube.com/channel/UCTLF36lXVM7uiR-VolWHv0Q",
-    "Viva The Keys": "https://www.youtube.com/channel/UCtzYRypg21-R2suTVCetlbg",
-    "Deerfield Beach Live": "https://www.youtube.com/channel/UCGOxU-8iNOeoG3a337shXoA",
-    "Wahoo Bay": "https://www.youtube.com/channel/UCcCXppxPeV4-xBKIwZXCQMQ",
-    "NamibiaCam": "https://www.youtube.com/channel/UC9X6gGKDv2yhMoofoeS7-Gg",
-    "The Friends of Algonquin Park": "https://www.youtube.com/channel/UCWnud9RdFRc8VXmVkHQrFxg",
-    "Scottish Wildlife Garden": "https://www.youtube.com/channel/UCbk8aByq7psiAKx41MQTnzQ",
-    "Determined To Explore": "https://www.youtube.com/channel/UC4xa0Ep5fw-xSo9H8tgphVQ",
-    "Urdaibai Bird Center": "https://www.youtube.com/channel/UCBeIuQX299e1MxFuSszHxtQ",
-    "Destin Fort Walton Beach": "https://www.youtube.com/@DestinFortWaltonBeach",
-    "Live Manatee, River & Wetland Bird Cams": "https://www.youtube.com/channel/UC7q505iPfTehVJUDYEm1jWw",
-    "Live Osprey & Peregrine Falcon Cams": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
-    "Vojt\u011bch Andres": "https://www.youtube.com/channel/UCn8-zofq3dDFlYaXcwjUIWQ",
-    "GRACEgorillas": "https://www.youtube.com/channel/UCK2iQu8NDbxtkxEd4xqaMag",
-    "Friends of Midway Atoll NWR": "https://www.youtube.com/channel/UCgDSg8kDhdOO3xwAJ_svtaA",
-    "Z\u00e1chrann\u00e1 stanice \u017eivo\u010dich\u016f Makov": "https://www.youtube.com/channel/UCFgH1S3UesjjQypQ-g5OB8Q",
-    "Unknown Channel": "https://www.youtube.com/channel/UCKqAJfYEVCPLbdgOm8QqSQg",
-    "Destin-Fort Walton Beach": "https://www.youtube.com/@DestinFortWaltonBeach",
-    "Explore Gorilla & Bonobo Cams: Great Apes": null,
-    "Explore Manatee, River & Wetland Bird Cams": "https://youtube.com/@exploremanateesandrivers",
-    "Explore Hummingbird & Bird Migration Cams": null,
-    "Explore Bee Hive & Backyard Cams": "https://youtube.com/@explorebackyardwildlife",
-    "Texas Backyard Wildlife": null,
-    "RoseCityTrails": "https://www.youtube.com/@RoseCityTrails",
-    "Explore African Wildlife": "https://www.youtube.com/channel/UCMfjW-9aZnsR-Rq-Ngo4CpQ",
-    "Explore Osprey & Peregrine Falcon Cams": "https://www.youtube.com/channel/UCv0In2Sw_YabIhMHHOoTSkA",
-    "Explore Panda and Polar Bear Cams": "https://www.youtube.com/channel/UCQI1rdPytw4jDAjwqXVSgfA",
-    "Explore Whale Walrus & Seal Cams": "https://www.youtube.com/channel/UC5RV1g0fRYXfrt75hqvohKw",
-    "Tennessee Wildlife Livestream": null,
-    "Steve Beckwith Outdoors - Maine Outback": null,
-    "Methow Valley Wildlife Cam": null,
-    "Explore Northern Lights & Nature Meditation Cams": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
-    "HANS NATURE CHANNEL": "https://www.youtube.com/channel/UCyC-ZovqS5MD-A9Iz0f8RAw",
-    "Explore Big Surf, Beaches and Sunsets": null,
-    "Backyard Birding": "https://www.youtube.com/@Backyard-Birding",
-    "Home by the Hedgerow": "https://www.youtube.com/@homebythehedgerow",
-    "Norm Hughes": "https://www.youtube.com/@Norm.Hughes",
-    "Finch Research Network (FiRN)": null,
-    "Birds in Ukraine": null,
-    "Newfields": null,
-    "Wildlife Rescue of Dade County": null,
-    "Steve Wildlife": null,
-    "Explore Owl Nests & California Condors": "https://www.youtube.com/@ExploreOwlsandCondors",
-    "Andy's Birds": "https://www.youtube.com/@andysbirds",
-    "JJ's Jungle \u2013 Live National Forest Wildlife Cams": "https://www.youtube.com/@jjsjungle69",
-    "North Carolina Bird Cam": null,
-    "Explore Bears": "https://www.youtube.com/channel/UC2Sk0aXLq3ADkH_USGPKT_Q",
-    "Explore Eagle Nest Cams": "https://youtube.com/@explorebirds",
-    "CarnyxWild": "https://youtube.com/@carnyxwild",
-    "Explore Wolf & Bison Cams: North American Wildlife": "https://youtube.com/@explorewolvesandbison",
-    "Charter Group Birdcams": "https://www.youtube.com/channel/UCzbydNAcB7jeJGssRFb_dCA"
   },
   "sync_engine_settings": {
     "auto_heal_enabled": true,
@@ -6077,5 +6077,6 @@
     "global_brake_pct": 95,
     "throttling_enabled": true
   },
-  "ignored_channels": []
+  "ignored_channels": [],
+  "channel_sync_rules": {}
 }

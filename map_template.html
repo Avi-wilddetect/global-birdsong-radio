@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Global Nervous System v41.16 (Edge-Pinning & Color Patch)</title>
+    <title>Global Nervous System v41.19 (Stacked Hover Kill Switch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -192,23 +192,24 @@
         /* REGULAR GREEN MAP ICON HOVER EFFECT */
         .hover-glow {
             transform: translate(-50%, -50%) scale(1.15) !important;
-            box-shadow: 0 0 12px #3CB043 !important;
-            border: 2px solid #3CB043 !important;
+            box-shadow: 0 0 10px rgba(60, 176, 67, 0.7) !important;
+            border: 3px solid rgba(60, 176, 67, 0.95) !important;
         }
 
         /* REGULAR GREEN MAP ICON THICK STROBE FLARE */
         .strobe-flare {
-            border-width: 3px !important;
-            box-shadow: 0 0 16px #3CB043 !important;
+            border-width: 4px !important;
+            box-shadow: 0 0 16px rgba(60, 176, 67, 1.0) !important;
         }
 
         /* CONTEXTUAL RED OVERRIDES FOR LIVE ICONS */
         .status-live.hover-glow {
-            box-shadow: 0 0 12px #FF3D00 !important;
-            border-color: #FF3D00 !important;
+            box-shadow: 0 0 10px rgba(255, 61, 0, 0.7) !important;
+            border-color: rgba(255, 61, 0, 0.95) !important;
         }
         .status-live.strobe-flare {
-            box-shadow: 0 0 16px #FF3D00 !important;
+            border-width: 4px !important;
+            box-shadow: 0 0 16px rgba(255, 61, 0, 1.0) !important;
         }
 
         .visible-anchor.target-active { z-index: 9999 !important; }
@@ -236,7 +237,6 @@
         .modal-note { font-size: 11px; color: #666; margin-top: 10px; text-align: center; }
 
         /* REGULAR GREEN OFF-SCREEN POINTER CSS (SVG Arrow, Z-Index 1999) */
-        /* Note: Removed 'transform' from @keyframes so it doesn't overwrite Javascript rotation */
         #offscreen-pointer {
             position: fixed;
             top: 50%;
@@ -266,7 +266,7 @@
     <div id="offscreen-pointer"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v41.16</div>
+    <div class="version-tag">v41.19</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -378,6 +378,7 @@
         const gracePeriodTimers = {}; 
         const tooltipHovers = {};    
         const strobeStates = {};     
+        const carouselIntervals = {}; // NEW: High Zoom Hover Carousel
 
         function getBadgesHtml(method, dist, frameSize, speciesName) {
             let m = String(method || 'audio');
@@ -551,9 +552,16 @@
         function setMarkerHover(idOrIds, isHover) {
             let ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
             const pointer = document.getElementById('offscreen-pointer');
+            const groupKey = ids.join('_');
             
             if (!isHover) {
                 pointer.style.display = 'none';
+                
+                // Halt the carousel if it was running
+                if (carouselIntervals[groupKey]) {
+                    clearInterval(carouselIntervals[groupKey]);
+                    delete carouselIntervals[groupKey];
+                }
             } else {
                 let pointed = false;
                 
@@ -620,10 +628,70 @@
                     }
                 }
                 if (!pointed) pointer.style.display = 'none';
+                
+                // --- High Zoom Overlap Carousel Logic ---
+                // If there are multiple streams and we are zoomed out enough that they physically overlap
+                if (ids.length > 1 && map.getZoom() < 7) {
+                    if (carouselIntervals[groupKey]) clearInterval(carouselIntervals[groupKey]);
+                    let carouselIdx = 0;
+                    
+                    // Initial State (Bring first one to absolute front)
+                    ids.forEach((id, idx) => {
+                        if (markers[id] && markers[id].marker) {
+                            markers[id].marker.setZIndexOffset(idx === carouselIdx ? 9500 : 9000);
+                        }
+                    });
+                    
+                    // Start rotating through them every 1 second
+                    carouselIntervals[groupKey] = setInterval(() => {
+                        carouselIdx = (carouselIdx + 1) % ids.length;
+                        ids.forEach((id, idx) => {
+                            if (markers[id] && markers[id].marker) {
+                                markers[id].marker.setZIndexOffset(idx === carouselIdx ? 9500 : 9000);
+                            }
+                        });
+                    }, 1000);
+                }
             }
             
             ids.forEach(id => {
                 if (isHover) {
+                    // --- STACKED-COORDINATE KILL SWITCH PATCH ---
+                    if (map.getZoom() < 7 && markers[id]) {
+                        const targetLat = markers[id].data.lat;
+                        const targetLon = markers[id].data.lon;
+                        
+                        Object.keys(activeHighlights).forEach(otherId => {
+                            if (otherId !== id && !ids.includes(otherId) && markers[otherId]) {
+                                if (markers[otherId].data.lat === targetLat && markers[otherId].data.lon === targetLon) {
+                                    // Kill overlapping timers instantly
+                                    if (hoverTimeouts[otherId]) { clearTimeout(hoverTimeouts[otherId]); delete hoverTimeouts[otherId]; }
+                                    if (strobeIntervals[otherId]) { clearInterval(strobeIntervals[otherId]); delete strobeIntervals[otherId]; }
+                                    if (strobeTimeouts[otherId]) { clearTimeout(strobeTimeouts[otherId]); delete strobeTimeouts[otherId]; }
+                                    
+                                    delete activeHighlights[otherId];
+                                    delete strobeStates[otherId];
+                                    
+                                    // Remove CSS
+                                    let el = markers[otherId].marker.getElement();
+                                    if (el) {
+                                        let core = el.querySelector('.pulse-core');
+                                        if (core) {
+                                            core.classList.remove('hover-glow');
+                                            core.classList.remove('strobe-flare');
+                                        }
+                                    }
+                                    
+                                    // Reset Z-Index
+                                    if (!activeFocusIds.includes(otherId)) {
+                                        markers[otherId].marker.setZIndexOffset(getZIndex(markers[otherId].data.status));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    // --- END KILL SWITCH ---
+                    
                     if (hoverTimeouts[id]) { clearTimeout(hoverTimeouts[id]); delete hoverTimeouts[id]; }
                     activeHighlights[id] = true;
                     if (markers[id] && markers[id].marker) {
@@ -632,7 +700,11 @@
                             let core = el.querySelector('.pulse-core');
                             if (core) core.classList.add('hover-glow');
                         }
-                        markers[id].marker.setZIndexOffset(9000); 
+                        
+                        // Don't forcefully overwrite the Z-Index if the carousel is managing it
+                        if (!(ids.length > 1 && map.getZoom() < 7)) {
+                            markers[id].marker.setZIndexOffset(9500); // Boosted to ensure it punches to the front
+                        }
                     }
                     if(strobeIntervals[id]) clearInterval(strobeIntervals[id]);
                     if(strobeTimeouts[id]) clearTimeout(strobeTimeouts[id]);
@@ -1022,6 +1094,9 @@
             Object.keys(strobeStates).forEach(k => delete strobeStates[k]);
             Object.keys(tooltipIntentTimers).forEach(k => delete tooltipIntentTimers[k]);
             Object.keys(gracePeriodTimers).forEach(k => delete gracePeriodTimers[k]);
+            
+            for (let key in carouselIntervals) clearInterval(carouselIntervals[key]);
+            Object.keys(carouselIntervals).forEach(k => delete carouselIntervals[k]);
             
             if (currentData && currentData.nodes) {
                 calculateOffsets(currentData.nodes);

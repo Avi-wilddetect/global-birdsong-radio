@@ -1,6 +1,8 @@
 # FILE: intelligence_hub_gui.py
-# VERSION: 16.9 - "The Dormancy Backoff Patch"
-# CHANGES: Wired the Vision Dormancy Threshold and Dormant Interval settings to load/save from the config file.
+# VERSION: 16.10 - "The QGroupBox Padding & Sync Patch"
+# CHANGES: 
+# 1. Injected padding-top: 15px into all QGroupBox stylesheets to prevent the invisible title box from blocking spinbox Up-Arrows.
+# 2. Fixed open_global_vision_settings() to fully sync all keys from birdnet_config.json before opening, eliminating stale memory overwrites.
 
 import sys
 import json
@@ -351,7 +353,7 @@ class BioacousticConfigurator(QMainWindow):
         
         self.setStyleSheet("""
             QMainWindow, QWidget { background-color: #2b2b2b; color: #ffffff; }
-            QGroupBox { border: 1px solid #555; margin-top: 15px; font-weight: bold; color: #4CAF50; }
+            QGroupBox { border: 1px solid #555; margin-top: 15px; padding-top: 15px; font-weight: bold; color: #4CAF50; }
             QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }
             QListWidget, QTableWidget { background-color: #1e1e1e; border: 1px solid #444; color: #ddd; font-size: 13px; outline: none; gridline-color: #333; }
             QListWidget::item:selected, QTableWidget::item:selected { background-color: #0078d7; color: white; }
@@ -691,7 +693,7 @@ class BioacousticConfigurator(QMainWindow):
         
         # --- TUNING GROUP (TALLER LAYOUT FOR MORE TEXT) ---
         v_tuning_group = QGroupBox("Stream AI Tuning & Custom Prompts")
-        v_tuning_group.setStyleSheet("QGroupBox { margin-top: 15px; }") 
+        v_tuning_group.setStyleSheet("QGroupBox { margin-top: 15px; padding-top: 15px; }") 
         v_tuning_group.setFixedHeight(180) 
         v_tuning_layout = QVBoxLayout(v_tuning_group)
         v_tuning_layout.setContentsMargins(4, 4, 4, 4)
@@ -1344,7 +1346,11 @@ class BioacousticConfigurator(QMainWindow):
             if GBR_CONFIG.exists():
                 fresh_cfg = json.loads(GBR_CONFIG.read_text(encoding='utf-8'))
                 vision_cfg = fresh_cfg.get("vision_ai", {})
-                self.vision_settings["api_keys"] = vision_cfg.get("api_keys",[])
+                
+                # --- THE STALE MEMORY FIX (1b) ---
+                # Completely refresh our local state from disk before opening the dialog
+                for k, v in vision_cfg.items():
+                    self.vision_settings[k] = v
         except: pass
         
         d = GlobalVisionSettingsDialog(self.vision_settings, self.vision_data["global_defaults"], self)

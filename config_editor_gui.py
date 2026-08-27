@@ -1,7 +1,7 @@
 # FILE: config_editor_gui.py
-# VERSION: 13.6 - "The Inline Queue Restoration (Typo Fix)"
+# VERSION: 13.7 - "The Stale Memory Protector"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Fixed a signal connection typo on the open_url_button.
+# UPDATED: Added real-time disk lookups for external nodes (vision_ai, sync_engine, etc) during saves, preventing the GUI from overwriting the Intelligence Hub's background changes with stale memory.
 
 import sys
 
@@ -1664,6 +1664,15 @@ class ConfigEditor(QWidget):
         if 'streams' in clean_cfg:
             for stream in clean_cfg['streams']:
                 stream.pop('updated_at', None)
+                
+        # Stale Memory Protector: Ignore externally managed nodes in diff
+        clean_cfg.pop("vision_ai", None)
+        clean_cfg.pop("sync_engine_settings", None)
+        clean_cfg.pop("hydra_pid_settings", None)
+        clean_cfg.pop("ignored_channels", None)
+        clean_cfg.pop("channel_sync_rules", None)
+        clean_cfg.pop("database_cloud", None)
+        
         return clean_cfg
 
     def _check_and_update_dirty_state(self, *args):
@@ -1995,6 +2004,14 @@ class ConfigEditor(QWidget):
         hk_config = copy.deepcopy(self.unsaved_housekeeping_config)
         hk_config['auto_wipe_db_bloat'] = False # FORCE TO FALSE ALWAYS
         
+        # Dynamically load external nodes from disk to prevent stale memory overwrites
+        disk_cfg = {}
+        try:
+            if CONFIG_FILE.exists():
+                disk_cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+        except Exception:
+            pass
+        
         return {
             "bot_token": self.bot_token_edit.text().strip(), "chat_id": self.chat_id_edit.text().strip(),
             "youtube_cookies_file": self.unsaved_cookies_path if self.unsaved_cookies_path is not None else self.saved_config_data.get("youtube_cookies_file", ""),
@@ -2050,14 +2067,16 @@ class ConfigEditor(QWidget):
             "housekeeping": hk_config,
             
             "map_settings": self.unsaved_map_config,
-            "database_cloud": self.saved_config_data.get("database_cloud", {}),
-            
-            "vision_ai": self.saved_config_data.get("vision_ai", {}),
             "maintenance_mode": self.btn_maintenance.isChecked(),
             "channels": self.unsaved_channels,
-            "sync_engine_settings": self.saved_config_data.get("sync_engine_settings", {}),
-            "hydra_pid_settings": json.loads(CONFIG_FILE.read_text(encoding='utf-8')).get("hydra_pid_settings", {}) if CONFIG_FILE.exists() else {},
-            "ignored_channels": json.loads(CONFIG_FILE.read_text(encoding='utf-8')).get("ignored_channels", []) if CONFIG_FILE.exists() else []
+            
+            # --- THE STALE MEMORY PROTECTORS ---
+            "database_cloud": disk_cfg.get("database_cloud", self.saved_config_data.get("database_cloud", {})),
+            "vision_ai": disk_cfg.get("vision_ai", self.saved_config_data.get("vision_ai", {})),
+            "sync_engine_settings": disk_cfg.get("sync_engine_settings", self.saved_config_data.get("sync_engine_settings", {})),
+            "hydra_pid_settings": disk_cfg.get("hydra_pid_settings", self.saved_config_data.get("hydra_pid_settings", {})),
+            "ignored_channels": disk_cfg.get("ignored_channels", self.saved_config_data.get("ignored_channels", [])),
+            "channel_sync_rules": disk_cfg.get("channel_sync_rules", self.saved_config_data.get("channel_sync_rules", {}))
         }
         
     def _get_gui_settings_from_ui(self):
@@ -2346,7 +2365,7 @@ class ConfigEditor(QWidget):
                                 prog_dialog.setFixedSize(450, 150)
                                 prog_dialog.setModal(True)
                                 lay = QVBoxLayout(prog_dialog)
-                                lbl = QLabel("Migrating data locally and on the cloud...\nPlease wait.")
+                                lbl = QLabel("Migrating data locally and on the Cloud...\nPlease wait.")
                                 lbl.setWordWrap(True)
                                 lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
                                 lay.addWidget(lbl)
