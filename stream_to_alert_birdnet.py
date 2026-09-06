@@ -1,7 +1,10 @@
 # FILE: stream_to_alert_birdnet.py
-# VERSION: 38.2 - "The Silent Window Patch"
+# VERSION: 38.4 - "The Sniffer Amnesty Patch"
 # RESPONSIBILITY: Analyzes audio, Reports to DB, Manages Queue Escalations & Cooldowns.
-# UPDATED: Added CREATE_NO_WINDOW to the Node.js subprocess check to prevent black console boxes from popping up.
+# CHANGELOG:
+# [2026-09-04 01:32] - v38.4: Added "auto_resolver_failed" to the HICCUP list and retry-break list to prevent Auto-Healer failures from permanently banning streams.
+# [2026-09-02 02:16] - v38.3: Fixed severe race condition causing cooldown state amnesia between Audio and Vision engines.
+# [2026-08-10 12:00] - v38.2: Added CREATE_NO_WINDOW to the Node.js subprocess check to prevent black console boxes from popping up.
 
 import sys
 import os
@@ -433,7 +436,10 @@ class StreamListener:
                 last_error_str = str(e).lower()
                 logging.warning(f"[{self.lid}] Grab Audio Attempt {attempt+1} failed for {name}. Error: {str(e)}")
                 
-                if any(x in last_error_str for x in["terminated", "removed", "404", "410", "has ended", "strict proxy", "vod_rejected"]): 
+                # --- THE SNIFFER AMNESTY PATCH ---
+                # We specifically check for auto_resolver_failed to break out of pointless retry loops
+                # when the auto-healer fails to find a stream link, preventing useless retries.
+                if any(x in last_error_str for x in ["auto_resolver_failed", "auto-resolver failed", "terminated", "removed", "404", "410", "has ended", "strict proxy", "vod_rejected"]): 
                     break 
                     
                 if attempt < max_retries - 1: 
@@ -447,7 +453,11 @@ class StreamListener:
             if any(x in last_error_str for x in["video unavailable", "is not available", "recording is not available", "private", "offline", "waiting for"]):
                 self.db.log_health_event(url, "SUSPENDED", f"Stream Offline: {last_error_str[:100]}")
                 return 'SUSPENDED'
-            if any(x in last_error_str for x in["timeout", "connection reset", "network is unreachable", "429", "too many requests", "503", "rate-limited", "strict proxy", "404", "410", "no such host", "malformed url", "-138", "403 forbidden", "invalid data found", "auto-resolver failed", "timed out", "10054"]):
+            
+            # --- THE SNIFFER AMNESTY PATCH ---
+            # Added auto_resolver_failed to the HICCUP list. This prevents temporary Selenium 
+            # sniffer failures (e.g. from getting a captcha wall) from permanently banning the stream.
+            if any(x in last_error_str for x in["timeout", "connection reset", "network is unreachable", "429", "too many requests", "503", "rate-limited", "strict proxy", "404", "410", "no such host", "malformed url", "-138", "403 forbidden", "invalid data found", "auto-resolver failed", "auto_resolver_failed", "timed out", "10054"]):
                 self.db.log_health_event(url, "HICCUP", f"Network/Proxy Block: {last_error_str[:100]}")
                 return 'HICCUP'
             self.db.log_health_event(url, "FAILURE", f"Error: {last_error_str[:100]}")
@@ -673,14 +683,28 @@ class StreamListener:
             if did and should_alert:
                 logging.info(f"[{self.lid}] ALERT: {sp} ({dist_cat})")
                 
-                if is_bioacoustic:
-                    cooldowns[key_target] = now_ts
-                    cooldowns[key_stream] = now_ts
-                    cooldowns[key_species] = now_ts
-                else:
-                    cooldowns[key] = now_ts
-                    
-                COOLDOWN_STATE_PATH.write_text(json.dumps(cooldowns))
+                # --- THE COOLDOWN RACE CONDITION PATCH ---
+                # Re-read the file immediately before writing to prevent wiping out
+                # updates made by the Vision Engine or other Audio workers.
+                for _attempt in range(3):
+                    try:
+                        fresh_cooldowns = {}
+                        if COOLDOWN_STATE_PATH.exists(): 
+                            fresh_cooldowns = json.loads(COOLDOWN_STATE_PATH.read_text(encoding='utf-8'))
+                            
+                        if is_bioacoustic:
+                            fresh_cooldowns[key_target] = now_ts
+                            fresh_cooldowns[key_stream] = now_ts
+                            fresh_cooldowns[key_species] = now_ts
+                        else:
+                            fresh_cooldowns[key] = now_ts
+                            
+                        tmp_path = COOLDOWN_STATE_PATH.with_suffix('.tmp')
+                        tmp_path.write_text(json.dumps(fresh_cooldowns))
+                        os.replace(tmp_path, COOLDOWN_STATE_PATH)
+                        break
+                    except Exception as e:
+                        time.sleep(0.2)
                 
                 chat = self.g_cfg.get('chat_id')
                 
@@ -728,6 +752,7 @@ class StreamListener:
                             
                             for attempt in range(3):
                                 try:
+                                    files = {'audio': (f"detection_{did}.mp3", audio_bytes, "audio/mpeg")} if should_send_audio else None
                                     current_proxies = proxies_dict if attempt < 2 else None
                                     
                                     if should_send_audio: 

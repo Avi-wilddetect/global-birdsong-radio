@@ -1,7 +1,7 @@
 # FILE: stream_discovery_gui.py
-# VERSION: 14.17 - "The Mother Channel Fallback Patch"
+# VERSION: 14.18 - "The Dynamic AI Model Patch"
 # RESPONSIBILITY: Triage Ward, Graveyard, Discovery Radar, and the Unified Lifecycle & Sync Engine.
-# UPDATED: Fixed a bug where new_channel_name defaulted to "Unknown Channel" instead of inheriting the known Mother Channel. Injected plain English issue descriptions into the DiffViewer header.
+# UPDATED: Replaced hardcoded 'gemini-2.5-flash' with dynamic model extraction from the Economic Cruise Control configuration.
 
 import sys
 import json
@@ -80,14 +80,27 @@ class TranslationWorker(QThread):
             return
             
         api_key = None
+        ai_model = "gemini-3.7-flash"
+        
         try:
             if CONFIG_FILE.exists():
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                
+                # Fetch API Key
                 keys = cfg.get("vision_ai", {}).get("api_keys",[])
                 for k in keys:
                     if k.get("status") != "Exhausted" and k.get("key", "").strip():
                         api_key = k["key"].strip()
                         break
+                        
+                # Fetch AI Model
+                eco = cfg.get("economic_control", {})
+                ai_model = eco.get("ai_model", "gemini-3.7-flash")
+                if ai_model == "custom":
+                    ai_model = eco.get("custom_ai_model", "gemini-3.7-flash")
+                if not ai_model.strip():
+                    ai_model = "gemini-3.7-flash"
+                    
         except Exception as e:
             self.result_ready.emit({'error': f'Config read error: {e}'})
             return
@@ -111,7 +124,7 @@ class TranslationWorker(QThread):
             """
             
             response = client.models.generate_content(
-                model='gemini-2.5-flash', 
+                model=ai_model, 
                 contents=[prompt],
                 config=types.GenerateContentConfig(
                     temperature=0.1,

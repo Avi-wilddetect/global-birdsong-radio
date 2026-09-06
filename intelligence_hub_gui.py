@@ -1,8 +1,8 @@
 # FILE: intelligence_hub_gui.py
-# VERSION: 16.10 - "The QGroupBox Padding & Sync Patch"
+# VERSION: 16.11 - "The Dynamic AI Model Patch"
 # CHANGES: 
-# 1. Injected padding-top: 15px into all QGroupBox stylesheets to prevent the invisible title box from blocking spinbox Up-Arrows.
-# 2. Fixed open_global_vision_settings() to fully sync all keys from birdnet_config.json before opening, eliminating stale memory overwrites.
+# [2026-09-03 13:30] - v16.11: Applied dynamic AI model selection to the Taxonomy Auditor tool, removing the hardcoded 2.5-flash fallback.
+# [2026-09-02 18:00] - v16.10: Injected padding-top into all QGroupBox stylesheets to prevent the invisible title box from blocking spinbox Up-Arrows. Fixed open_global_vision_settings to fully sync all keys from birdnet_config.json.
 
 import sys
 import json
@@ -119,10 +119,11 @@ class TaxonomyAuditorWorker(QThread):
     result_ready = pyqtSignal(dict)
     error_occurred = pyqtSignal(str)
 
-    def __init__(self, api_key, animals):
+    def __init__(self, api_key, animals, ai_model="gemini-3.7-flash"):
         super().__init__()
         self.api_key = api_key
         self.animals = animals
+        self.ai_model = ai_model
 
     def run(self):
         try:
@@ -147,7 +148,7 @@ class TaxonomyAuditorWorker(QThread):
                 )
                 
                 response = client.models.generate_content(
-                    model='gemini-2.5-flash', 
+                    model=self.ai_model, 
                     contents=[prompt],
                     config=types.GenerateContentConfig(
                         temperature=0.1,
@@ -1099,11 +1100,27 @@ class BioacousticConfigurator(QMainWindow):
         if not active_key:
             QMessageBox.critical(self, "No API Key", "Cannot run AI Auditor: No active Gemini API key found in Global Defaults.")
             return
+            
+        # --- DYNAMIC AI MODEL PATCH ---
+        ai_model = "gemini-3.7-flash"
+        try:
+            if CONFIG_FILE.exists():
+                with config_lock:
+                    with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                        cfg = json.load(f)
+                    eco = cfg.get("economic_control", {})
+                    ai_model = eco.get("ai_model", "gemini-3.7-flash")
+                    if ai_model == "custom":
+                        ai_model = eco.get("custom_ai_model", "gemini-3.7-flash")
+                    if not ai_model.strip():
+                        ai_model = "gemini-3.7-flash"
+        except Exception:
+            pass
 
         self.btn_v_auditors.setText("⏳ Starting Worker...")
         self.btn_v_auditors.setEnabled(False)
         
-        self.auditor_worker = TaxonomyAuditorWorker(active_key, animals_to_check)
+        self.auditor_worker = TaxonomyAuditorWorker(active_key, animals_to_check, ai_model)
         self.auditor_worker.progress_update.connect(self.btn_v_auditors.setText)
         self.auditor_worker.error_occurred.connect(self._on_auditor_error)
         self.auditor_worker.result_ready.connect(self._on_auditor_finished)

@@ -1,7 +1,7 @@
-# FILE: config_editor_gui.py
-# VERSION: 13.7 - "The Stale Memory Protector"
+﻿# FILE: config_editor_gui.py
+# VERSION: 13.10 - "The Duplicate Eradication & Cruise Control Integration Patch"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Added real-time disk lookups for external nodes (vision_ai, sync_engine, etc) during saves, preventing the GUI from overwriting the Intelligence Hub's background changes with stale memory.
+# UPDATED: Removed massive chunks of duplicated code (NetworkTelemetryDialog, etc.) to force reliance on config_editor_sys_dialogs.py. Added Economic Cruise Control to fallback defaults.
 
 import sys
 
@@ -103,9 +103,6 @@ COOKIE_WARNING_STATE_PATH = ROOT / "cookie_warning_state.json"
 SYNC_PROPOSALS_FILE = ROOT / "sync_proposals.json"
 HYDRA_STATE_FILE = ROOT / "hydra_heat_state.json"
 LOG_ANALYZER_SETTINGS_FILE = ROOT / "log_analyzer_settings.json"
-
-# --- Database Helper ---
-import db_connector
 
 def get_db_connection():
     con = sqlite3.connect(DATABASE_PATH, timeout=15)
@@ -789,11 +786,23 @@ class ConfigEditor(QWidget):
                         target_stream['updated_at'] = time.time()
                         target_stream.pop('disable_reason', None)
                         target_stream.pop('status_reason', None)
-                        if p.get('new_channel_name'):
-                            target_stream['channel_name'] = p['new_channel_name']
+                        
+                        # --- THE UNKNOWN CHANNEL PRESERVATION PATCH ---
+                        new_cname = str(p.get('new_channel_name', '')).strip()
+                        old_cname = str(target_stream.get('channel_name', '')).strip()
+                        bad_names = ["Unknown Channel", "Unknown", ""]
+                        
+                        if new_cname and new_cname not in bad_names:
+                            target_stream['channel_name'] = new_cname
                             if 'channels' not in cfg: cfg['channels'] = {}
-                            if p['new_channel_name'] not in cfg['channels']:
-                                cfg['channels'][p['new_channel_name']] = p['new_channel']
+                            if new_cname not in cfg['channels']:
+                                cfg['channels'][new_cname] = p.get('new_channel', '')
+                        elif old_cname and old_cname not in bad_names:
+                            target_stream['channel_name'] = old_cname
+                        else:
+                            target_stream['channel_name'] = "Unknown Channel"
+                        # ----------------------------------------------
+                                
                         updated = True
                         
                         if stream_migrator:
@@ -1669,6 +1678,7 @@ class ConfigEditor(QWidget):
         clean_cfg.pop("vision_ai", None)
         clean_cfg.pop("sync_engine_settings", None)
         clean_cfg.pop("hydra_pid_settings", None)
+        clean_cfg.pop("economic_control", None)
         clean_cfg.pop("ignored_channels", None)
         clean_cfg.pop("channel_sync_rules", None)
         clean_cfg.pop("database_cloud", None)
@@ -1748,6 +1758,19 @@ class ConfigEditor(QWidget):
                     "enable_bursts": True, "spiderify_radius": 0.025, "burst_zoom_level": 13,
                     "enable_swarms": True, "swarm_max_distance_km": 500, "swarm_bbox_padding": 1.5, "swarm_max_zoom": 6
                 }, 
+                
+                "economic_control": {
+                    "enabled": False,
+                    "target_detections_30m": 15,
+                    "max_daily_budget_credits": 5.0,
+                    "ai_model": "gemini-3.7-flash",
+                    "custom_ai_model": "",
+                    "cost_per_1000_images_credits": 0.75,
+                    "tuning_interval_mins": 30,
+                    "last_calculated_hit_rate": 0.0,
+                    "last_calculated_cycle_s": 0,
+                    "last_throttle_reason": "None"
+                },
                 
                 "browser_automation": {"enabled": True, "chrome_profile_path": "", "webdriver_path": ""},
                 
@@ -2075,6 +2098,7 @@ class ConfigEditor(QWidget):
             "vision_ai": disk_cfg.get("vision_ai", self.saved_config_data.get("vision_ai", {})),
             "sync_engine_settings": disk_cfg.get("sync_engine_settings", self.saved_config_data.get("sync_engine_settings", {})),
             "hydra_pid_settings": disk_cfg.get("hydra_pid_settings", self.saved_config_data.get("hydra_pid_settings", {})),
+            "economic_control": disk_cfg.get("economic_control", self.saved_config_data.get("economic_control", {})),
             "ignored_channels": disk_cfg.get("ignored_channels", self.saved_config_data.get("ignored_channels", [])),
             "channel_sync_rules": disk_cfg.get("channel_sync_rules", self.saved_config_data.get("channel_sync_rules", {}))
         }

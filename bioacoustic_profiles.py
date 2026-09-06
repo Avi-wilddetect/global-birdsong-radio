@@ -1,8 +1,8 @@
 # FILE: bioacoustic_profiles.py
-# VERSION: 2.0 - "The Physics Update (Broadband Veto)"
-# CHANGES: 
-# 1. Implemented strict Spectral Flatness checks to kill Rain/Wind false positives.
-# 2. Implemented Frequency Isolation: Elephants abort if high-freq hiss is present. Crickets abort if low-freq rumble is present.
+# VERSION: 2.1 - "The Electronic Artifact Veto"
+# CHANGELOG:
+# [2026-09-02 02:13] - v2.1: Implemented global Electronic Artifact veto to reject mic buzzes/sine waves (tonality > 0.85).
+# [2026-08-15 10:00] - v2.0: Implemented strict Spectral Flatness checks to kill Rain/Wind false positives. Implemented Frequency Isolation.
 
 import numpy as np
 import logging
@@ -184,6 +184,12 @@ def analyze_target(wav_bytes, target_animal):
     
     stats = _calculate_spectral_stats(audio, sr)
     if not stats: return 0.0, "Silence/Short"
+    
+    # --- THE ELECTRONIC ARTIFACT VETO PATCH ---
+    # A tonality > 0.85 indicates a near-perfect sine wave (electronic hum/buzz).
+    # No biological animal emits a perfectly continuous, pure sine wave for 12 seconds.
+    if stats['tonality'] > 0.85:
+        return 0.0, f"VETO: Electronic Artifact / Mic Buzz (Tonality {stats['tonality']:.2f})"
     
     # Run the specific scorer
     scorer = PROFILES[target]

@@ -1,7 +1,7 @@
 # FILE: yt_sync_engine.py
-# VERSION: 6.11 - "The Variant Tag Fix"
+# VERSION: 6.12 - "The Unknown Channel Preservation Patch"
 # PURPOSE: Compares local YouTube stream metadata against live channel data to detect URL changes, Title/Description changes, new streams, and resurrect dead streams.
-# UPDATED: Injected aggressive variant tag stripping for config_stream_by_url dictionary builder to prevent dead variant streams from being falsely flagged as unknown and proposed repeatedly as Case A.
+# UPDATED: Added _get_safe_cname helper to aggressively preserve existing channel names if YouTube scraping temporarily returns 'Unknown Channel', preventing overnight configuration wipeouts.
 
 import json
 import logging
@@ -374,6 +374,18 @@ class YouTubeSyncEngine:
             raise e  
 
     def _run_sync_internal(self, progress_callback, target_channels):
+        
+        # --- THE UNKNOWN CHANNEL PRESERVATION PATCH ---
+        def _get_safe_cname(new_name, old_name):
+            bad_names = ["Unknown Channel", "Unknown", "", None]
+            n = str(new_name).strip() if new_name else ""
+            o = str(old_name).strip() if old_name else ""
+            if n in bad_names:
+                if o not in bad_names:
+                    return o
+            return n if n else "Unknown Channel"
+        # ----------------------------------------------
+
         self._debug_log(f"--- ENGINE STARTING _run_sync_internal ---")
         self._debug_log(f"Explicit target_channels passed: {target_channels}")
         
@@ -497,7 +509,6 @@ class YouTubeSyncEngine:
             
         self._save_cache()
 
-        # --- THE VARIANT TAG FIX ---
         config_stream_by_url = {}
         config_stream_by_name = {}
         global_known_urls = set()
@@ -530,7 +541,6 @@ class YouTubeSyncEngine:
                 self._debug_log("SKIPPED: Channel is in skipped_channels list.")
                 continue
             
-            # Use clean URL for config lookup to recognize existing variant streams
             clean_db_url = re.sub(r'[\?&]variant=\d+', '', db_url).strip()
             config_stream = config_stream_by_url.get(clean_db_url) or config_stream_by_name.get(friendly_name, {})
             
@@ -581,7 +591,7 @@ class YouTubeSyncEngine:
                         sim = self._calculate_similarity(old_title, live_s['title'])
                         self._debug_log(f"Exact URL Match Found! Similarity to old title: {sim:.2f}")
                         
-                        new_chan_name = live_s.get('channel_name', old_channel_name)
+                        new_chan_name = _get_safe_cname(live_s.get('channel_name'), old_channel_name)
                         chan_changed = False
                         
                         if old_channel_name and new_chan_name and str(old_channel_name).lower() != str(new_chan_name).lower():
@@ -616,7 +626,7 @@ class YouTubeSyncEngine:
                             "old_channel": old_channel_url, 
                             "new_channel": old_channel_url,
                             "old_channel_name": old_channel_name, 
-                            "new_channel_name": old_channel_name,
+                            "new_channel_name": _get_safe_cname(old_channel_name, old_channel_name),
                             "confidence": 1.0, 
                             "auto_heal_eligible": True 
                         })
@@ -637,7 +647,7 @@ class YouTubeSyncEngine:
                         "case": case_id, "case_desc": case_desc, "friendly_name": friendly_name,
                         "old_url": db_url, "new_url": best_candidate['url'], "old_title": old_title, "new_title": best_candidate['title'],
                         "old_channel": old_channel_url, "new_channel": best_candidate['channel_url'],
-                        "old_channel_name": old_channel_name, "new_channel_name": best_candidate.get('channel_name', old_channel_name),
+                        "old_channel_name": old_channel_name, "new_channel_name": _get_safe_cname(best_candidate.get('channel_name'), old_channel_name),
                         "confidence": best_sim, "auto_heal_eligible": (case_id == "B") 
                     })
                     self._debug_log(f"APPENDED: Case {case_id} (Same Channel Migration - Confidence {best_sim:.2f})")
@@ -657,7 +667,7 @@ class YouTubeSyncEngine:
                         "case": case_id, "case_desc": case_desc, "friendly_name": friendly_name,
                         "old_url": db_url, "new_url": best_candidate['url'], "old_title": old_title, "new_title": best_candidate['title'],
                         "old_channel": old_channel_url, "new_channel": best_candidate['channel_url'],
-                        "old_channel_name": old_channel_name, "new_channel_name": best_candidate.get('channel_name', 'Unknown Channel'),
+                        "old_channel_name": old_channel_name, "new_channel_name": _get_safe_cname(best_candidate.get('channel_name'), old_channel_name),
                         "confidence": best_sim, "auto_heal_eligible": False 
                     })
                     self._debug_log(f"APPENDED: Case {case_id} (Cross-Channel Migration - Confidence {best_sim:.2f})")
@@ -681,7 +691,7 @@ class YouTubeSyncEngine:
                             "case": case_id, "case_desc": case_desc, "friendly_name": friendly_name,
                             "old_url": db_url, "new_url": best_candidate['url'], "old_title": old_title, "new_title": best_candidate['title'],
                             "old_channel": old_channel_url, "new_channel": best_candidate['channel_url'],
-                            "old_channel_name": old_channel_name, "new_channel_name": best_candidate['channel_name'],
+                            "old_channel_name": old_channel_name, "new_channel_name": _get_safe_cname(best_candidate.get('channel_name'), old_channel_name),
                             "confidence": best_sim, "auto_heal_eligible": False 
                         })
                         self._debug_log(f"APPENDED: Case {case_id} (Fugitive Migration - Confidence {best_sim:.2f})")
@@ -708,7 +718,7 @@ class YouTubeSyncEngine:
                         "old_channel": old_channel_url, 
                         "new_channel": old_channel_url,
                         "old_channel_name": old_channel_name, 
-                        "new_channel_name": old_channel_name,
+                        "new_channel_name": _get_safe_cname(old_channel_name, old_channel_name),
                         "confidence": 1.0, 
                         "auto_heal_eligible": True 
                     })
@@ -741,7 +751,15 @@ class YouTubeSyncEngine:
         for c_url, live_streams in self.live_channel_data.items():
             if not live_streams: continue 
             
-            c_name_check = live_streams[0].get('channel_name', '')
+            # Use reverse lookup to find real channel name for Case N safety
+            real_c_name = "Unknown Channel"
+            for kname, kurl in self.known_channels.items():
+                if kurl == c_url:
+                    real_c_name = kname
+                    break
+                    
+            c_name_check = _get_safe_cname(live_streams[0].get('channel_name'), real_c_name)
+            
             channel_siblings = [s for s in self.config.get('streams', []) if (s.get('channel_name') or '') == c_name_check and (s.get('lat', 0.0) != 0.0 or s.get('lon', 0.0) != 0.0)]
             
             for live_s in live_streams:
@@ -785,7 +803,7 @@ class YouTubeSyncEngine:
                                 "old_channel": None, 
                                 "new_channel": live_s.get('channel_url'),
                                 "old_channel_name": best_r_stream.get('channel_name', 'Unknown Channel'), 
-                                "new_channel_name": live_s.get('channel_name', 'Unknown Channel'),
+                                "new_channel_name": _get_safe_cname(live_s.get('channel_name'), best_r_stream.get('channel_name')),
                                 "confidence": best_r_sim, 
                                 "auto_heal_eligible": auto_heal
                             })
@@ -808,7 +826,7 @@ class YouTubeSyncEngine:
                             "case": "N", "case_desc": "New Stream Discovered", "friendly_name": live_s.get('title'),
                             "old_url": None, "new_url": live_s.get('url'), "old_title": None, "new_title": live_s.get('title'),
                             "old_channel": None, "new_channel": live_s.get('channel_url'),
-                            "old_channel_name": None, "new_channel_name": live_s.get('channel_name', 'Unknown Channel'),
+                            "old_channel_name": None, "new_channel_name": _get_safe_cname(live_s.get('channel_name'), real_c_name),
                             "confidence": 1.0, "auto_heal_eligible": False,
                             "suggested_lat": suggested_lat, "suggested_lon": suggested_lon, "suggested_match_name": match_name, "sibling_streams": siblings_list
                         })

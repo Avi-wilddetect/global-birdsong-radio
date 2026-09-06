@@ -1,17 +1,15 @@
 # FILE: proxy_manager.py
-# VERSION: 3.0 - "The Self-Healing & Socket Linger Patch"
+# VERSION: 3.1 - "The Graceful Linger Reversion Patch"
 # PURPOSE: Handles both HTTPS (CONNECT) and HTTP (GET/POST) Proxying.
-# FIXED: 
-# 1. Reduced buffer to 32KB to prevent USB Wi-Fi driver crashes.
-# 2. Changed to dynamic Interface Name binding to auto-heal if an adapter restarts.
-# 3. Added SO_LINGER to aggressively destroy dead sockets, preventing Windows TCP exhaustion.
+# CHANGELOG:
+# [2026-09-04 20:30] - v3.1: Reverted aggressive SO_LINGER TCP Reset commands. The previous patch was violently severing connections mid-buffer, causing FFmpeg to crash with return codes 4294957242 and 3335375624 (ECONNRESET).
+# [2026-09-02 20:00] - v3.0: Added dynamic Interface Name binding to auto-heal if an adapter restarts.
 
 import socket
 import select
 import threading
 import logging
 import psutil
-import struct
 
 # Configure simple logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - [PROXY] - %(message)s')
@@ -73,10 +71,6 @@ class InterfaceProxy(threading.Thread):
     def handle_client(self, client_socket):
         remote_socket = None
         try:
-            # TCP Exhaustion Fix: Aggressively destroy socket on close (skip TIME_WAIT)
-            linger_enabled = struct.pack('ii', 1, 0)
-            client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, linger_enabled)
-            
             request = b""
             client_socket.settimeout(5.0) # Safety timeout for headers
             
@@ -123,7 +117,6 @@ class InterfaceProxy(threading.Thread):
 
             # --- DYNAMIC BIND AND CONNECT ---
             remote_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            remote_socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, linger_enabled)
             
             if self.interface_name and self.interface_name != "Default / OS":
                 # FETCH FRESH IP RIGHT BEFORE BINDING

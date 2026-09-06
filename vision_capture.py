@@ -1,6 +1,10 @@
 # FILE: vision_capture.py
-# VERSION: 16.16 - "The Web Client Restoration Patch"
-# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
+# VERSION: 16.19 - "The Client Spoofing Restoration Patch"
+# 
+# CHANGELOG:
+# [2026-09-04 20:40] - v16.19: Reverted the Web Client Restoration Patch to allow yt-dlp to use 'tv', 'ios', and 'mweb' clients, bypassing YouTube's strict blocking of the 'web' client.
+# [2026-09-03 13:01] - v16.18: Implemented Web Client Restoration Patch to force 'web' client for yt-dlp, synchronizing with audio_capture.py to prevent unnecessary Selenium fallbacks.
+# [2026-09-02 15:09] - v16.17: Increased Selenium timeout to 45s and enhanced JS payload to forcefully nuke new YouTube UI overlays/cookie dialogs.
 
 import sys
 import os
@@ -50,8 +54,11 @@ def extract_stream_url(raw_url, cookies_path=None, proxy_url=None, resolution="7
             ext_strat = cfg.get("extraction_strategy", {})
         except: pass
         
-    clients =[c.strip() for c in ext_strat.get('player_client', 'web').split(',') if c.strip()]
-    if not clients: clients = ['web']
+    # --- CLIENT SPOOFING RESTORATION PATCH ---
+    # Allow the original config list to flow directly to yt-dlp without stripping mobile clients
+    clients = [c.strip() for c in ext_strat.get('player_client', 'tv, mweb, ios').split(',') if c.strip()]
+    if not clients:
+        clients = ['tv', 'mweb', 'ios', 'web'] # Robust fallback
 
     def try_extract(use_proxy, use_cookies):
         ydl_opts = {
@@ -226,8 +233,8 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
         except Exception as e:
             v_logger.warning(f"Could not inject CDP bypass cookies: {e}")
             
-        # INCREASED TIMEOUT: From 15s to 30s for slower cellular proxies
-        driver.set_page_load_timeout(30)
+        # INCREASED TIMEOUT: From 30s to 45s for slower cellular proxies
+        driver.set_page_load_timeout(45)
         try: driver.get(target_url)
         except: pass
         
@@ -241,7 +248,7 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
             body, html { background: black !important; overflow: hidden !important; }
             .ytp-chrome-top, .ytp-chrome-bottom, .ytp-watermark, .ytp-show-cards-title, .ytp-ce-element, .ytp-ad-module, .ytp-pause-overlay, .ytp-progress-bar-container, .ytp-progress-bar, .ytp-play-progress, .ytp-load-progress, .ytp-scrubber-container, .ytp-chapters-container, .ytp-heat-map-container, .ytp-error { display: none !important; opacity: 0 !important; pointer-events: none !important; }
             /* Hide modal backdrops and popups entirely */
-            ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+            ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop, ytd-action-companion-ad-renderer, ytd-promoted-sparkles-web-renderer { display: none !important; opacity: 0 !important; pointer-events: none !important; }
             video { 
                 position: fixed !important; 
                 top: 0 !important; 
@@ -260,7 +267,7 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
 
         setInterval(function() {
             // Nuke dialogs aggressively from DOM
-            document.querySelectorAll('ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop').forEach(el => el.remove());
+            document.querySelectorAll('ytd-popup-container, tp-yt-iron-overlay-backdrop, tp-yt-paper-dialog, ytd-consent-bump-v2-lightbox, iron-overlay-backdrop, div[role="dialog"], .ytp-ad-overlay-container, .yt-spec-button-shape-next--filled').forEach(el => el.remove());
             
             let v = document.querySelector('video');
             if (v && v.paused) {
@@ -281,7 +288,7 @@ def grab_video_frame(stream_url, output_path, headers_list=None, proxy_url=None)
             let clickables = document.querySelectorAll('button, a, span, [role="button"]');
             clickables.forEach(b => {
                 let txt = (b.innerText || '').toLowerCase();
-                if(txt.includes('accept') || txt.includes('agree') || txt.includes('reject')) {
+                if(txt.includes('accept') || txt.includes('agree') || txt.includes('reject') || txt.includes('got it') || txt.includes('skip ad')) {
                     b.click();
                 }
             });

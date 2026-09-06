@@ -1,7 +1,7 @@
-# FILE: config_editor_sys_dialogs.py
-# VERSION: 1.8 - "The Clean Nuke Patch"
+﻿# FILE: config_editor_sys_dialogs.py
+# VERSION: 1.10 - "The Economic Cruise Control Frequency Patch"
 # RESPONSIBILITY: Houses all System, Maintenance, Auditing, and Telemetry dialogs for the Config Editor.
-# UPDATED: Removed massive AI-hallucinated class duplications. Restored clean file structure. Added the targetted "Nuke Detection Logs" button to the manual clean section.
+# UPDATED: Added "Tune Every X Minutes" dial to the Economic Cruise Control settings.
 
 import sys
 import copy
@@ -324,21 +324,33 @@ class NetworkTelemetryDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Network Telemetry, Quotas & Hydra PID Tuning")
-        self.setMinimumSize(750, 600)
+        self.setMinimumSize(850, 650)
         self.layout = QVBoxLayout(self)
         
         self.scroll_filter = ScrollStealFilter(self)
         self.interfaces = network_manager.get_active_interfaces()
         
         self.pid_settings = {"ema_alpha": 0.3, "soft_lockout_pct": 90, "global_brake_pct": 95, "throttling_enabled": True}
+        self.eco_settings = {
+            "enabled": False,
+            "target_detections_30m": 15,
+            "max_daily_budget_credits": 5.0,
+            "ai_model": "gemini-3.7-flash",
+            "custom_ai_model": "",
+            "cost_per_1000_images_credits": 0.75,
+            "tuning_interval_mins": 30
+        }
+        
         if CONFIG_FILE.exists():
             try:
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
                 self.pid_settings.update(cfg.get("hydra_pid_settings", {}))
+                self.eco_settings.update(cfg.get("economic_control", {}))
             except: pass
 
         self.tabs = QTabWidget()
         
+        # --- TAB 1: SIM QUOTAS ---
         self.tab_quotas = QWidget()
         self.tab_quotas_layout = QVBoxLayout(self.tab_quotas)
         info = QLabel("<b>Set Data Limits & Billing Cycles.</b> Engines will automatically stop using a SIM if its quota is exceeded for the current billing cycle. Vision Engines will proportionally load-balance traffic toward the SIMs with the most remaining data.")
@@ -485,6 +497,7 @@ class NetworkTelemetryDialog(QDialog):
         self.tab_quotas_layout.addWidget(self.scroll)
         self.tabs.addTab(self.tab_quotas, "SIM Quotas & Telemetry")
 
+        # --- TAB 2: HYDRA PID ---
         self.tab_pid = QWidget()
         self.tab_pid_layout = QVBoxLayout(self.tab_pid)
         pid_info = QLabel("<b>Hydra PID Tuning & Algorithm Overrides</b><br>Fine-tune how the dynamic load balancer reacts to network heat, or manually reset the algorithms for debugging purposes.")
@@ -536,6 +549,91 @@ class NetworkTelemetryDialog(QDialog):
         self.tab_pid_layout.addWidget(reset_group)
         self.tab_pid_layout.addStretch()
         self.tabs.addTab(self.tab_pid, "Hydra PID Tuning & Resets")
+        
+        # --- TAB 3: ECONOMIC CRUISE CONTROL ---
+        self.tab_eco = QWidget()
+        self.tab_eco_layout = QVBoxLayout(self.tab_eco)
+        eco_info = QLabel("<b>Economic Cruise Control & AI Model Selection</b><br>Protect your Gemini API budget. Set your desired detection rate and daily budget, and the system will automatically tune the engine speed and SIM data limits in the background to safely achieve it without stuttering.")
+        eco_info.setWordWrap(True)
+        self.tab_eco_layout.addWidget(eco_info)
+        
+        model_group = QGroupBox("Vision AI Model Selection")
+        model_group.setStyleSheet("QGroupBox { border: 1px solid #AB47BC; color: #E1BEE7; font-weight: bold; margin-top: 15px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
+        model_form = QFormLayout(model_group)
+        
+        self.combo_eco_model = QComboBox()
+        self.combo_eco_model.addItem("gemini-3.7-flash (Recommended - Best capability/cost balance)", "gemini-3.7-flash")
+        self.combo_eco_model.addItem("gemini-3.5-flash-lite (Ultra Cheap - High risk of hallucinations)", "gemini-3.5-flash-lite")
+        self.combo_eco_model.addItem("gemini-3.5-flash (Legacy 3.x - More expensive than 3.7)", "gemini-3.5-flash")
+        self.combo_eco_model.addItem("gemini-2.5-flash (Ground State - Used for most of 2025-2026)", "gemini-2.5-flash")
+        self.combo_eco_model.addItem("gemini-3.1-pro-preview (Too Expensive - Do not use)", "gemini-3.1-pro-preview")
+        self.combo_eco_model.addItem("Custom... (Type your own)", "custom")
+        
+        # Select current
+        curr_model = self.eco_settings.get("ai_model", "gemini-3.7-flash")
+        idx = self.combo_eco_model.findData(curr_model)
+        if idx >= 0:
+            self.combo_eco_model.setCurrentIndex(idx)
+        else:
+            self.combo_eco_model.setCurrentIndex(5) # Custom
+            
+        self.edit_eco_custom = QLineEdit()
+        self.edit_eco_custom.setPlaceholderText("e.g. gemini-4.0-flash")
+        self.edit_eco_custom.setText(self.eco_settings.get("custom_ai_model", ""))
+        self.edit_eco_custom.setEnabled(self.combo_eco_model.currentData() == "custom")
+        
+        self.combo_eco_model.currentIndexChanged.connect(self._on_eco_model_changed)
+        
+        model_form.addRow("Active AI Model:", self.combo_eco_model)
+        model_form.addRow("Custom Model String:", self.edit_eco_custom)
+        self.tab_eco_layout.addWidget(model_group)
+        
+        eco_group = QGroupBox("Budget & Speed Targets")
+        eco_group.setStyleSheet("QGroupBox { border: 1px solid #4CAF50; color: #00E676; font-weight: bold; margin-top: 15px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
+        eco_form = QFormLayout(eco_group)
+        
+        self.chk_eco_enable = QCheckBox("Enable Autonomous Economic Cruise Control")
+        self.chk_eco_enable.setChecked(self.eco_settings.get("enabled", False))
+        self.chk_eco_enable.setStyleSheet("font-size: 14px; font-weight: bold;")
+        
+        self.spin_eco_interval = QSpinBox()
+        self.spin_eco_interval.setRange(5, 1440)
+        self.spin_eco_interval.setValue(self.eco_settings.get("tuning_interval_mins", 30))
+        self.spin_eco_interval.setSuffix(" mins")
+        
+        self.spin_eco_target = QSpinBox()
+        self.spin_eco_target.setRange(1, 500)
+        self.spin_eco_target.setValue(self.eco_settings.get("target_detections_30m", 15))
+        self.spin_eco_target.setSuffix(" alerts")
+        
+        self.spin_eco_budget = QDoubleSpinBox()
+        self.spin_eco_budget.setRange(0.1, 1000.0)
+        self.spin_eco_budget.setDecimals(1)
+        self.spin_eco_budget.setValue(self.eco_settings.get("max_daily_budget_credits", 5.0))
+        self.spin_eco_budget.setSuffix(" Credits")
+        
+        self.spin_eco_cost = QDoubleSpinBox()
+        self.spin_eco_cost.setRange(0.01, 100.0)
+        self.spin_eco_cost.setDecimals(2)
+        self.spin_eco_cost.setValue(self.eco_settings.get("cost_per_1000_images_credits", 0.75))
+        self.spin_eco_cost.setSuffix(" Credits")
+        
+        eco_form.addRow("", self.chk_eco_enable)
+        eco_form.addRow(QLabel("<hr>"))
+        eco_form.addRow("Tune Every:", self.spin_eco_interval)
+        eco_form.addRow("Target Detections (per 30 mins):", self.spin_eco_target)
+        eco_form.addRow("Max Daily API Budget:", self.spin_eco_budget)
+        eco_form.addRow("Cost per 1,000 Scans (Images):", self.spin_eco_cost)
+        
+        self.lbl_eco_status = QLabel("<b>Cruise Control Status:</b> Loading background data...")
+        self.lbl_eco_status.setStyleSheet("color: #ccc; margin-top: 10px; padding: 10px; background: #222; border-radius: 4px;")
+        self.lbl_eco_status.setWordWrap(True)
+        eco_form.addRow(self.lbl_eco_status)
+        
+        self.tab_eco_layout.addWidget(eco_group)
+        self.tab_eco_layout.addStretch()
+        self.tabs.addTab(self.tab_eco, "Economic Cruise Control")
+        
         self.layout.addWidget(self.tabs)
         
         btn_layout = QHBoxLayout()
@@ -550,9 +648,54 @@ class NetworkTelemetryDialog(QDialog):
         self.layout.addLayout(btn_layout)
 
         self.refresh_telemetry_data()
+        self.update_eco_status()
+        
         self.live_timer = QTimer(self)
         self.live_timer.timeout.connect(self.refresh_telemetry_data)
+        self.live_timer.timeout.connect(self.update_eco_status)
         self.live_timer.start(10000)
+
+    def _on_eco_model_changed(self, index):
+        val = self.combo_eco_model.currentData()
+        if val == "custom":
+            self.edit_eco_custom.setEnabled(True)
+        else:
+            self.edit_eco_custom.setEnabled(False)
+            
+        # Optional: Auto-fill rough costs based on model to save time
+        if val == "gemini-3.7-flash":
+            self.spin_eco_cost.setValue(0.75)
+        elif val == "gemini-3.5-flash-lite":
+            self.spin_eco_cost.setValue(0.30)
+        elif val == "gemini-3.5-flash":
+            self.spin_eco_cost.setValue(1.50)
+        elif val == "gemini-3.1-pro-preview":
+            self.spin_eco_cost.setValue(2.00)
+
+    def update_eco_status(self):
+        try:
+            if CONFIG_FILE.exists():
+                cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                eco = cfg.get("economic_control", {})
+                
+                hr = eco.get("last_calculated_hit_rate", 0.0)
+                cyc = eco.get("last_calculated_cycle_s", 0)
+                reason = eco.get("last_throttle_reason", "None")
+                
+                if not eco.get("enabled", False):
+                    self.lbl_eco_status.setText("<b>Cruise Control Status:</b> <span style='color: #FF9800;'>DISABLED</span>. Background thread is sleeping.")
+                    return
+                    
+                status_html = f"<b>Cruise Control Status:</b> <span style='color: #00E676;'>ACTIVE</span><br>"
+                status_html += f"<b>Last Known Hit Rate:</b> {hr*100:.2f}%<br>"
+                status_html += f"<b>Calculated Engine Speed:</b> {cyc} seconds<br>"
+                if reason != "None":
+                    status_html += f"<b>Limiter Applied:</b> <span style='color: #FF5252;'>{reason}</span>"
+                else:
+                    status_html += f"<b>Limiter Applied:</b> None (Cruising at Target Rate)"
+                    
+                self.lbl_eco_status.setText(status_html)
+        except: pass
 
     def reset_ema_state(self):
         if QMessageBox.question(self, "Reset PID Memory", "Wipe the algorithm's memory (EMA)?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
@@ -685,16 +828,39 @@ class NetworkTelemetryDialog(QDialog):
                     max_speed = inputs['speed'].value()
                     limit_gb = plan_size * (allowed_pct / 100.0)
                     con.execute("REPLACE INTO network_quotas (interface_name, limit_gb, reset_day, plan_size_gb, allowed_percent, max_gb_per_hour) VALUES (?, ?, ?, ?, ?, ?)", (name, limit_gb, reset_day, plan_size, allowed_pct, max_speed))
+            
             if CONFIG_FILE.exists():
                 try:
                     cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
                     throttle_flag = cfg.get("hydra_pid_settings", {}).get("throttling_enabled", True)
-                    cfg["hydra_pid_settings"] = {"ema_alpha": self.spin_ema_alpha.value(), "soft_lockout_pct": self.spin_soft_lockout.value(), "global_brake_pct": self.spin_global_brake.value(), "throttling_enabled": throttle_flag}
+                    cfg["hydra_pid_settings"] = {
+                        "ema_alpha": self.spin_ema_alpha.value(), 
+                        "soft_lockout_pct": self.spin_soft_lockout.value(), 
+                        "global_brake_pct": self.spin_global_brake.value(), 
+                        "throttling_enabled": throttle_flag
+                    }
+                    
+                    cfg["economic_control"] = {
+                        "enabled": self.chk_eco_enable.isChecked(),
+                        "target_detections_30m": self.spin_eco_target.value(),
+                        "max_daily_budget_credits": self.spin_eco_budget.value(),
+                        "ai_model": self.combo_eco_model.currentData(),
+                        "custom_ai_model": self.edit_eco_custom.text().strip(),
+                        "cost_per_1000_images_credits": self.spin_eco_cost.value(),
+                        "tuning_interval_mins": self.spin_eco_interval.value(),
+                        
+                        # Preserve calculated state so it isn't wiped by UI save
+                        "last_calculated_hit_rate": self.eco_settings.get("last_calculated_hit_rate", 0.0),
+                        "last_calculated_cycle_s": self.eco_settings.get("last_calculated_cycle_s", 0),
+                        "last_throttle_reason": self.eco_settings.get("last_throttle_reason", "None")
+                    }
+                    
                     tmp_file = CONFIG_FILE.with_suffix('.tmp')
                     tmp_file.write_text(json.dumps(cfg, indent=2), encoding='utf-8')
                     os.replace(tmp_file, CONFIG_FILE)
-                except Exception as e: logging.error(f"Failed to save PID settings: {e}")
-            QMessageBox.information(self, "Success", "Network Quotas and PID parameters saved successfully.")
+                except Exception as e: logging.error(f"Failed to save PID/ECO settings: {e}")
+                
+            QMessageBox.information(self, "Success", "Network Quotas, PID parameters, and Economic Cruise Control settings saved successfully.")
             self.accept()
         except Exception as e: QMessageBox.critical(self, "Error", f"Failed to save: {e}")
 
@@ -903,7 +1069,7 @@ class StreamAuditDialog(QDialog):
             
             with db_connector.get_db_connection(force_local=True) as con:
                 cur = con.cursor()
-                for iface in interfaces:
+                for iface in self.interfaces:
                     name = iface['name']
                     used_bytes, limit_bytes, is_over = network_manager.get_interface_quota_status(name)
                     is_monthly_dead = (limit_bytes > 0 and used_bytes >= limit_bytes)

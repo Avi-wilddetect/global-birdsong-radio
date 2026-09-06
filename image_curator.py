@@ -1,9 +1,20 @@
 # FILE: image_curator.py
-# VERSION: 16.12 - "The Lazy BLOB Loading Patch"
+# VERSION: 16.14 - "The Ghost Window Exorcism Patch"
 # RESPONSIBILITY: Instant Local UI load, background scraping, Cloud sync, and AI Content/License Moderation.
-# UPDATED: Completely removed the 88MB RAM bottleneck. Switched from infinite scrolling to explicit Next/Prev pagination and implemented lazy BLOB loading to only fetch images for the current 100 rows.
+# CHANGELOG:
+# [2026-09-04 01:45] - v16.14: Injected Nuclear GPU Disable flags and replaced the delayed maximize timer with native window state flags to prevent Windows 11 Ghost Windows and blank taskbar thumbnails.
+# [2026-09-03 13:30] - v16.13: Replaced hardcoded 'gemini-2.5-flash' with dynamic model extraction from the Economic Cruise Control configuration.
 
 import sys
+import os
+
+# --- NUCLEAR GPU DISABLE (Fix for Windows 11 Ghost Windows & Blank Thumbnails) ---
+sys.argv.append("--disable-gpu")
+sys.argv.append("--disable-software-rasterizer")
+sys.argv.append("--disable-gpu-compositing")
+sys.argv.append("--disable-accelerated-2d-canvas")
+sys.argv.append("--disable-d3d11")
+
 import json
 import logging
 import requests
@@ -19,7 +30,6 @@ from datetime import datetime, timezone, timedelta
 import re
 import sqlite3
 import unicodedata
-import os
 
 try:
     from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
@@ -204,6 +214,23 @@ def run_ai_moderation(image_bytes, species_name):
             forbidden_words = s.get("image_moderation_rules",[])
     except: pass
 
+    # --- DYNAMIC AI MODEL PATCH ---
+    ai_model = "gemini-3.7-flash"
+    try:
+        if CONFIG_FILE.exists():
+            with config_lock:
+                with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+                    cfg = json.load(f)
+                eco = cfg.get("economic_control", {})
+                ai_model = eco.get("ai_model", "gemini-3.7-flash")
+                if ai_model == "custom":
+                    ai_model = eco.get("custom_ai_model", "gemini-3.7-flash")
+                if not ai_model.strip():
+                    ai_model = "gemini-3.7-flash"
+    except Exception:
+        pass
+    # ------------------------------
+
     active_keys = get_available_keys()
     if not active_keys:
         return 'UNCHECKED', "No API key available"
@@ -241,7 +268,7 @@ def run_ai_moderation(image_bytes, species_name):
         try:
             client = genai.Client(api_key=api_key)
             response = client.models.generate_content(
-                model='gemini-2.5-flash', 
+                model=ai_model, 
                 contents=[img, prompt],
                 config=types.GenerateContentConfig(temperature=0.1, response_mime_type="application/json")
             )
@@ -1083,7 +1110,7 @@ class ImageCurator(QWidget):
                     self.setGeometry(x, y, w, h)
                 
                 if s.get('image_curator_maximized', False):
-                    QTimer.singleShot(100, self.showMaximized)
+                    self.setWindowState(Qt.WindowState.WindowMaximized)
         except Exception as e:
             logging.error(f"Failed to load UI settings: {e}")
 

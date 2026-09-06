@@ -1,7 +1,7 @@
-# FILE: scheduler.py
-# VERSION: 13.8 - "The Zombie Eradication Patch"
-# RESPONSIBILITY: Manages Proxies, Launches Workers, Sends Reports, Syncs Config, Cleans Logs, Enforces SIM Data Limits, and Auto-Heals Dead Links.
-# UPDATED: Completely refactored the process management loop to extract TASKKILL logic into a guaranteed cleanup_fleet() function. Fixes a catastrophic memory leak where broken loops orphaned Python processes.
+﻿# FILE: scheduler.py
+# VERSION: 14.2 - "The Economic Cruise Control Variable Frequency Patch"
+# RESPONSIBILITY: Manages Proxies, Launches Workers, Sends Reports, Syncs Config, Cleans Logs, Enforces SIM Data Limits, Auto-Heals Dead Links, and Manages the Financial/Hit-Rate Cruise Control.
+# UPDATED: EconomicCruiseControlThread now dynamically reads 'tuning_interval_mins' from the config to control its sleep cycle, rather than being hardcoded to 1 hour.
 
 import sys
 import json
@@ -83,6 +83,123 @@ def terminate_handler(signum, frame):
     sys.exit(0)
 
 
+# --- ECONOMIC CRUISE CONTROL (BUDGET AUTOTUNER) ---
+class EconomicCruiseControlThread(threading.Thread):
+    def __init__(self):
+        super().__init__()
+        self.daemon = True
+
+    def run(self):
+        logging.info("EconomicCruiseControlThread started. Will dynamically wake up to tune AI budgets.")
+        time.sleep(120) # Startup delay
+        
+        while True:
+            try:
+                if not CFG_PATH.exists():
+                    time.sleep(60); continue
+                    
+                cfg = json.loads(CFG_PATH.read_text(encoding='utf-8'))
+                eco = cfg.get("economic_control", {})
+                
+                if not eco.get("enabled", False):
+                    time.sleep(600); continue
+                    
+                # 1. Read Inputs
+                target_30m = float(eco.get("target_detections_30m", 15))
+                max_budget_day = float(eco.get("max_daily_budget_credits", 5.0))
+                cost_per_1000 = float(eco.get("cost_per_1000_images_credits", 0.75))
+                
+                vision_cfg = cfg.get("vision_ai", {})
+                active_vision_streams = len(vision_cfg.get("enabled_streams", []))
+                
+                if active_vision_streams == 0:
+                    time.sleep(3600); continue
+                    
+                curr_interval = float(vision_cfg.get("cycle_interval_seconds", 60))
+                if curr_interval <= 0: curr_interval = 60
+                
+                # 2. Calculate Hit Rate
+                cutoff_12h = time.time() - (12 * 3600)
+                with db_connector.get_db_connection(force_local=True) as con:
+                    cur = con.cursor()
+                    cur.execute("SELECT COUNT(*) FROM detections WHERE timestamp > ? AND detection_method IN ('vision', 'multimodal')", (cutoff_12h,))
+                    d_12h = cur.fetchone()[0]
+                    
+                d_30m_avg = max(d_12h / 24.0, 0.1) # Floor at 0.1 to avoid div zero
+                scans_30m = (1800.0 / curr_interval) * active_vision_streams
+                hit_rate = d_30m_avg / scans_30m if scans_30m > 0 else 0.001
+                if hit_rate <= 0: hit_rate = 0.001
+                
+                # 3. Calculate Required Scans
+                req_scans_30m = target_30m / hit_rate
+                
+                # 4. Budget Constraint
+                cost_per_scan = cost_per_1000 / 1000.0
+                max_scans_day = max_budget_day / cost_per_scan if cost_per_scan > 0 else 999999
+                max_scans_30m = max_scans_day / 48.0
+                
+                reason = "None"
+                if req_scans_30m > max_scans_30m:
+                    req_scans_30m = max_scans_30m
+                    reason = "Budget Cap Active"
+                    
+                # 5. SIM Data Limitation & Assignment
+                # Vision ~ 8MB/scan = 0.0078 GB. Audio ~ 1MB/min = 0.06 GB/hr.
+                total_audio_streams = len([s for s in cfg.get('streams', []) if s.get('enabled', True) and not s.get('mute_audio', False)])
+                audio_gb_hr = total_audio_streams * 0.06
+                vision_gb_hr = (req_scans_30m * 2) * 0.0078
+                total_gb_hr_needed = (audio_gb_hr + vision_gb_hr) * 1.2 # 20% headroom
+                
+                network_map = cfg.get("network_map", {})
+                sims = list(set(network_map.values()) - {"Default / OS"})
+                num_sims = len(sims)
+                
+                if num_sims > 0:
+                    per_sim_limit = round(total_gb_hr_needed / num_sims, 2)
+                    with db_connector.get_db_connection(force_local=True) as con:
+                        for sim in sims:
+                            # Upsert max_gb_per_hour without breaking existing monthly limits
+                            con.execute("""
+                                INSERT INTO network_quotas (interface_name, max_gb_per_hour) 
+                                VALUES (?, ?) 
+                                ON CONFLICT(interface_name) 
+                                DO UPDATE SET max_gb_per_hour = excluded.max_gb_per_hour
+                            """, (sim, per_sim_limit))
+                
+                # 6. Apply New Interval
+                if req_scans_30m > 0:
+                    new_interval = 1800.0 / (req_scans_30m / active_vision_streams)
+                else:
+                    new_interval = 3600
+                    
+                # Clamp safely between 20s and 3600s
+                new_interval = max(20, min(3600, int(new_interval)))
+                
+                # 7. Write Back to Config
+                cfg_update = json.loads(CFG_PATH.read_text(encoding='utf-8'))
+                cfg_update.setdefault("vision_ai", {})["cycle_interval_seconds"] = new_interval
+                eco_update = cfg_update.setdefault("economic_control", {})
+                eco_update["last_calculated_hit_rate"] = hit_rate
+                eco_update["last_calculated_cycle_s"] = new_interval
+                eco_update["last_throttle_reason"] = reason
+                
+                tmp_path = CFG_PATH.with_suffix('.tmp')
+                tmp_path.write_text(json.dumps(cfg_update, indent=2), encoding='utf-8')
+                os.replace(tmp_path, CFG_PATH)
+                
+                logging.info(f"[ECO CRUISE] Tuned! Hit Rate: {hit_rate*100:.2f}% | Target Scans/30m: {req_scans_30m:.0f} | New Interval: {new_interval}s | Reason: {reason}")
+                
+                # THE FREQUENCY DIAL PATCH: Read user's interval preference
+                tuning_interval_mins = float(eco.get("tuning_interval_mins", 30))
+                sleep_secs = max(60, int(tuning_interval_mins * 60))
+                
+            except Exception as e:
+                logging.error(f"[ECO CRUISE] Error in background tuning: {e}")
+                sleep_secs = 1800 # Fallback 30 mins on error
+                
+            time.sleep(sleep_secs)
+
+
 # --- AUTO-SYNC THREAD (DRIP-FEED CHANNEL SCANNER) ---
 class AutoSyncThread(threading.Thread):
     def __init__(self):
@@ -149,11 +266,22 @@ class AutoSyncThread(threading.Thread):
                             target_stream['updated_at'] = time.time()
                             target_stream.pop('disable_reason', None)
                             target_stream.pop('status_reason', None)
-                            if p.get('new_channel_name'):
-                                target_stream['channel_name'] = p['new_channel_name']
+                            
+                            # --- THE UNKNOWN CHANNEL PRESERVATION PATCH ---
+                            new_cname = str(p.get('new_channel_name', '')).strip()
+                            old_cname = str(target_stream.get('channel_name', '')).strip()
+                            bad_names = ["Unknown Channel", "Unknown", ""]
+                            
+                            if new_cname and new_cname not in bad_names:
+                                target_stream['channel_name'] = new_cname
                                 if 'channels' not in cfg_to_update: cfg_to_update['channels'] = {}
-                                if p['new_channel_name'] not in cfg_to_update['channels']:
-                                    cfg_to_update['channels'][p['new_channel_name']] = p['new_channel']
+                                if new_cname not in cfg_to_update['channels']:
+                                    cfg_to_update['channels'][new_cname] = p.get('new_channel', '')
+                            elif old_cname and old_cname not in bad_names:
+                                target_stream['channel_name'] = old_cname
+                            else:
+                                target_stream['channel_name'] = "Unknown Channel"
+                            # ----------------------------------------------
                                     
                             config_updated = True
                             if stream_migrator:
@@ -800,6 +928,7 @@ def main(show_windows_flag: str):
     HardwareTelemetryThread().start()
     NetworkMonitorThread().start()
     AutoSyncThread().start()
+    EconomicCruiseControlThread().start()
     
     global child_processes
     

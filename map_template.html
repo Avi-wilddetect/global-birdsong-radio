@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Global Nervous System v41.19 (Stacked Hover Kill Switch)</title>
+    <title>Global Nervous System v41.21 (Unique Species Burst Patch)</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -25,7 +25,7 @@
             border-radius: 4px; 
             box-shadow: 0 4px 25px rgba(0,0,0,0.8); 
             padding: 6px 10px !important; 
-            pointer-events: auto !important; 
+            pointer-events: none !important; 
             z-index: 9999 !important; 
             white-space: normal !important; 
             width: max-content !important; 
@@ -266,7 +266,7 @@
     <div id="offscreen-pointer"></div>
     <div id="error-banner"></div>
     <div id="maintenance-banner">⚠️ SYSTEM NOTICE: The global sensor network is currently undergoing scheduled maintenance. Live stream scanning is temporarily paused, but historical data remains fully accessible.</div>
-    <div class="version-tag">v41.19</div>
+    <div class="version-tag">v41.21</div>
     <div id="hud-right">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="SEARCH TARGET SPECIES..." onkeyup="handleSearch()">
@@ -376,7 +376,6 @@
         const mapHovers = {};        
         const tooltipIntentTimers = {}; 
         const gracePeriodTimers = {}; 
-        const tooltipHovers = {};    
         const strobeStates = {};     
         const carouselIntervals = {}; // NEW: High Zoom Hover Carousel
 
@@ -496,25 +495,8 @@
                         let ttOffset = isNearRightEdge ? [-20, 0] : [0, -40];
                         
                         markers[id].marker.bindTooltip(markers[id].lastTooltip, { 
-                            direction: ttDirection, sticky: false, opacity: 1, offset: ttOffset, interactive: true
+                            direction: ttDirection, sticky: false, opacity: 1, offset: ttOffset, interactive: false
                         }).openTooltip();
-                        
-                        let tt = markers[id].marker.getTooltip();
-                        if (tt) {
-                            let ttEl = tt.getElement();
-                            if (ttEl) {
-                                ttEl.onmouseenter = () => {
-                                    tooltipHovers[id] = true;
-                                    if (gracePeriodTimers[id]) clearTimeout(gracePeriodTimers[id]);
-                                    if (hoverTimeouts[id]) clearTimeout(hoverTimeouts[id]);
-                                    activeHighlights[id] = true;
-                                };
-                                ttEl.onmouseleave = () => {
-                                    delete tooltipHovers[id];
-                                    handleMapMarkerMouseOut(id);
-                                };
-                            }
-                        }
                     }
                 }, 500);
             }
@@ -526,7 +508,6 @@
             if (gracePeriodTimers[id]) clearTimeout(gracePeriodTimers[id]);
             
             gracePeriodTimers[id] = setTimeout(() => {
-                if (tooltipHovers[id]) return; 
                 if (markers[id] && markers[id].marker) {
                     markers[id].marker.closeTooltip();
                     markers[id].marker.unbindTooltip();
@@ -729,7 +710,7 @@
                         }
                     }, 1500);
                 } else {
-                    if (!mapHovers[id] && !tooltipHovers[id]) handleMapMarkerMouseOut(id);
+                    if (!mapHovers[id]) handleMapMarkerMouseOut(id);
                 }
             });
         }
@@ -1090,7 +1071,6 @@
             Object.keys(strobeTimeouts).forEach(k => delete strobeTimeouts[k]);
             Object.keys(activeHighlights).forEach(k => delete activeHighlights[k]);
             Object.keys(mapHovers).forEach(k => delete mapHovers[k]);
-            Object.keys(tooltipHovers).forEach(k => delete tooltipHovers[k]);
             Object.keys(strobeStates).forEach(k => delete strobeStates[k]);
             Object.keys(tooltipIntentTimers).forEach(k => delete tooltipIntentTimers[k]);
             Object.keys(gracePeriodTimers).forEach(k => delete gracePeriodTimers[k]);
@@ -1265,7 +1245,8 @@
                         let placed = false;
                         for (let c of clusters) {
                             let cTs = c.items[c.items.length - 1].timestamp;
-                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs) {
+                            let hasSpecies = c.items.some(i => i.species === item.species); // NEW
+                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && !hasSpecies) { // MODIFIED
                                 c.items.push(item);
                                 placed = true;
                                 break;
@@ -1343,8 +1324,9 @@
                             let baseLon = parseFloat(c.items[0].lon) || 0.0;
                             
                             let dist = getDistanceKm(itemLat, itemLon, baseLat, baseLon); 
+                            let hasCamera = c.items.some(i => i.camera_id === item.camera_id); // NEW
                             
-                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                            if (Math.abs(item.timestamp - cTs) <= maxTimeGapSecs && dist <= maxSwarmDist && !hasCamera) { // MODIFIED
                                 c.items.push(item);
                                 placed = true;
                                 break;
@@ -1651,7 +1633,8 @@
                             let placed = false;
                             for (let c of clusters) {
                                 let lastItemTs = c.items[c.items.length - 1].timestamp; 
-                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs) {
+                                let hasSpecies = c.items.some(i => i.species === item.species); // NEW
+                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && !hasSpecies) { // MODIFIED
                                     c.items.push(item);
                                     placed = true;
                                     break;
@@ -1700,8 +1683,9 @@
                                 let baseLon = parseFloat(c.items[0].lon) || 0;
                                 
                                 let dist = getDistanceKm(itemLat, itemLon, baseLat, baseLon);
+                                let hasCamera = c.items.some(i => i.camera_id === item.camera_id); // NEW
                                 
-                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && dist <= maxSwarmDist) {
+                                if (Math.abs(item.timestamp - lastItemTs) <= maxTimeGapSecs && dist <= maxSwarmDist && !hasCamera) { // MODIFIED
                                     c.items.push(item);
                                     placed = true;
                                     break;

@@ -1,6 +1,13 @@
 # FILE: audio_capture.py
-# VERSION: 8.4 - "The Web Client Restoration Patch"
-# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
+# VERSION: 8.13 - "The Client Spoofing Restoration Patch"
+#
+# CHANGELOG:
+# [2026-09-04 20:34] - v8.13: Reverted the Web Client Restoration Patch to allow yt-dlp to use 'tv', 'ios', and 'mweb' clients, bypassing YouTube's strict blocking of the 'web' client.
+# [2026-09-04 12:08] - v8.12: Implemented Pure Python Downloader via 'requests' to bypass FFmpeg's TCP stack for MP3s, preventing Returncode 3419392776 crashes. Downgraded Selenium Sniffer failures from TERMINATED to AUTO_RESOLVER_FAILED to prevent 24-hour permanent bans on temporary proxy hiccups.
+# [2026-09-03 13:45] - v8.10: Bypassed the proxy entirely for Native Audio (MP3) streams to prevent aggressive SO_LINGER socket destruction from crashing FFmpeg with returncode 3419392776.
+# [2026-09-03 13:00] - v8.9: Implemented Web Client Restoration Patch to force 'web' client for yt-dlp, fixing YouTube audio extraction.
+# [2026-09-03 03:20] - v8.8: Fixed false-positive FATAL/SUSPENDED flags by routing "Private/Unavailable" YouTube blocks and IP Camera token expirations directly to the Selenium Auto-Healer.
+# [2026-09-03 03:00] - v8.7: Upgraded FFmpeg segfault regex to catch 4294957242 and all other 10-digit memory access violations.
 
 import os
 import time
@@ -9,6 +16,8 @@ import random
 import subprocess
 import json
 import logging
+import tempfile
+import requests
 from urllib.parse import urljoin
 from pathlib import Path
 
@@ -131,6 +140,76 @@ class AudioCaptureEngine:
         self.db = db_manager
         self.g_cfg = global_config
 
+    def _grab_pure_audio_stream(self, url, capture_seconds, headers_list, proxy_url, interface_name):
+        """
+        Bypasses FFmpeg's TCP stack entirely to read MP3/Icecast streams directly via 'requests'.
+        Prevents FFmpeg returncode 3419392776 crashes caused by poor HTTP stream handling.
+        """
+        proxies = {"http": proxy_url, "https": proxy_url} if proxy_url and proxy_url != "None" else None
+        
+        headers = {}
+        for h in headers_list:
+            if ":" in h:
+                k, v = h.split(":", 1)
+                headers[k.strip()] = v.strip()
+        
+        if "User-Agent" not in headers:
+            ext_strat = self.g_cfg.get('extraction_strategy', {})
+            headers["User-Agent"] = ext_strat.get('ffmpeg_user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+            
+        logging.info(f"[{self.lid}] Engaging Native Python HTTP downloader for audio stream...")
+        
+        try:
+            r = requests.get(url, headers=headers, proxies=proxies, stream=True, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            raise RuntimeError(f"Native Python Downloader request failed: {e}")
+        
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tf:
+            temp_path = tf.name
+            start_time = time.time()
+            try:
+                for chunk in r.iter_content(chunk_size=16384):
+                    if chunk:
+                        tf.write(chunk)
+                    if time.time() - start_time >= capture_seconds:
+                        break
+            except Exception as e:
+                logging.warning(f"[{self.lid}] Stream read interrupted (normal for live streams): {e}")
+                
+        # Now convert downloaded file to WAV via FFmpeg locally (no networking required)
+        ffmpeg_exe = str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe")
+        ff_cmd =[
+            ffmpeg_exe, "-y", "-hide_banner", "-loglevel", "error",
+            "-i", temp_path
+        ]
+        
+        if self.g_cfg.get('extraction_strategy', {}).get('audio_normalization', True):
+            ff_cmd.extend(["-af", "dynaudnorm"])
+            
+        ff_cmd.extend(["-ac", "1", "-ar", "48000", "-f", "wav", "pipe:1"])
+        
+        creation_flags = subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+        
+        try:
+            ff_proc = subprocess.Popen(ff_cmd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, creationflags=creation_flags)
+            out, _ = ff_proc.communicate(timeout=15)
+            
+            if ff_proc.returncode != 0:
+                raise RuntimeError(f"FFmpeg decoding failed with returncode {ff_proc.returncode}")
+                
+            self.db.log_health_event(url, "SUCCESS", "Captured via Native Python Downloader")
+                
+            if interface_name and interface_name != "Default / OS":
+                try: 
+                    network_manager.log_app_usage(interface_name, 'audio', int(capture_seconds * 128 * 1024))
+                except Exception: pass
+                
+            return out, headers_list
+        finally:
+            try: os.unlink(temp_path)
+            except: pass
+
     def _grab_audio_via_native_python(self, base_youtube_url, capture_seconds, proxy_url, interface_name, is_youtube=True, original_url=None):
         if is_youtube:
             if _is_proxy_rate_limited(proxy_url):
@@ -141,8 +220,12 @@ class AudioCaptureEngine:
         headers_dict = {}
 
         ext_strat = self.g_cfg.get('extraction_strategy', {})
-        clients =[c.strip() for c in ext_strat.get('player_client', 'web').split(',') if c.strip()]
-        if not clients: clients = ['web']
+        
+        # --- CLIENT SPOOFING RESTORATION PATCH ---
+        # Allow the original config list to flow directly to yt-dlp without stripping mobile clients
+        clients = [c.strip() for c in ext_strat.get('player_client', 'tv, mweb, ios').split(',') if c.strip()]
+        if not clients:
+            clients = ['tv', 'mweb', 'ios', 'web'] # Robust fallback
 
         if is_youtube:
             ydl_opts = {
@@ -212,10 +295,18 @@ class AudioCaptureEngine:
             except Exception as e:
                 e_str = str(e)
 
-                if "vod_rejected" in e_str.lower() or "is not available" in e_str.lower() or "private video" in e_str.lower():
+                if "vod_rejected" in e_str.lower():
                     raise e 
                 
-                block_markers = ["no video formats found", "sign in to confirm you", "bot", "requested format is not available", "only images are available"]
+                # --- THE BOT WALL BYPASS PATCH ---
+                # Explicitly map YouTube's new bot-wall phrases to YOUTUBE_BLOCK
+                # so the Engine triggers Selenium instead of killing the stream.
+                block_markers = [
+                    "no video formats found", "sign in to confirm you", "bot", 
+                    "requested format is not available", "only images are available",
+                    "is not available", "private video", "video is unavailable",
+                    "this live stream recording"
+                ]
                 if any(x in e_str.lower() for x in block_markers):
                     raise RuntimeError(f"YOUTUBE_BLOCK: {e_str}")
 
@@ -281,40 +372,78 @@ class AudioCaptureEngine:
                     "returncode", "connection reset", "wsaeconnreset", "invalid data", "0 bytes",
                     "no media segments", "native downloader request failed"
                 ])
-                if "youtube_block" in err_str or cached_manifest_dead:
-                    logging.warning(f"[{self.lid}] Cached link expired or YT-DLP blocked. Launching Selenium Sniffer for {stream_name}...")
+                
+                ffmpeg_crashed = bool(re.search(r'[1-4]\d{9}', err_str))
+                
+                if "youtube_block" in err_str or cached_manifest_dead or ffmpeg_crashed:
+                    reason = "FFmpeg crashed" if ffmpeg_crashed else ("YT-DLP blocked" if "youtube_block" in err_str else "Cached link expired")
+                    logging.warning(f"[{self.lid}] {reason}. Launching Selenium Sniffer for {stream_name}...")
                     if not stream_resolver:
-                        raise RuntimeError("stream_resolver missing, cannot sniff.")
+                        raise RuntimeError("AUTO_RESOLVER_FAILED: stream_resolver missing, cannot sniff.")
                     
                     base_yt = original_url if original_url else (clean_url if "youtube" in clean_url else None)
                     if not base_yt:
-                        raise RuntimeError("No base YouTube URL to sniff.")
+                        raise RuntimeError("AUTO_RESOLVER_FAILED: No base YouTube URL to sniff.")
                         
                     links, stype, msg = stream_resolver.resolve_stream_url(base_yt, proxy_url=proxy_url, fast_mode=False)
                     if links:
                         new_url = links[0].replace(r"\u0026", "&").replace(r"\/", "/")
                         update_config_with_new_url(stream_name, new_url)
                         logging.info(f"[{self.lid}] Successfully sniffed and cached raw .m3u8 link!")
-                        return self._grab_audio_via_native_python(new_url, capture_seconds, proxy_url, interface_name, is_youtube=False, original_url=base_yt)
+                        try:
+                            return self._grab_audio_via_native_python(new_url, capture_seconds, proxy_url, interface_name, is_youtube=False, original_url=base_yt)
+                        except Exception as inner_e:
+                            raise RuntimeError(f"AUTO_RESOLVER_FAILED: Auto-healed link failed immediately: {inner_e}")
                     else:
-                        raise RuntimeError(f"Selenium Sniffer failed to find stream: {msg}")
+                        raise RuntimeError(f"AUTO_RESOLVER_FAILED: Selenium Sniffer failed to find stream: {msg}")
                 raise e
 
         try:
             headers_list =[]
             if original_url: headers_list.append(f"Referer: {original_url}")
+            
+            # --- THE NATIVE AUDIO PROXY BYPASS PATCH ---
+            if stream_type == 'audio':
+                return self._grab_pure_audio_stream(clean_url, capture_seconds, headers_list, proxy_url, interface_name)
+                
             return self._execute_ffmpeg(
                 clean_url, capture_seconds, headers_list, stream_type,
                 use_proxy=True, proxy_url=proxy_url, interface_name=interface_name
             )
         except RuntimeError as e:
             err_str = str(e).lower()
-            if any(x in err_str for x in["403 forbidden", "404 not found", "410 gone", "invalid data found", "stream ends prematurely", "end of file", "timed out", "-10054", "10054", "connection reset", "ffmpeg failed with returncode", "server returned 403", "server returned 404", "server returned 410"]):
-                logging.info(f"[{self.lid}] TLS Block or FFmpeg crash detected on non-YouTube stream. Engaging Native Python Downloader for {clean_url[:60]}...")
-                try: 
-                    return self._grab_audio_via_native_python(clean_url, capture_seconds, proxy_url, interface_name, is_youtube=False)
-                except Exception as ex: 
-                    raise RuntimeError(f"Native Downloader failed: {ex}")
+            
+            # --- IP CAMERA HEALING PATCH ---
+            is_crash_or_block = any(x in err_str for x in [
+                "403 forbidden", "404 not found", "410 gone", "invalid data found", 
+                "stream ends prematurely", "end of file", "timed out", "-10054", "10054", 
+                "connection reset", "ffmpeg failed with returncode", "server returned 403", 
+                "server returned 404", "server returned 410", "native downloader request failed"
+            ]) or bool(re.search(r'[1-4]\d{9}', err_str))
+            
+            if is_crash_or_block:
+                if original_url and original_url != clean_url and not original_url.endswith('.m3u8'):
+                    logging.warning(f"[{self.lid}] IP Camera token expired or FFmpeg crashed. Launching Selenium Sniffer for {stream_name}...")
+                    if not stream_resolver:
+                        raise RuntimeError("AUTO_RESOLVER_FAILED: stream_resolver missing, cannot sniff.")
+                    
+                    links, stype, msg = stream_resolver.resolve_stream_url(original_url, proxy_url=proxy_url, fast_mode=False)
+                    if links:
+                        new_url = links[0].replace(r"\u0026", "&").replace(r"\/", "/")
+                        update_config_with_new_url(stream_name, new_url)
+                        logging.info(f"[{self.lid}] Successfully sniffed and cached fresh IP Camera link!")
+                        try:
+                            return self._grab_audio_via_native_python(new_url, capture_seconds, proxy_url, interface_name, is_youtube=False, original_url=original_url)
+                        except Exception as inner_e:
+                            raise RuntimeError(f"AUTO_RESOLVER_FAILED: Auto-healed IP Camera link failed immediately: {inner_e}")
+                    else:
+                        raise RuntimeError(f"AUTO_RESOLVER_FAILED: Selenium Sniffer failed to find IP Camera stream: {msg}")
+                else:
+                    logging.info(f"[{self.lid}] TLS Block or FFmpeg crash detected on non-YouTube stream. Engaging Native Python Downloader for {clean_url[:60]}...")
+                    try: 
+                        return self._grab_pure_audio_stream(clean_url, capture_seconds, headers_list, proxy_url, interface_name)
+                    except Exception as ex: 
+                        raise RuntimeError(f"Native Downloader failed: {ex}")
             raise e
 
     def _execute_ffmpeg(self, url, capture_seconds, headers_list, stream_type, use_proxy, proxy_url, interface_name):

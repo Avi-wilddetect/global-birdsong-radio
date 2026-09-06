@@ -1,7 +1,9 @@
 # FILE: stream_resolver.py
-# VERSION: 4.79 - "The Web Client Restoration Patch"
+# VERSION: 4.80 - "The Sniffer Amnesty Patch"
 # PURPOSE: Resolves streams using HTTP Headers, yt-dlp, Static Regex, and Headless Browser Network Sniffing.
-# UPDATED: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
+# CHANGELOG:
+# [2026-09-04 01:25] - v4.80: Softened Selenium VOD_REJECTED check to prevent false positives when YouTube serves consent/bot-wall pages.
+# [2026-09-03 13:01] - v4.79: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
 
 import sys
 import os
@@ -14,7 +16,7 @@ import time
 import subprocess
 from pathlib import Path
 
-print("DEBUG: Stream Resolver v4.79 (Web Client Restoration Patch) Loaded")
+print("DEBUG: Stream Resolver v4.80 (Sniffer Amnesty Patch) Loaded")
 
 # --- GLOBAL NODE.JS PATH INJECTION ---
 def ensure_node_in_path():
@@ -156,8 +158,15 @@ def deep_scan_browser_intercept(url, proxy_url=None):
             try:
                 page_source = driver.page_source
                 live_indicators =["isLiveBroadcast", "isLiveNow", "isLive", '"status":"LIVE"']
-                if not any(indicator in page_source for indicator in live_indicators):
+                bot_indicators = ["consent", "cookies", "sign in", "robot", "captcha", "unusual traffic", "before you continue"]
+                
+                is_live_flag = any(indicator in page_source for indicator in live_indicators)
+                is_bot_wall = any(bot in page_source.lower() for bot in bot_indicators)
+                
+                if not is_live_flag and not is_bot_wall:
                     return[], "\n".join(log_buffer) + "\nVOD_REJECTED: Selenium confirmed this YouTube page is a recorded VOD."
+                elif is_bot_wall:
+                    log_buffer.append("Browser Intercept: Bot wall / Consent page detected. Skipping strict VOD check and proceeding to sniff...")
             except Exception as e:
                 log_buffer.append(f"Browser Intercept: Could not verify VOD status ({e}).")
         

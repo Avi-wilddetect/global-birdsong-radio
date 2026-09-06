@@ -1,7 +1,10 @@
 # FILE: vision_scheduler.py
-# VERSION: 10.12 - "The Silent Window Patch"
+# VERSION: 10.18 - "The Decoupling Patch"
 # RESPONSIBILITY: Exclusively handles AI Inference (Gemini), Multi-Modal Bridge Logic, Telegram Reporting, and Dormancy Backoff constraints.
-# UPDATED: Added CREATE_NO_WINDOW to the Node.js subprocess check to prevent black console boxes from popping up on Windows.
+# CHANGELOG:
+# [2026-09-04 01:25] - v10.18: Decoupled Vision Engine from Audio Engine network failures. Vision now only skips explicitly DEAD streams (FATAL/SUSPENDED) and ignores UNRESPONSIVE/FAILURE flags.
+# [2026-09-03 02:55] - v10.17: Fixed Drip-Feed Turnstile math to properly pace streams without starving the worker pool.
+# [2026-09-03 02:07] - v10.16: Implemented Drip-Feed Turnstile pacing to cure the Burst & Starve coma.
 
 import sys
 import traceback
@@ -191,7 +194,8 @@ def check_stream_health(url):
             row = cur.fetchone()
             if row and row[0]:
                 status = row[0].upper()
-                if any(bad in status for bad in["TERMINAL", "SUSPENDED", "UNRESPONSIVE", "FATAL"]):
+                # THE DECOUPLING PATCH: Only skip if the stream is truly dead. Ignore UNRESPONSIVE.
+                if any(bad in status for bad in ["TERMINAL", "SUSPENDED", "FATAL"]):
                     return status
     except Exception:
         pass 
@@ -753,6 +757,13 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
     tid = threading.get_ident()
     temp_img = VAULT_DIR / f"temp_vision_grab_{tid}_{int(time.time()*1000)}.jpg"
     
+    eco_cfg = cfg.get("economic_control", {})
+    ai_model = eco_cfg.get("ai_model", "gemini-3.7-flash")
+    if ai_model == "custom":
+        ai_model = eco_cfg.get("custom_ai_model", "gemini-3.7-flash")
+    if not ai_model.strip():
+        ai_model = "gemini-3.7-flash"
+        
     try:
         targets_data = load_vision_targets()
         stream_overrides = targets_data.get("stream_overrides", {})
@@ -1016,7 +1027,7 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
                                 # REMOVED HTTP OPTIONS TO FIX PYDANTIC CRASH
                                 client = genai.Client(api_key=target_api_key)
                                 response = client.models.generate_content(
-                                    model='gemini-2.5-flash', 
+                                    model=ai_model, 
                                     contents=[img_to_analyze, prompt],
                                     config=types.GenerateContentConfig(
                                         temperature=global_temp,
@@ -1519,15 +1530,25 @@ def main():
             if throttling_enabled:
                 capped_heat = min(global_brake_thresh - 0.01, global_heat) 
                 exp_multiplier = 1.0 / (1.0 - capped_heat)
-                # HARD CAP: Never stretch cycle beyond 3 minutes regardless of heat.
-                # This guarantees the system never fully stalls even when all SIMs are hot.
-                padded_cycle_interval = min(180.0, cycle_interval * exp_multiplier)
-                v_logger.info(f"[HYDRA-PID] Main Pipe Aggregate Heat: {global_heat*100:.1f}%. Stretching Cycle from {cycle_interval}s to {padded_cycle_interval:.1f}s.")
+                
+                # Cap the exponential multiplier to a maximum of 1.5x to prevent the Vision Engine 
+                # from entering an extreme multi-hour coma during network heat events, while still
+                # respecting the base Cruise Control budget.
+                safe_multiplier = min(1.5, exp_multiplier)
+                padded_cycle_interval = cycle_interval * safe_multiplier
             else:
                 exp_multiplier = 1.0
                 padded_cycle_interval = cycle_interval
-                if expected_interfaces:
-                    v_logger.info(f"[HYDRA-PID] ⚠️ THROTTLING DISABLED. Running at max capacity (Cycle: {cycle_interval}s).")
+
+            # --- THE DRIP-FEED TURNSTILE PATCH ---
+            total_streams = len(active_enabled_urls)
+            drip_delay = padded_cycle_interval / total_streams if total_streams > 0 else 60.0
+            
+            if throttling_enabled:
+                v_logger.info(f"[HYDRA-PID] Main Pipe Aggregate Heat: {global_heat*100:.1f}%. Stretching Cycle from {cycle_interval}s to {padded_cycle_interval:.1f}s.")
+                v_logger.info(f"[HYDRA-PID] Drip-feeding {total_streams} streams (Delay: {drip_delay:.1f}s per stream).")
+            else:
+                v_logger.info(f"[HYDRA-PID] ⚠️ THROTTLING DISABLED. Drip-feeding {total_streams} streams (Delay: {drip_delay:.1f}s).")
             
             active_proxies = get_active_hydra_proxies(cfg)
             
@@ -1544,6 +1565,9 @@ def main():
             
             v_logger.info(f"Initializing {vision_workers} Concurrent Worker(s) for {len(active_enabled_urls)} Streams...")
 
+            cycle_start_time = time.time()
+            next_submit_time = time.time()
+            
             # --- THE MULTI-THREADED POOL ---
             with concurrent.futures.ThreadPoolExecutor(max_workers=vision_workers) as executor:
                 futures = {}
@@ -1552,6 +1576,13 @@ def main():
                     
                     while len(futures) < vision_workers and len(scanned_this_cycle) < len(active_enabled_urls):
                         
+                        now = time.time()
+                        # Drip-Feed Turnstile: Sleep if we are trying to submit faster than the allotted drip pace.
+                        # We skip this for the first few workers to quickly fill the initial pool.
+                        if len(scanned_this_cycle) >= vision_workers and now < next_submit_time:
+                            sleep_duration = next_submit_time - now
+                            time.sleep(sleep_duration)
+                            
                         bounty_info = get_acoustic_bounty(active_enabled_urls, processed_bounty_ids, predator_threshold)
                         bounty_species = None
                         bounty_det_id = None
@@ -1597,11 +1628,7 @@ def main():
                                     break
                                     
                         if url_to_scan:
-                            # --- THE TRIPLICATE THREAD SPAM PATCH ---
-                            # Unconditionally add to scanned_this_cycle to prevent multiple workers 
-                            # from grabbing the same bounty simultaneously.
                             scanned_this_cycle.add(url_to_scan)
-                                
                             last_vision_scan_times[url_to_scan] = time.time()
                             
                             future = executor.submit(
@@ -1614,23 +1641,14 @@ def main():
                             )
                             futures[future] = url_to_scan
                             
-                            # --- THE STAGGERED LAUNCH PATCH WITH EXPONENTIAL PID ---
-                            if len(futures) < vision_workers:
-                                base_stagger = random.uniform(2.0, 5.0)
-                                padded_stagger = base_stagger * exp_multiplier
-                                # HARD CAP: Never stagger more than 15s between workers.
-                                # Prevents the system from taking 4+ minutes just to launch workers.
-                                padded_stagger = min(15.0, padded_stagger) 
-                                
-                                if throttling_enabled:
-                                    v_logger.info(f"[HYDRA-PID] Staggering next worker launch by {padded_stagger:.1f}s to gracefully pace network/API...")
-                                else:
-                                    v_logger.info(f"[HYDRA-PID] Staggering next worker launch by {padded_stagger:.1f}s...")
-                                time.sleep(padded_stagger)
+                            # Advance the turnstile clock
+                            if len(scanned_this_cycle) >= vision_workers:
+                                next_submit_time = time.time() + drip_delay
                         else:
                             break 
                             
                     if futures:
+                        # Wait for at least one future to complete
                         done, _ = concurrent.futures.wait(futures.keys(), return_when=concurrent.futures.FIRST_COMPLETED)
                         for f in done:
                             finished_url = futures.pop(f)
@@ -1644,8 +1662,15 @@ def main():
             clean_vision_log(log_retention_hours)
             sweep_orphaned_snapshots_auto(auto_sweep_hours)
             
-            v_logger.info(f"Vision Cycle complete. Sleeping for {padded_cycle_interval:.1f} seconds...")
-            time.sleep(padded_cycle_interval)
+            elapsed = time.time() - cycle_start_time
+            remaining = padded_cycle_interval - elapsed
+            
+            if remaining > 0:
+                v_logger.info(f"Vision Cycle complete early (Crashes/Fast scans). Sleeping {remaining:.1f}s to respect global pacing budget...")
+                time.sleep(remaining)
+            else:
+                v_logger.info("Vision Cycle complete. Resetting for next loop...")
+                time.sleep(15)
             
         except Exception as e:
             v_logger.error(f"Vision Scheduler Main Crash: {e}\n{traceback.format_exc()}")
