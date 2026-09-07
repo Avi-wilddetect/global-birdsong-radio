@@ -1047,13 +1047,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Verreaux'S Eagle": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Waterbird": {
       "type": "General",
       "synonyms": [],
@@ -1499,13 +1492,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Brandt'S Cormorant": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Barn Owlet": {
       "type": "Specific",
       "synonyms": [],
@@ -1661,13 +1647,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true,
       "global_prompt": ""
-    },
-    "Verreaux'S Eagle (Black Eagle)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Monkey Or Baboon": {
       "type": "General",
@@ -2030,13 +2009,6 @@
       "show_on_map": true,
       "global_prompt": ""
     },
-    "Plains Zebra (Burchell'S Zebra)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Large Snake": {
       "type": "General",
       "synonyms": [],
@@ -2277,22 +2249,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Steller'S Jay": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "global_prompt": ""
-    },
-    "Allen'S Hummingbird": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "global_prompt": ""
-    },
     "Montezuma Oropendola": {
       "type": "Specific",
       "synonyms": [],
@@ -2532,31 +2488,12 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Grauer'S Gorilla": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Gray Seal": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
-    },
-    "Anna'S Hummingbird": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "global_prompt": "",
-      "min_frame_single": "Default (Auto)",
-      "min_depth_single": "Default (Auto)",
-      "min_frame_flock": "Default (Auto)",
-      "min_depth_flock": "Default (Auto)"
     },
     "Seagull": {
       "type": "General",
@@ -3209,13 +3146,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Kirk'S Dik-Dik": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Small Ground-Feeding Birds": {
       "type": "General",
       "synonyms": [],
@@ -3495,13 +3425,6 @@
       "type": "General",
       "synonyms": [],
       "behavior": "Silent Log",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Allen'S Hummingbird (Chicks)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
     },
@@ -3793,13 +3716,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Burchell'S Zebra": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Parakeet": {
       "type": "General",
       "synonyms": [],
@@ -3884,13 +3800,6 @@
     },
     "Common Shelduck And Various Other Ducks": {
       "type": "General",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Gould'S Wild Turkey": {
-      "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
       "cooldown_minutes": 60,
@@ -4123,13 +4032,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Allen'S Hummingbird Chicks": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Great White Pelican": {
       "type": "Specific",
       "synonyms": [],
@@ -4146,13 +4048,6 @@
     },
     "Mousebird": {
       "type": "General",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Allen'S Hummingbird Chick": {
-      "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
       "cooldown_minutes": 60,
@@ -4296,13 +4191,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Black Eagle (Verreaux'S Eagle)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Bald Eagle (Juvenile/Subadult)": {
       "type": "Specific",
       "synonyms": [],
@@ -4422,13 +4310,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Fischer'S Lovebird": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Wild Canid": {
       "type": "General",
       "synonyms": [],
@@ -4488,13 +4369,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Wild Turkey (Likely Gould'S Turkey Subspecies)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Wall Lizard": {
       "type": "General",
       "synonyms": [],
@@ -4530,13 +4404,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Swainson'S Spurfowl": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Unidentified Snake Species": {
       "type": "General",
       "synonyms": [],
@@ -4565,13 +4432,6 @@
       "type": "General",
       "synonyms": [],
       "behavior": "Silent Log",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Allen'S Hummingbird (Male)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
     },
@@ -5620,13 +5480,6 @@
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
     },
-    "Hoffmann'S Two-Toed Sloth": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Liolaemus Lizard": {
       "type": "General",
       "synonyms": [],
@@ -6086,13 +5939,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Kittlitz'S Plover": {
-      "type": "General",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Common Minnow": {
       "type": "General",
@@ -7241,18 +7087,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Verreaux'S Eagle-Owl": {
-      "type": "General",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "global_prompt": "",
-      "min_frame_single": "Default (Auto)",
-      "min_depth_single": "Default (Auto)",
-      "min_frame_flock": "Default (Auto)",
-      "min_depth_flock": "Default (Auto)"
-    },
     "Holstein-Friesian Cow": {
       "type": "Specific",
       "synonyms": [],
@@ -7592,18 +7426,6 @@
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
     },
-    "Baird'S Tapir": {
-      "type": "General",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "global_prompt": "",
-      "min_frame_single": "Default (Auto)",
-      "min_depth_single": "Default (Auto)",
-      "min_frame_flock": "Default (Auto)",
-      "min_depth_flock": "Default (Auto)"
-    },
     "Bluestriped Snapper": {
       "type": "General",
       "synonyms": [],
@@ -7805,13 +7627,6 @@
     },
     "Feral Goat": {
       "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Geoffroy'S Spider Monkey": {
-      "type": "General",
       "synonyms": [],
       "behavior": "Alert",
       "cooldown_minutes": 60,
@@ -8043,13 +7858,6 @@
       "show_on_map": true
     },
     "White-Throated Magpie-Jay": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Lilian'S Lovebird": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -8416,13 +8224,6 @@
       "min_depth_flock": "Default (Auto)"
     },
     "Verdin": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Grauer'S Gorilla (Eastern Lowland Gorilla)": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -9424,13 +9225,6 @@
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
     },
-    "Swainson'S Francolin": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Little Grebe": {
       "type": "Specific",
       "synonyms": [],
@@ -9622,13 +9416,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Lion'S Mane Jellyfish": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Common Dace": {
       "type": "Specific",
       "synonyms": [],
@@ -9675,13 +9462,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Anna'S Hummingbird Chick": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Koi Carp": {
       "type": "Specific",
@@ -9784,13 +9564,6 @@
       "show_on_map": true
     },
     "Genet": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Grauer'S Gorilla (Silverback)": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -10027,13 +9800,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Grevy'S Zebra": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Eurasian Griffon": {
       "type": "Specific",
       "synonyms": [],
@@ -10161,13 +9927,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Bullock'S Oriole": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "North American Beaver": {
       "type": "Specific",
       "synonyms": [],
@@ -10253,13 +10012,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Anna'S Hummingbird Chicks": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Iguana": {
       "type": "Specific",
@@ -10751,13 +10503,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Perez'S Frog": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Rock Squirrel": {
       "type": "Specific",
       "synonyms": [],
@@ -10876,20 +10621,6 @@
       "min_depth_flock": "Default (Auto)"
     },
     "Dark-Eyed Junco (Slate-Colored Junco)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Abdim'S Stork": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Immature Allen'S Hummingbird": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -11538,13 +11269,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Gould'S Turkey": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Owl Chicks": {
       "type": "Specific",
       "synonyms": [],
@@ -12154,13 +11878,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Woodhouse'S Scrub-Jay": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "European Magpie": {
       "type": "Specific",
       "synonyms": [],
@@ -12496,13 +12213,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Gambel'S Quail": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Gemsbok (Oryx)": {
       "type": "Specific",
@@ -13346,13 +13056,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Tristram'S Starling": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Broad-Billed Roller": {
       "type": "Specific",
       "synonyms": [],
@@ -13535,13 +13238,6 @@
       "show_on_map": true
     },
     "Night-Heron": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Thomson'S Gazelle": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -14058,13 +13754,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Grant'S Gazelle": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Duiker": {
       "type": "Specific",
       "synonyms": [],
@@ -14114,13 +13803,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Pallas'S Squirrel": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Marbled Grouper": {
       "type": "Specific",
@@ -15133,13 +14815,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Burchell'S Coucal": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Pheasant Chick": {
       "type": "Specific",
       "synonyms": [],
@@ -15267,13 +14942,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Female Bullock'S Oriole": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "African Civet": {
       "type": "Specific",
       "synonyms": [],
@@ -15317,13 +14985,6 @@
       "show_on_map": true
     },
     "Nesting Bird": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Burchell'S Starling": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -15627,13 +15288,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Bonelli'S Eagle": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Montezuma Quail": {
       "type": "Specific",
       "synonyms": [],
@@ -15776,13 +15430,6 @@
       "min_depth_flock": "Default (Auto)"
     },
     "Peach-Faced Lovebird (Yellow Mutation)": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Brewer'S Blackbird": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -17031,13 +16678,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Leach'S Storm-Petrel": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Juvenile Blacksmith": {
       "type": "Specific",
       "synonyms": [],
@@ -17415,13 +17055,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Hartmann'S Mountain Zebra": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Eastern Mosquitofish": {
       "type": "Specific",
       "synonyms": [],
@@ -17450,13 +17083,6 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
-    },
-    "Venus'S Girdle": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
     },
     "Large Flying Fox": {
       "type": "Specific",
@@ -18218,13 +17844,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Hoffmann'S Woodpecker": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Beisa Oryx": {
       "type": "Specific",
       "synonyms": [],
@@ -18318,13 +17937,6 @@
       "cooldown_minutes": 60,
       "show_on_map": true
     },
-    "Meyer'S Parrot": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
     "Carmine Bee-Eater": {
       "type": "Specific",
       "synonyms": [],
@@ -18333,13 +17945,6 @@
       "show_on_map": true
     },
     "Arrow-Marked Babbler": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Cooper'S Hawk": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -18467,13 +18072,6 @@
       "show_on_map": true
     },
     "Black Swan": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true
-    },
-    "Gilbert'S Dragon": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -18724,28 +18322,6 @@
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
     },
-    "Potter'S Angelfish": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "min_frame_single": "Default (Auto)",
-      "min_depth_single": "Default (Auto)",
-      "min_frame_flock": "Default (Auto)",
-      "min_depth_flock": "Default (Auto)"
-    },
-    "Sailor'S Choice": {
-      "type": "Specific",
-      "synonyms": [],
-      "behavior": "Alert",
-      "cooldown_minutes": 60,
-      "show_on_map": true,
-      "min_frame_single": "Default (Auto)",
-      "min_depth_single": "Default (Auto)",
-      "min_frame_flock": "Default (Auto)",
-      "min_depth_flock": "Default (Auto)"
-    },
     "Spot-Fin Porcupinefish": {
       "type": "Specific",
       "synonyms": [],
@@ -18862,6 +18438,428 @@
       "min_depth_flock": "Default (Auto)"
     },
     "Atlantic Goliath Grouper": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Blacksmith Damselfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Kingfisher": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Grauer's Gorilla": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Brown Hyena": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Smooth Helmeted Iguana": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Verreaux's Eagle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Brandt's Cormorant": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Verreaux's Eagle (Black Eagle)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Plains Zebra (Burchell's Zebra)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Steller's Jay": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "global_prompt": ""
+    },
+    "Kirk's Dik-Dik": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Allen's Hummingbird (Chicks)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Burchell's Zebra": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Gould's Wild Turkey": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Allen's Hummingbird Chicks": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Allen's Hummingbird Chick": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Black Eagle (Verreaux's Eagle)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Fischer's Lovebird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Wild Turkey (Likely Gould's Turkey Subspecies)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Swainson's Spurfowl": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Allen's Hummingbird (Male)": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Hoffmann's Two-Toed Sloth": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Kittlitz's Plover": {
+      "type": "General",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Verreaux's Eagle-Owl": {
+      "type": "General",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "global_prompt": "",
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Baird's Tapir": {
+      "type": "General",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "global_prompt": "",
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Geoffroy's Spider Monkey": {
+      "type": "General",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Lilian's Lovebird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Swainson's Francolin": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Lion's Mane Jellyfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Anna's Hummingbird Chick": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Grevy's Zebra": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Bullock's Oriole": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Anna's Hummingbird Chicks": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Perez's Frog": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Abdim's Stork": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Immature Allen's Hummingbird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Gould's Turkey": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Woodhouse's Scrub-Jay": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Gambel's Quail": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Tristram's Starling": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Thomson's Gazelle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Grant's Gazelle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Pallas's Squirrel": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Burchell's Coucal": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Female Bullock's Oriole": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Burchell's Starling": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Bonelli's Eagle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Brewer's Blackbird": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Leach's Storm-Petrel": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Hartmann's Mountain Zebra": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Venus's Girdle": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Hoffmann's Woodpecker": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Meyer's Parrot": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Cooper's Hawk": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Gilbert's Dragon": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Potter's Angelfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Sailor's Choice": {
       "type": "Specific",
       "synonyms": [],
       "behavior": "Alert",
@@ -19198,7 +19196,7 @@
     ],
     "https://www.youtube.com/watch?v=nYzRIKv5j44": [
       {
-        "name": "Allen'S Hummingbird",
+        "name": "Allen's Hummingbird",
         "rule": "Enforce Target"
       }
     ],
@@ -19236,12 +19234,12 @@
           "min_frame_single": "Large",
           "min_depth_single": "Near"
         },
-        "Baird'S Tapir": {
-          "prompt": "Make sure not to confuse branches and leaves with animals."
-        },
         "Scarlet Macaw": {
           "min_frame_single": "Medium",
           "min_depth_single": "Near"
+        },
+        "Baird's Tapir": {
+          "prompt": "Make sure not to confuse branches and leaves with animals."
         }
       },
       "night_species_rules": {
@@ -19278,7 +19276,7 @@
         }
       },
       "night_species_rules": {
-        "Geoffroy'S Spider Monkey": {
+        "Geoffroy's Spider Monkey": {
           "min_frame_single": "Large",
           "min_depth_single": "Near"
         }
@@ -19614,7 +19612,7 @@
         "Red-Eyed Tree Frog": {
           "prompt": "There are small tree frog sculptures behind the hummingbird feeders, these are not real frogs."
         },
-        "Anna'S Hummingbird": {
+        "Anna's Hummingbird": {
           "min_frame_single": "Medium",
           "min_depth_single": "Very Near",
           "min_frame_flock": "Medium",
@@ -19626,7 +19624,7 @@
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         },
-        "Anna'S Hummingbird": {
+        "Anna's Hummingbird": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
@@ -20232,13 +20230,13 @@
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         },
-        "Allen'S Hummingbird": {
+        "Allen's Hummingbird": {
           "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
         }
       },
       "night_species_rules": {
-        "Allen'S Hummingbird": {
+        "Allen's Hummingbird": {
           "min_frame_single": "Large",
           "min_depth_single": "Mid-ground"
         }
@@ -21940,16 +21938,16 @@
         }
       },
       "night_species_rules": {
-        "Perez'S Frog": {
-          "min_frame_single": "Medium",
-          "min_depth_single": "Near"
-        },
         "Frog": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         },
         "Frog Or Toad": {
           "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Perez's Frog": {
+          "min_frame_single": "Medium",
           "min_depth_single": "Near"
         }
       }
@@ -22075,7 +22073,7 @@
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         },
-        "Anna'S Hummingbird": {
+        "Anna's Hummingbird": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
@@ -22130,7 +22128,7 @@
     },
     "https://www.youtube.com/watch?v=TeduCCxSCnI": {
       "species_rules": {
-        "Allen'S Hummingbird": {
+        "Allen's Hummingbird": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
@@ -22586,6 +22584,14 @@
       "species_rules": {
         "Polar Bear": {
           "prompt": "If there are regrigirators near a polar bear it is not a real polar bear but a commercial animation for refrigirators and you should reject it."
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=fRZfmrpAAM0": {
+      "species_rules": {
+        "Peregrine Falcon": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
         }
       }
     }

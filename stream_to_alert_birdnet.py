@@ -1,7 +1,8 @@
 # FILE: stream_to_alert_birdnet.py
-# VERSION: 38.4 - "The Sniffer Amnesty Patch"
+# VERSION: 38.5 - "The Mojibake Prevention Patch"
 # RESPONSIBILITY: Analyzes audio, Reports to DB, Manages Queue Escalations & Cooldowns.
 # CHANGELOG:
+# [2026-09-07 03:02] - v38.5: Added inline Mojibake sanitizer (_fix_mojibake) to instantly decode broken UTF-8 characters (like Ã¼ -> ü) returning from BirdNET before they hit the database.
 # [2026-09-04 01:32] - v38.4: Added "auto_resolver_failed" to the HICCUP list and retry-break list to prevent Auto-Healer failures from permanently banning streams.
 # [2026-09-02 02:16] - v38.3: Fixed severe race condition causing cooldown state amnesia between Audio and Vision engines.
 # [2026-08-10 12:00] - v38.2: Added CREATE_NO_WINDOW to the Node.js subprocess check to prevent black console boxes from popping up.
@@ -487,7 +488,16 @@ class StreamListener:
             week = min(datetime.now().isocalendar().week, 48)
             rec = Recording(analyzer=self.analyzer, path=tmp, lat=self.cfg.get('lat'), lon=self.cfg.get('lon'), week_48=week, min_conf=0.05)
             rec.analyze()
-            detections =[{"species": d['common_name'], **d} for d in rec.detections]
+            
+            # --- THE MOJIBAKE PREVENTION PATCH ---
+            def _fix_mojibake(s):
+                if not isinstance(s, str): return s
+                if 'Ã' in s:
+                    try: return s.encode('latin-1').decode('utf-8')
+                    except: pass
+                return s
+                
+            detections =[{"species": _fix_mojibake(d['common_name']), **d} for d in rec.detections]
         except Exception as e:
             logging.error(f"[{self.lid}] AI Analysis Error for {name}: {e}")
             os.unlink(tmp); return 'FAILURE'

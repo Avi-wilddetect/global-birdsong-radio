@@ -90,9 +90,9 @@
       "lon": -3.68104,
       "mute_audio": false,
       "name": "Osprey Nest Cam 2, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=w6JzDOBdTsA",
+      "page_url": "https://www.youtube.com/watch?v=JMsSTriPl54",
       "stream_type": "youtube",
-      "updated_at": 1788640565.1309085
+      "updated_at": 1788715187.558058
     },
     {
       "channel_name": "CarnyxWild",
@@ -102,9 +102,9 @@
       "lon": -3.68104,
       "mute_audio": false,
       "name": "Osprey Nest Cam 1, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=FUADCgJbvdo",
+      "page_url": "https://www.youtube.com/watch?v=NDsjDrmcGkQ",
       "stream_type": "youtube",
-      "updated_at": 1788640560.4006917
+      "updated_at": 1788715192.4234414
     },
     {
       "channel_name": "PixCams",
@@ -237,9 +237,9 @@
       "mute_audio": false,
       "name": "Bald Eagles Nest Cam, Hanover, Pennsylvania, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/204942/hanover-eagles-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/hdontap_hanover-eagles_upper-ptz-cam.stream/playlist.m3u8?t=vnBFFjKXGgLqxBjsNYEBQA&e=1788642290",
+      "page_url": "https://live.hdontap.com/hls/hosb1/hdontap_hanover-eagles_upper-ptz-cam.stream/playlist.m3u8?t=PtjA4Y4li6bU3azTZ4fZeA&e=1788774882",
       "stream_type": "hls",
-      "updated_at": 1788599069.873205
+      "updated_at": 1788731697.511366
     },
     {
       "channel_name": "Somerset Wildlife Trust",
@@ -358,9 +358,9 @@
       "mute_audio": false,
       "name": "Bird Feeder 2 Bottom Cam, Murrysville, Pennsylvania, USA (YouTube)",
       "original_yt_title": "PixCams.com PA Bird Feeder 2 Live Stream",
-      "page_url": "https://www.youtube.com/watch?v=a-IydWw-VXM",
+      "page_url": "https://www.youtube.com/watch?v=6--SErd7u4o",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4165926
+      "updated_at": 1788715264.7263322
     },
     {
       "channel_name": "PixCams",
@@ -730,9 +730,9 @@
       "mute_audio": false,
       "name": "Eagles Cam, Botanic Gardens, Dagsboro, Delaware USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/852616/delaware-botanic-gardens-eagles-live-cams/",
-      "page_url": "https://live.hdontap.com/hls/hosb6/dbg-eagles_large_ptz.stream/playlist.m3u8?t=tde5WvWeB0bhZcdqu1R7sg&e=1788667602",
+      "page_url": "https://live.hdontap.com/hls/hosb6/dbg-eagles_large_ptz.stream/playlist.m3u8?t=_plt2c1V5bi8qpcPyaifdQ&e=1788746460",
       "stream_type": "hls",
-      "updated_at": 1788624418.050503
+      "updated_at": 1788703194.1618342
     },
     {
       "channel_name": "hdontap",
@@ -804,9 +804,9 @@
       "mute_audio": false,
       "name": "Elk Cam, Morley, Tennessee, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/359514/tennessee-elk-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb3/tennessee-elk-cam_twra.stream/playlist.m3u8?t=XGAiNQzQYKU6dspy1zDukQ&e=1788669781",
+      "page_url": "https://live.hdontap.com/hls/hosb3/tennessee-elk-cam_twra.stream/playlist.m3u8?t=VxOpkrmtVgGg3Fs9OfqxbA&e=1788772629",
       "stream_type": "hls",
-      "updated_at": 1788626528.7900305
+      "updated_at": 1788729406.3801444
     },
     {
       "channel_name": "Explore Gorilla & Bonobo Cams: Great Apes",
@@ -990,9 +990,9 @@
       "mute_audio": false,
       "name": "Great Horned Owl Nest Cam, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/603901/eagle-country-great-horned-owl-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb6lo/eaglecountry_multiview.stream/playlist.m3u8?t=W4VVtWS3QYAJiqB86OoGZg&e=1788674318",
+      "page_url": "https://live.hdontap.com/hls/hosb6lo/eaglecountry_multiview.stream/playlist.m3u8?t=CaHEa2FV2GQms3yOBmSa6A&e=1788766374",
       "stream_type": "hls",
-      "updated_at": 1788631062.5354786
+      "updated_at": 1788723127.176188
     },
     {
       "channel_name": "NatureTec",
@@ -1120,7 +1120,7 @@
       "original_lon": -51.1,
       "page_url": "https://www.youtube.com/watch?v=0GRxQoFMmqo",
       "stream_type": "youtube",
-      "updated_at": 1788640314.872228
+      "updated_at": 1788715003.3390086
     },
     {
       "channel_name": "Locus",
@@ -1649,9 +1649,9 @@
       "mute_audio": false,
       "name": "Osprey Nest Cam, Pleasant Hill Lake, Perrysville, Ohio, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/237842/pleasant-hill-lake-ospreys-live-nest-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb6lo/muskingum_osprey-cam2.stream/playlist.m3u8?t=3GFNNMCAlp1vs7INMrGqVw&e=1788678537",
+      "page_url": "https://live.hdontap.com/hls/hosb6lo/muskingum_osprey-cam2.stream/playlist.m3u8?t=ogNP44kS3ncWJzPq-afEQA&e=1788763394",
       "stream_type": "hls",
-      "updated_at": 1788635354.4774659
+      "updated_at": 1788720143.8291118
     },
     {
       "channel_name": "hdontap",
@@ -1662,9 +1662,9 @@
       "mute_audio": false,
       "name": "Osprey Nest Cam, San Francisco Bay, Richmond, California, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/202376/san-francisco-bay-osprey-nest-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=5WOm1HnVncoOFvU3ZLU2_w&e=1788677219",
+      "page_url": "https://live.hdontap.com/hls/hosb1/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=Nl91DAFuExUQuj3pXGF6LA&e=1788774784",
       "stream_type": "hls",
-      "updated_at": 1788633986.21419
+      "updated_at": 1788731516.4000547
     },
     {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
@@ -1862,9 +1862,9 @@
       "mute_audio": false,
       "name": "Raptor Nest Cam, Blackwater Wildlife Refuge, Church Creek, Maryland, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/477623/blackwaterwildlife-refuge-raptor-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb3/fobwr_eagles-ptz.stream/playlist.m3u8?t=z0jeli4tacV2N4I2Ah-2KA&e=1788673247",
+      "page_url": "https://live.hdontap.com/hls/hosb3/fobwr_eagles-ptz.stream/playlist.m3u8?t=WC1hHwZHy7P8wL0EOnrhRg&e=1788766366",
       "stream_type": "hls",
-      "updated_at": 1788630003.8401766
+      "updated_at": 1788723158.690288
     },
     {
       "channel_name": "RSPB",
@@ -1988,7 +1988,7 @@
       "original_yt_title": "LIVE African Animal Lookout - Kenya Savannah View - MPALA | explore.org",
       "page_url": "https://www.youtube.com/watch?v=AaIUo_jTlxo",
       "stream_type": "youtube",
-      "updated_at": 1788640371.7488596
+      "updated_at": 1788715214.7206695
     },
     {
       "channel_name": "Wildlife of Maine",
@@ -2219,7 +2219,7 @@
       "name": "Underwater camera, Okaloosa Island Pier, Florida, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=9rl1gWxXgC8",
       "stream_type": "youtube",
-      "updated_at": 1788640365.6385012
+      "updated_at": 1788715246.739524
     },
     {
       "channel_name": "Wahoo Bay",
@@ -2292,9 +2292,9 @@
       "mute_audio": false,
       "name": "Waterfowl Cam, Blackwater Wildlife Refuge, Chesapeake Bay, Maryland, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/205526/blackwater-wildlife-refuge-waterfowl-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb3/waterfowl_fobwr.stream/playlist.m3u8?t=LTn_2e3K8DmklBH42thwxQ&e=1788692191",
+      "page_url": "https://live.hdontap.com/hls/hosb3/waterfowl_fobwr.stream/playlist.m3u8?t=8lVai1fiosIiL2q3_Ej52Q&e=1788769368",
       "stream_type": "hls",
-      "updated_at": 1788648931.4073393
+      "updated_at": 1788726121.255441
     },
     {
       "channel_name": "Africam",
@@ -2475,9 +2475,9 @@
       "mute_audio": false,
       "name": "Wildlife Cam, Hog Island, Surry, Virginia, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/351035/hog-island-wildlife-management-area-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/vdgif_hog-island_night.stream/playlist.m3u8?t=cMWK952TliGzhDZXEb3xnw&e=1788656614",
+      "page_url": "https://live.hdontap.com/hls/hosb1/vdgif_hog-island_night.stream/playlist.m3u8?t=F8i0BatLG8rZOD7N4m3vLQ&e=1788778978",
       "stream_type": "hls",
-      "updated_at": 1788613362.4308734
+      "updated_at": 1788735797.5587437
     },
     {
       "channel_name": "Africam",
@@ -2584,9 +2584,9 @@
       "mute_audio": false,
       "name": "WildLife Cam, South West Florida River, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/473717/southwest-florida-river-wildlife-live-cams/",
-      "page_url": "https://live.hdontap.com/hls/hosb6lo/eaglecountry_river2-cam.stream/playlist.m3u8?t=G3Bj4RFuNea8tKQH1Y09xA&e=1788664627",
+      "page_url": "https://live.hdontap.com/hls/hosb6lo/eaglecountry_river2-cam.stream/playlist.m3u8?t=VO1riaudNZxi6XcA4h8w5A&e=1788757144",
       "stream_type": "hls",
-      "updated_at": 1788621516.502185
+      "updated_at": 1788713983.0439498
     },
     {
       "channel_name": "Africam",
@@ -2743,7 +2743,7 @@
       "name": "Bald Eagle Nest Up Cam, Irvin Plant, Pittsburgh, West Mifflin, Pennsylvania, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=dDIfhPXn_-c",
       "stream_type": "youtube",
-      "updated_at": 1788640261.3782828
+      "updated_at": 1788715252.0707023
     },
     {
       "channel_name": "Cedarview Birds",
@@ -3583,7 +3583,7 @@
       "original_yt_title": "\ud83d\udd34 Owl Spring. Relaxation / Meditation | Water, Birds and night sounds",
       "page_url": "https://www.youtube.com/watch?v=4Jt3K83fwxg",
       "stream_type": "youtube",
-      "updated_at": 1788640416.116326
+      "updated_at": 1788715219.586421
     },
     {
       "channel_name": "Madarles - Live Bird Cams",
@@ -3622,7 +3622,7 @@
       "original_yt_title": "LIVE Mountain View Bird Feeder Cam - CANADA 4K/60fps 2026-05-13 16:31",
       "page_url": "https://www.youtube.com/watch?v=n0J2BPFzLPQ",
       "stream_type": "youtube",
-      "updated_at": 1788640570.1657407
+      "updated_at": 1788715115.4369323
     },
     {
       "channel_name": "Africam",
@@ -3683,7 +3683,7 @@
       "name": "An Oasis Amidst the Ashes, Cam 84, Molina de Arag\u00f3n-Alto Tajo Region, Spain (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=NIueZJb0uK4",
       "stream_type": "youtube",
-      "updated_at": 1788640478.6547308
+      "updated_at": 1788715072.8584955
     },
     {
       "channel_name": "DIRECTO NATURA",
@@ -3720,7 +3720,7 @@
       "name": "Backyard, Bird Feeder, Ozark Mountains, Southern Missouri, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=_wnjeiATFk4",
       "stream_type": "youtube",
-      "updated_at": 1788640255.9813719
+      "updated_at": 1788715093.0181766
     },
     {
       "channel_name": "PixCams",
@@ -3732,7 +3732,7 @@
       "name": "Bald Eagle Cam, Glen Hazel, Pittsburgh, Pennsylvania, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=yPq9aNukckQ",
       "stream_type": "youtube",
-      "updated_at": 1788640270.319492
+      "updated_at": 1788715259.629016
     },
     {
       "channel_name": "Robert E Fuller",
@@ -3744,7 +3744,7 @@
       "name": "Bird Cam, Fotherdale, Yorkshire, UK (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=q28Q9_qzqyg",
       "stream_type": "youtube",
-      "updated_at": 1788640276.8132203
+      "updated_at": 1788715197.0384765
     },
     {
       "channel_name": "UW-Whitewater Biology Nature Cam",
@@ -3756,7 +3756,7 @@
       "name": "Bird Cam, Kettle Moraine State Forest, Whitewater, Wisconsin, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=KSbM3x3aJmI",
       "stream_type": "youtube",
-      "updated_at": 1788640283.2733881
+      "updated_at": 1788715290.011822
     },
     {
       "channel_name": "Nashville Bird Cam",
@@ -3768,7 +3768,7 @@
       "name": "Bird Feeder Cam 2, Nashville, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=3uEi1fE7mCY",
       "stream_type": "youtube",
-      "updated_at": 1788640288.57532
+      "updated_at": 1788715207.9927962
     },
     {
       "channel_name": "NatureTec",
@@ -3780,7 +3780,7 @@
       "name": "Bird Nest Box1, Recke, Germany (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=on7uHHwZDZQ",
       "stream_type": "youtube",
-      "updated_at": 1788640295.2219512
+      "updated_at": 1788715024.7112105
     },
     {
       "channel_name": "Bird Watching HQ",
@@ -3819,7 +3819,7 @@
       "name": "Garden and Critter Cam, Birmingham, Alabama, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=LK_MNTYEHR8",
       "stream_type": "youtube",
-      "updated_at": 1788640300.2647276
+      "updated_at": 1788715238.4210665
     },
     {
       "channel_name": "Africam",
@@ -3844,7 +3844,7 @@
       "name": "LIVE Tawny Owls, Kestrels , Buzzards, Badgers & More | From Ash Wood, Yorkshire, UK (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=bnQloTGd3OY",
       "stream_type": "youtube",
-      "updated_at": 1788640323.4145591
+      "updated_at": 1788715202.778985
     },
     {
       "channel_name": "Bushtops Safaris",
@@ -3869,7 +3869,7 @@
       "name": "Osprey Cam, Moraine State Park, Pittsburgh, Pennsylvania, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=5DlywACQ9qM",
       "stream_type": "youtube",
-      "updated_at": 1788640333.820551
+      "updated_at": 1788715271.9353251
     },
     {
       "channel_name": "Brownville's Food Pantry For Deer",
@@ -3895,7 +3895,7 @@
       "name": "Underwater Cam, Mega Lab, Off the Coast of Kona, Hawaii, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=jOp_aAXsYmE",
       "stream_type": "youtube",
-      "updated_at": 1788640347.398675
+      "updated_at": 1788715029.7737236
     },
     {
       "channel_name": "DIRECTO NATURA",
@@ -3907,7 +3907,7 @@
       "name": "Underwater fauna, Cam 71, Avila, Spain (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=WwX7cj_esqo",
       "stream_type": "youtube",
-      "updated_at": 1788640360.5075138
+      "updated_at": 1788715045.7575004
     },
     {
       "channel_name": "Charter Wildlife Cams",
@@ -3934,7 +3934,7 @@
       "original_yt_title": "LIVE Alligators and Spoonbills - St. Augustine's Alligator Farm Zoological Park | explore.org",
       "page_url": "https://www.youtube.com/watch?v=qJr5KK6F7Q0",
       "stream_type": "youtube",
-      "updated_at": 1788640378.6832778
+      "updated_at": 1788715034.4692798
     },
     {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
@@ -3974,7 +3974,7 @@
       "original_yt_title": "LIVE Arctic Tundra: Cape South - Wapusk National Park | explore.org",
       "page_url": "https://www.youtube.com/watch?v=dF6frKSZZU8",
       "stream_type": "youtube",
-      "updated_at": 1788640383.1150086
+      "updated_at": 1788715331.5839517
     },
     {
       "channel_name": "Explore Northern Lights & Nature Meditation Cams",
@@ -3987,7 +3987,7 @@
       "original_yt_title": "Mission Mountain Range powered by Explore.org",
       "page_url": "https://www.youtube.com/watch?v=wDgZkzkOP-s",
       "stream_type": "youtube",
-      "updated_at": 1788640385.9528606
+      "updated_at": 1788715285.4075012
     },
     {
       "channel_name": "Wildlife of Maine",
@@ -4013,7 +4013,7 @@
       "name": "Chicken Coop Cam, Near Reservoir Rozkos, Czech Republic (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=CHd1G_WWb3I",
       "stream_type": "youtube",
-      "updated_at": 1788640395.0958035
+      "updated_at": 1788715280.4434536
     },
     {
       "channel_name": "afarTV",
@@ -4026,7 +4026,7 @@
       "original_yt_title": "\ud83d\udd34 En directo: 24/7 Erupci\u00f3n del volc\u00e1n de Fuego en 4K Ultra HD (Guatemala)",
       "page_url": "https://www.youtube.com/watch?v=mRRrJJlO0vg",
       "stream_type": "youtube",
-      "updated_at": 1788640402.231531
+      "updated_at": 1788715014.6399684
     },
     {
       "channel_name": "DIRECTO NATURA",
@@ -4039,7 +4039,7 @@
       "original_yt_title": "Lince ib\u00e9rico \ud83d\udd34 DIRECTO Sierra Morena (C\u00e1mara 36 | Ja\u00e9n)",
       "page_url": "https://www.youtube.com/watch?v=JuBKDmfYVk8",
       "stream_type": "youtube",
-      "updated_at": 1788640410.4971685
+      "updated_at": 1788715056.236804
     },
     {
       "channel_name": "Alyssa's Nature Sanctuary",
@@ -4051,7 +4051,7 @@
       "name": "Water Fountain Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=O6uaw8TV19U",
       "stream_type": "youtube",
-      "updated_at": 1788640464.7875292
+      "updated_at": 1788715087.5454755
     },
     {
       "channel_name": "DIRECTO NATURA",
@@ -4087,7 +4087,7 @@
       "name": "Animals and Wildlife Cam, Gaylord, Michigan, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=IU_-Pl9O5jQ",
       "stream_type": "youtube",
-      "updated_at": 1788640230.2079165
+      "updated_at": 1788715039.374128
     },
     {
       "channel_name": "Explore Bears",
@@ -4208,7 +4208,7 @@
       "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
       "page_url": "https://www.youtube.com/watch?v=hTOmWcmr2Tc",
       "stream_type": "youtube",
-      "updated_at": 1788640576.0224605
+      "updated_at": 1788715297.2208757
     },
     {
       "channel_name": "Explore Whale Walrus & Seal Cams",
@@ -4221,7 +4221,7 @@
       "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
       "page_url": "https://www.youtube.com/watch?v=HVzyLMktOVo",
       "stream_type": "youtube",
-      "updated_at": 1788640582.2056139
+      "updated_at": 1788715307.9586296
     },
     {
       "channel_name": "Explore Whale Walrus & Seal Cams",
@@ -4234,7 +4234,7 @@
       "original_yt_title": "LIVE Sea Lion Beach - British Columbia | explore.org",
       "page_url": "https://www.youtube.com/watch?v=iWyTu_0znB4",
       "stream_type": "youtube",
-      "updated_at": 1788640588.7410057
+      "updated_at": 1788715320.6170287
     },
     {
       "channel_name": "Explore Whale Walrus & Seal Cams",
@@ -4272,7 +4272,7 @@
       "original_yt_title": "West End Bald Eagle Nest Low Cam powered by EXPLORE.org 2026-05-01 22:55",
       "page_url": "https://www.youtube.com/watch?v=aT1adgYSfbc",
       "stream_type": "youtube",
-      "updated_at": 1788640594.6478083
+      "updated_at": 1788715226.4363685
     },
     {
       "channel_name": "Explore Eagle Nest Cams",
@@ -4337,7 +4337,7 @@
       "original_yt_title": "LIVE Audubon Boat House Osprey Nest | explore.org",
       "page_url": "https://www.youtube.com/watch?v=O6Ir_sMsTtc",
       "stream_type": "youtube",
-      "updated_at": 1788640600.2473438
+      "updated_at": 1788715232.5590055
     },
     {
       "channel_name": "Explore Eagle Nest Cams",
@@ -4683,7 +4683,7 @@
       "name": "Hummingbird Feeder Cam, Oceanside, Pacific Ocean, Callifotnia, USA (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=Iu6kH-Dd2Vc",
       "stream_type": "youtube",
-      "updated_at": 1788640431.698443
+      "updated_at": 1788715082.4118953
     },
     {
       "channel_name": "Bird Watching HQ",
@@ -4733,7 +4733,7 @@
       "original_yt_title": "\ud83d\udd34 LIVE: Arizona Bird Feeder Cam (Acorn Woodpeckers, Goldfinches & More)",
       "page_url": "https://www.youtube.com/watch?v=H04VEYy5iMg",
       "stream_type": "youtube",
-      "updated_at": 1788598704.7803009
+      "updated_at": 1788715105.0578706
     },
     {
       "channel_name": "CritterVision",
@@ -4744,9 +4744,9 @@
       "mute_audio": false,
       "name": "Forest Cam, Johns Island, South Carolina, USA (YouTube)",
       "original_yt_title": "CritterVision Wildlife Critter Cam",
-      "page_url": "https://www.youtube.com/watch?v=3A5U0POr0Q8",
+      "page_url": "https://www.youtube.com/watch?v=0cn-Y3Mfx3g",
       "stream_type": "youtube",
-      "updated_at": 1788652075.784193
+      "updated_at": 1788715019.3264256
     }
   ],
   "tiered_cooldowns": {
@@ -5000,35 +5000,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1446
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1452
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1486
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1468
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1428
+        "usage_count": 1462
       },
       {
         "exhausted_until": 0,
@@ -5042,77 +5014,42 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1456
+        "usage_count": 1502
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1494
+        "usage_count": 1490
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1456
+        "usage_count": 1441
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1486
+        "usage_count": 1487
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1446
+        "usage_count": 1478
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1436
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1442
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1430
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1457
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1444
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1459
+        "usage_count": 1511
       },
       {
         "exhausted_until": 0,
@@ -5126,14 +5063,77 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1475
+        "usage_count": 1499
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1464
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1447
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1460
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1443
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1468
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1460
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1480
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1483
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1493
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Paid",
-        "usage_count": 34270
+        "usage_count": 34816
       }
     ],
     "cycle_interval_seconds": 3600,
@@ -6057,7 +6057,7 @@
     "custom_ai_model": "",
     "cost_per_1000_images_credits": 0.75,
     "tuning_interval_mins": 15,
-    "last_calculated_hit_rate": 0.012902462121212122,
+    "last_calculated_hit_rate": 0.01065340909090909,
     "last_calculated_cycle_s": 3600,
     "last_throttle_reason": "Budget Cap Active"
   },

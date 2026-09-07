@@ -1,7 +1,8 @@
 # FILE: vision_scheduler.py
-# VERSION: 10.18 - "The Decoupling Patch"
+# VERSION: 10.19 - "The Apostrophe Capitalization Patch"
 # RESPONSIBILITY: Exclusively handles AI Inference (Gemini), Multi-Modal Bridge Logic, Telegram Reporting, and Dormancy Backoff constraints.
 # CHANGELOG:
+# [2026-09-06 14:34] - v10.19: Fixed the Apostrophe Capitalization Bug where Python's .title() function created invalid names like "Grauer'S Gorilla", breaking the Wikipedia Image Curator.
 # [2026-09-04 01:25] - v10.18: Decoupled Vision Engine from Audio Engine network failures. Vision now only skips explicitly DEAD streams (FATAL/SUSPENDED) and ignores UNRESPONSIVE/FAILURE flags.
 # [2026-09-03 02:55] - v10.17: Fixed Drip-Feed Turnstile math to properly pace streams without starving the worker pool.
 # [2026-09-03 02:07] - v10.16: Implemented Drip-Feed Turnstile pacing to cure the Burst & Starve coma.
@@ -594,14 +595,15 @@ def resolve_and_route(general, common, scientific, is_endemic, targets_data, enf
     
     is_specific_guess = False
     
+    # --- THE APOSTROPHE CAPITALIZATION PATCH ---
     if common and common.upper() != "NONE":
-        final_name = common.title().strip()
+        final_name = common.title().replace("'S", "'s").strip()
         is_specific_guess = True
     elif scientific and scientific.upper() != "NONE":
         final_name = scientific.capitalize().strip()
         is_specific_guess = True
     elif general and general.upper() != "NONE":
-        final_name = general.title().strip()
+        final_name = general.title().replace("'S", "'s").strip()
     else:
         final_name = "Unknown Animal"
 
@@ -616,7 +618,7 @@ def resolve_and_route(general, common, scientific, is_endemic, targets_data, enf
         if final_name.lower() in synonyms:
             return c_name, c_data, False, c_name
 
-    parent_category = general.title().strip() if general and general.upper() != "NONE" else None
+    parent_category = general.title().replace("'S", "'s").strip() if general and general.upper() != "NONE" else None
     matched_parent = None
     
     if parent_category:
@@ -1095,9 +1097,10 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
                 ai_frame = data.get("frame_size", "NONE").upper()
                 ai_depth = data.get("distance_category", "NONE").upper()
                 
-                general_animal = data.get("general_animal", "NONE").title().strip()
+                # --- THE APOSTROPHE CAPITALIZATION PATCH ---
+                general_animal = data.get("general_animal", "NONE").title().replace("'S", "'s").strip()
                 is_endemic_confirmed = bool(data.get("is_endemic_confirmed", False))
-                common_endemic = data.get("common_endemic_name", "NONE").title().strip()
+                common_endemic = data.get("common_endemic_name", "NONE").title().replace("'S", "'s").strip()
                 scientific = data.get("scientific_name", "NONE").capitalize().strip()
                 is_group = bool(data.get("is_group", False))
 
