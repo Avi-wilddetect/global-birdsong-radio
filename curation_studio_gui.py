@@ -1,7 +1,7 @@
 # FILE: curation_studio_gui.py
-# VERSION: 40.18 - "The Signal-Driven Carousel Patch"
+# VERSION: 40.19 - "The Apostrophe Curation Patch"
 # RESPONSIBILITY: Side-by-side review, AI correction, ML exports, and batch processing.
-# UPDATED: Refactored ImageViewerDialog to use native PyQt Signals (index_changed, exclusion_toggled) instead of brittle direct parent references. Added QApplication.processEvents() to BatchReviewDialog.set_focus() to force instant cyan box repaints during keyboard navigation.
+# UPDATED: Fixed a bug where manually typing animal names with apostrophes (e.g. Grauer's Gorilla) into the "Teach AI" box would get wrongly capitalized by .title() into "Grauer'S Gorilla".
 
 import sys
 import os
@@ -763,7 +763,7 @@ class SmartTuningDialog(QDialog):
 class CurationStudio(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.18)")
+        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.19)")
         self.resize(1400, 850)
         self.setStyleSheet("""
             QMainWindow, QWidget { background-color: #1e1e1e; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
@@ -1301,7 +1301,9 @@ class CurationStudio(QMainWindow):
         targets_data =[self.table.item(r, 0).data(Qt.ItemDataRole.UserRole) for r in unique_rows]
         total = len(targets_data)
         
-        new_name = self.edit_correct_name.text().strip().title()
+        # --- THE APOSTROPHE CURATION PATCH ---
+        # Correctly capitalize names with apostrophes (e.g. "Grauer's Gorilla" instead of "Grauer'S Gorilla")
+        new_name = self.edit_correct_name.text().strip().title().replace("'S", "'s")
         if not new_name:
             QMessageBox.warning(self, "Missing Name", "Please type the correct animal name first.")
             return

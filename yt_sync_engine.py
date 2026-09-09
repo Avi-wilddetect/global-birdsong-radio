@@ -1,7 +1,10 @@
 # FILE: yt_sync_engine.py
-# VERSION: 6.12 - "The Unknown Channel Preservation Patch"
+# VERSION: 6.14 - "The Scheduled Stream Blockade Patch"
 # PURPOSE: Compares local YouTube stream metadata against live channel data to detect URL changes, Title/Description changes, new streams, and resurrect dead streams.
-# UPDATED: Added _get_safe_cname helper to aggressively preserve existing channel names if YouTube scraping temporarily returns 'Unknown Channel', preventing overnight configuration wipeouts.
+# CHANGELOG:
+# [2026-09-10 00:55] - v6.14: Bulletproofed scheduled stream rejection by filtering out all non-'is_live' states in Tier 1 and hooking directly into the language-agnostic 'UPCOMING' and 'PREMIERE' style badges in Tier 2.
+# [2026-09-10 00:04] - v6.13: Patched channel scraper to explicitly reject 'is_upcoming' / 'UPCOMING' scheduled streams in both yt-dlp and HTML tiers, preventing future broadcasts from inflating live counts and clogging the queue.
+# [2026-09-09 23:25] - v6.12: Added _get_safe_cname helper to aggressively preserve existing channel names if YouTube scraping temporarily returns 'Unknown Channel'.
 
 import json
 import logging
@@ -182,9 +185,9 @@ class YouTubeSyncEngine:
                         if entry.get('duration') is not None:
                             continue
                             
-                        # Double check explicit VOD flags just in case
+                        # Strict live check to kill 'is_upcoming' / scheduled streams
                         live_status = entry.get('live_status')
-                        if live_status in ['was_live', 'not_live', 'post_live']: 
+                        if live_status and live_status != 'is_live': 
                             continue
                             
                         vid_id = entry.get('id')
@@ -282,23 +285,33 @@ class YouTubeSyncEngine:
 
             for video in video_renderers:
                 is_live = False
+                is_upcoming = False
+                
+                # Check for explicit language-agnostic style badges
                 for overlay in video.get('thumbnailOverlays', []):
-                    if overlay.get('thumbnailOverlayTimeStatusRenderer', {}).get('style', '') == 'LIVE':
+                    style = overlay.get('thumbnailOverlayTimeStatusRenderer', {}).get('style', '')
+                    if style in ['UPCOMING', 'PREMIERE']:
+                        is_upcoming = True
+                    elif style == 'LIVE':
                         is_live = True
-                        break
                         
-                if not is_live:
-                    for badge in video.get('badges', []):
-                        style = badge.get('metadataBadgeRenderer', {}).get('style', '')
-                        label = badge.get('metadataBadgeRenderer', {}).get('label', '')
-                        if style == 'BADGE_STYLE_TYPE_LIVE_NOW' or label == 'LIVE' or label == 'Live':
-                            is_live = True
-                            break
+                for badge in video.get('badges', []):
+                    style = badge.get('metadataBadgeRenderer', {}).get('style', '')
+                    label = badge.get('metadataBadgeRenderer', {}).get('label', '')
+                    if style == 'BADGE_STYLE_TYPE_LIVE_NOW' or label == 'LIVE' or label == 'Live':
+                        is_live = True
+                    elif label == 'UPCOMING' or label == 'Upcoming' or 'UPCOMING' in style:
+                        is_upcoming = True
 
                 view_str = str(video.get('viewCountText', '')).lower()
                 pub_str = str(video.get('publishedTimeText', '')).lower()
-                if "views" in view_str or "waiting" in view_str or "streamed" in view_str or "streamed" in pub_str:
+                
+                # Check for textual indicators like "Scheduled for..." or "Premieres in..."
+                if "views" in view_str or "waiting" in view_str or "streamed" in view_str or "streamed" in pub_str or "scheduled" in pub_str or "premieres" in pub_str:
                     is_live = False 
+                    
+                if is_upcoming:
+                    is_live = False
                 
                 if not is_live: continue
 
@@ -348,7 +361,7 @@ class YouTubeSyncEngine:
                     for entry in info['entries']:
                         if not entry: continue
                         live_status = entry.get('live_status')
-                        if live_status in ['was_live', 'not_live', 'post_live'] or live_status != 'is_live': continue
+                        if live_status and live_status != 'is_live': continue
                         url = entry.get('url', '')
                         if not url.startswith('http'): url = f"https://www.youtube.com/watch?v={url}"
                         clean_url = re.sub(r'[\?&]variant=\d+', '', url).strip()

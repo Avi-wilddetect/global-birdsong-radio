@@ -1,6 +1,7 @@
 # FILE: bioacoustic_profiles.py
-# VERSION: 2.1 - "The Electronic Artifact Veto"
+# VERSION: 2.2 - "The Bear & Hippo Patch"
 # CHANGELOG:
+# [2026-09-09 23:48] - v2.2: Mapped 'BEAR' and remapped 'HIPPOPOTAMUS' to score_generic_mammal_call to ensure mid-range vocalizations (like hippo wheeze-honks and bear growls) pass DSP filters.
 # [2026-09-02 02:13] - v2.1: Implemented global Electronic Artifact veto to reject mic buzzes/sine waves (tonality > 0.85).
 # [2026-08-15 10:00] - v2.0: Implemented strict Spectral Flatness checks to kill Rain/Wind false positives. Implemented Frequency Isolation.
 
@@ -150,7 +151,6 @@ PROFILES = {
     
     "ELEPHANT": score_elephant,
     "RHINOCEROS": score_elephant,
-    "HIPPOPOTAMUS": score_elephant,
     
     "WOLF": score_wolf,
     "HYENA": score_wolf,
@@ -159,6 +159,8 @@ PROFILES = {
     "SEA_LION": score_sea_lion,
     "OTTER": score_sea_lion,
     
+    "HIPPOPOTAMUS": score_generic_mammal_call,
+    "BEAR": score_generic_mammal_call,
     "COW": score_generic_mammal_call,
     "SHEEP": score_generic_mammal_call,
     "YAK": score_generic_mammal_call,

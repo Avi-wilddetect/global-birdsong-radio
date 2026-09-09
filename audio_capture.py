@@ -1,13 +1,10 @@
 # FILE: audio_capture.py
-# VERSION: 8.13 - "The Client Spoofing Restoration Patch"
+# VERSION: 8.15 - "The Cookie Restoration Hotfix"
 #
 # CHANGELOG:
+# [2026-09-10 00:45] - v8.15: CRITICAL HOTFIX. Reverted the accidental stripping of yt-dlp authentication cookies in _execute_ffmpeg. Stripping these cookies caused YouTube to stall the FFmpeg connection, resulting in endless 32-second timeouts that completely paralyzed the Audio Engine. Also sanitized header injection to fix FFmpeg returncode 4294967274 (EINVAL) crashes on IP Cameras.
+# [2026-09-09 23:53] - v8.14: Implemented URL Tag-Along Patch for vision streams and separated DEAD_STREAM markers from YOUTUBE_BLOCK to prevent dead/scheduled streams from triggering the heavy Selenium Auto-Healer.
 # [2026-09-04 20:34] - v8.13: Reverted the Web Client Restoration Patch to allow yt-dlp to use 'tv', 'ios', and 'mweb' clients, bypassing YouTube's strict blocking of the 'web' client.
-# [2026-09-04 12:08] - v8.12: Implemented Pure Python Downloader via 'requests' to bypass FFmpeg's TCP stack for MP3s, preventing Returncode 3419392776 crashes. Downgraded Selenium Sniffer failures from TERMINATED to AUTO_RESOLVER_FAILED to prevent 24-hour permanent bans on temporary proxy hiccups.
-# [2026-09-03 13:45] - v8.10: Bypassed the proxy entirely for Native Audio (MP3) streams to prevent aggressive SO_LINGER socket destruction from crashing FFmpeg with returncode 3419392776.
-# [2026-09-03 13:00] - v8.9: Implemented Web Client Restoration Patch to force 'web' client for yt-dlp, fixing YouTube audio extraction.
-# [2026-09-03 03:20] - v8.8: Fixed false-positive FATAL/SUSPENDED flags by routing "Private/Unavailable" YouTube blocks and IP Camera token expirations directly to the Selenium Auto-Healer.
-# [2026-09-03 03:00] - v8.7: Upgraded FFmpeg segfault regex to catch 4294957242 and all other 10-digit memory access violations.
 
 import os
 import time
@@ -116,16 +113,29 @@ def update_config_with_new_url(stream_name, new_url):
             if not CFG_PATH.exists(): return
             data = json.loads(CFG_PATH.read_text(encoding='utf-8'))
             updated = False
+            old_url = None
             for s in data.get('streams',[]):
                 if s.get('name') == stream_name and s.get('page_url') != new_url:
                     # Preserve original URL for Auto-Healer sniffer
                     if not s.get('original_url') and ("youtube.com" in s.get('page_url', '') or "youtu.be" in s.get('page_url', '')):
                         s['original_url'] = s['page_url']
                         
+                    old_url = s['page_url']
                     s['page_url'] = new_url
                     s['updated_at'] = time.time()
                     updated = True
                     break
+            
+            # --- THE URL TAG-ALONG PATCH ---
+            # Also update the vision_ai enabled_streams list so we don't go blind
+            if updated and old_url and "vision_ai" in data and "enabled_streams" in data["vision_ai"]:
+                vision_enabled = data["vision_ai"]["enabled_streams"]
+                for i, u in enumerate(vision_enabled):
+                    if u == old_url:
+                        vision_enabled[i] = new_url
+                        logging.info(f"[Auto-Healer] Successfully transferred Vision Checkbox state to new URL: {new_url}")
+                        break
+                        
             if updated:
                 tmp_path = CFG_PATH.with_suffix('.tmp')
                 tmp_path.write_text(json.dumps(data, indent=2), encoding='utf-8')
@@ -293,21 +303,28 @@ class AudioCaptureEngine:
                         raise RuntimeError(f"VOD_REJECTED: Stream explicitly flagged as ended or VOD. Status: {live_status}")
 
             except Exception as e:
-                e_str = str(e)
+                e_str = str(e).lower()
 
-                if "vod_rejected" in e_str.lower():
+                if "vod_rejected" in e_str:
                     raise e 
                 
+                # --- THE DEAD STREAM BYPASS PATCH ---
+                dead_markers = [
+                    "is not available", "private video", "video is unavailable", 
+                    "this live stream recording", "will begin in", "has ended",
+                    "terminated", "removed", "copyright", "offline"
+                ]
+                if any(x in e_str for x in dead_markers):
+                    raise RuntimeError(f"DEAD_STREAM: {e_str}")
+
                 # --- THE BOT WALL BYPASS PATCH ---
                 # Explicitly map YouTube's new bot-wall phrases to YOUTUBE_BLOCK
                 # so the Engine triggers Selenium instead of killing the stream.
                 block_markers = [
                     "no video formats found", "sign in to confirm you", "bot", 
-                    "requested format is not available", "only images are available",
-                    "is not available", "private video", "video is unavailable",
-                    "this live stream recording"
+                    "requested format is not available", "only images are available"
                 ]
-                if any(x in e_str.lower() for x in block_markers):
+                if any(x in e_str for x in block_markers):
                     raise RuntimeError(f"YOUTUBE_BLOCK: {e_str}")
 
                 if _is_429_error(e_str):
@@ -464,13 +481,19 @@ class AudioCaptureEngine:
         
         header_str = f"User-Agent: {ua}\r\n"
         
-        if "youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url:
+        # --- THE COOKIE RESTORATION HOTFIX ---
+        # Ensure we do not accidentally strip the cookies passed by yt-dlp, 
+        # and safely inject our fallback consent cookies only if necessary.
+        has_cookie = any(h.lower().startswith("cookie:") for h in headers_list) if headers_list else False
+        if not has_cookie and ("youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url):
             header_str += "Cookie: CONSENT=YES+cb; SOCS=CAI;\r\n"
         
         if headers_list:
             for h in headers_list:
-                if not h.lower().startswith("user-agent:") and not h.lower().startswith("cookie:"): 
-                    header_str += f"{h}\r\n"
+                # Sanitize to prevent trailing newlines from causing EINVAL (-22) crashes
+                clean_h = h.strip()
+                if clean_h and not clean_h.lower().startswith("user-agent:"): 
+                    header_str += f"{clean_h}\r\n"
 
         ff_cmd.extend(["-headers", header_str])
         ff_cmd.extend(["-i", url])

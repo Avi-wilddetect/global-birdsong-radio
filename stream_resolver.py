@@ -1,7 +1,8 @@
 # FILE: stream_resolver.py
-# VERSION: 4.80 - "The Sniffer Amnesty Patch"
+# VERSION: 4.81 - "The Dead Stream Bypass Patch"
 # PURPOSE: Resolves streams using HTTP Headers, yt-dlp, Static Regex, and Headless Browser Network Sniffing.
 # CHANGELOG:
+# [2026-09-10 00:00] - v4.81: Applied identical dead stream markers to all extraction tiers so that the manual resolver instantly aborts dead streams instead of falling back to the heavy Selenium network sniffer.
 # [2026-09-04 01:25] - v4.80: Softened Selenium VOD_REJECTED check to prevent false positives when YouTube serves consent/bot-wall pages.
 # [2026-09-03 13:01] - v4.79: Removed the forced 'ios/tv' client spoofing. Relying on the upgraded yt-dlp package to properly handle the 'web' client alongside cookies to restore YouTube livestream access.
 
@@ -16,7 +17,7 @@ import time
 import subprocess
 from pathlib import Path
 
-print("DEBUG: Stream Resolver v4.80 (Sniffer Amnesty Patch) Loaded")
+print("DEBUG: Stream Resolver v4.81 (Dead Stream Bypass Patch) Loaded")
 
 # --- GLOBAL NODE.JS PATH INJECTION ---
 def ensure_node_in_path():
@@ -249,6 +250,16 @@ def resolve_stream_url(webpage_url, proxy_url=None, fast_mode=False):
             cookies_path = cfg.get("youtube_cookies_file", "")
     except: pass
 
+    def is_dead_stream(e_str):
+        e_str = e_str.lower()
+        if "vod_rejected" in e_str: return True
+        dead_markers = [
+            "is not available", "private video", "video is unavailable", 
+            "this live stream recording", "will begin in", "has ended",
+            "terminated", "removed", "copyright", "offline"
+        ]
+        return any(x in e_str for x in dead_markers)
+
     def try_extract(use_proxy, use_cookies):
         ydl_opts = {
             'quiet': True, 'no_warnings': True, 'skip_download': True, 'force_generic_extractor': False, 
@@ -291,13 +302,13 @@ def resolve_stream_url(webpage_url, proxy_url=None, fast_mode=False):
         links, stype, msg = try_extract(use_proxy=True, use_cookies=False)
         return links, stype, log_msg + msg
     except Exception as e1:
-        if "vod_rejected" in str(e1).lower(): return[], 'unknown', log_msg + str(e1)
+        if is_dead_stream(str(e1)): return [], 'unknown', log_msg + str(e1)
         log_msg += f"TIER 1 (Proxy+Anonymous) failed: {e1}\n"
         try:
             links, stype, msg = try_extract(use_proxy=True, use_cookies=True)
             return links, stype, log_msg + msg
         except Exception as e1_5:
-            if "vod_rejected" in str(e1_5).lower(): return[], 'unknown', log_msg + str(e1_5)
+            if is_dead_stream(str(e1_5)): return [], 'unknown', log_msg + str(e1_5)
             log_msg += f"TIER 1.5 (Proxy+Cookies) failed: {e1_5}\n"
             
             # --- THE UNSHACKLING PATCH ---
@@ -307,13 +318,13 @@ def resolve_stream_url(webpage_url, proxy_url=None, fast_mode=False):
                 links, stype, msg = try_extract(use_proxy=False, use_cookies=False)
                 return links, stype, log_msg + msg
             except Exception as e2:
-                if "vod_rejected" in str(e2).lower(): return[], 'unknown', log_msg + str(e2)
+                if is_dead_stream(str(e2)): return [], 'unknown', log_msg + str(e2)
                 log_msg += f"TIER 2 (No Proxy+Anonymous) failed: {e2}\n"
                 try:
                     links, stype, msg = try_extract(use_proxy=False, use_cookies=True)
                     return links, stype, log_msg + msg
                 except Exception as e3:
-                    if "vod_rejected" in str(e3).lower(): return[], 'unknown', log_msg + str(e3)
+                    if is_dead_stream(str(e3)): return [], 'unknown', log_msg + str(e3)
                     log_msg += f"TIER 3 (No Proxy+Cookies) failed: {e3}\n"
 
     log_msg += "Switching to Deep Scan (Static)...\n"

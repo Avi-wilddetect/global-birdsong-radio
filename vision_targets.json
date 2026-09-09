@@ -18869,6 +18869,110 @@
       "min_depth_single": "Default (Auto)",
       "min_frame_flock": "Default (Auto)",
       "min_depth_flock": "Default (Auto)"
+    },
+    "Coney": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Vulturine Guineafowl": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Threespot Damselfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Topsmelt Silverside": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Snowflake Coral": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Malayan Flying Fox": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Cave Swallow": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "African Common Toad": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "American Barn Owl": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "American Red Fox": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Hawaiian Chromis": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Western Barn Owl": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
     }
   },
   "assignments": {
@@ -19301,6 +19405,10 @@
         },
         "Seagull": {
           "prompt": "There are no birds that are white in the water! Never!"
+        },
+        "Double-Crested Cormorant": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -19316,6 +19424,22 @@
         "African Wattled Lapwing": {
           "min_frame_single": "Medium",
           "min_depth_single": "Very Near"
+        },
+        "Heron": {
+          "min_frame_flock": "Tiny",
+          "min_depth_flock": "Mid-ground"
+        },
+        "Grey Heron": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        },
+        "African Bush Elephant": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
+        },
+        "Hamerkop": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       }
     },
@@ -19361,6 +19485,10 @@
         "Seagull": {
           "min_frame_single": "Medium",
           "min_depth_single": "Mid-ground"
+        },
+        "Brandt's Cormorant": {
+          "min_frame_flock": "Tiny",
+          "min_depth_flock": "Mid-ground"
         }
       }
     },
@@ -19405,7 +19533,7 @@
       "custom_prompt": "If it is night time than only very close animals should be counted for.",
       "species_rules": {
         "Hippopotamus": {
-          "min_frame_single": "Medium",
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         },
         "Olive Baboon": {
@@ -19533,6 +19661,10 @@
         "Marabou Stork": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        },
+        "Impala": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       },
       "night_species_rules": {
@@ -19572,6 +19704,10 @@
         "Royal Albatross": {
           "min_frame_single": "Medium",
           "min_depth_single": "Near"
+        },
+        "Northern Royal Albatross": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -19595,6 +19731,10 @@
         "Impala": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        },
+        "Yellow-Billed Stork": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -19736,7 +19876,8 @@
     "https://www.youtube.com/watch?v=QoKy-rn66og": {
       "species_rules": {
         "Philippine Eagle": {
-          "min_depth_single": "Near"
+          "min_depth_single": "Very Near",
+          "min_frame_single": "Small"
         }
       }
     },
@@ -19928,7 +20069,7 @@
           "min_depth_single": "Mid-ground"
         },
         "Egyptian Goose": {
-          "min_frame_single": "Small",
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         },
         "Steenbok": {
@@ -20042,6 +20183,14 @@
     "https://www.youtube.com/watch?v=qwvk5hbEJnY": {
       "species_rules": {
         "African Bush Elephant": {
+          "min_depth_single": "Mid-ground"
+        },
+        "Angolan Giraffe": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        },
+        "Black-Backed Jackal": {
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         }
       },
@@ -20177,6 +20326,10 @@
         "Downy Woodpecker": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        },
+        "Mourning Dove": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       },
       "night_species_rules": {
@@ -20187,6 +20340,10 @@
         },
         "White-Throated Sparrow": {
           "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Northern Cardinal": {
+          "min_frame_single": "Tiny",
           "min_depth_single": "Near"
         }
       }
@@ -20370,6 +20527,14 @@
         "Chickadee": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        },
+        "Northern Cardinal": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Tufted Titmouse": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
         }
       }
     },
@@ -20447,6 +20612,10 @@
           "min_depth_single": "Near"
         },
         "Yellow-Rumped Warbler": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Northern Cardinal": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
@@ -20599,6 +20768,10 @@
         "Purple-Throated Fruitcrow": {
           "min_frame_single": "Large",
           "min_depth_single": "Mid-ground"
+        },
+        "Smooth Helmeted Iguana": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -20731,8 +20904,22 @@
           "min_depth_single": "Point Blank"
         },
         "Eurasian Nuthatch": {
-          "min_frame_single": "Small",
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Very Near"
+        },
+        "Eurasian Magpie": {
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
+        },
+        "Marsh Tit": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
+        }
+      },
+      "night_species_rules": {
+        "European Roe Deer": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
         }
       }
     },
@@ -20795,6 +20982,12 @@
           "min_frame_single": "Large",
           "min_depth_single": "Mid-ground"
         }
+      },
+      "species_rules": {
+        "African Lion": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
       }
     },
     "https://www.youtube.com/watch?v=F0GOOP82094": {
@@ -20831,7 +21024,7 @@
         },
         "Red Fox": {
           "min_frame_single": "Medium",
-          "min_depth_single": "Mid-ground"
+          "min_depth_single": "Near"
         }
       }
     },
@@ -20902,6 +21095,10 @@
         "African Elephant": {
           "min_frame_single": "Huge",
           "min_depth_single": "Very Near"
+        },
+        "Great Egret": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
         }
       }
     },
@@ -21057,6 +21254,12 @@
           "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
+      },
+      "night_species_rules": {
+        "Mourning Dove": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        }
       }
     },
     "https://www.youtube.com/watch?v=oI8R4_UG3Fs": {
@@ -21118,6 +21321,14 @@
         },
         "Red Hartebeest": {
           "min_frame_single": "Large",
+          "min_depth_single": "Mid-ground"
+        },
+        "White Rhinoceros": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        },
+        "Egyptian Goose": {
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         }
       },
@@ -21331,6 +21542,19 @@
           "min_frame_flock": "Large",
           "min_depth_flock": "Very Near"
         }
+      },
+      "night_species_rules": {
+        "Marsh Terrapin": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
+        },
+        "Hippopotamus": {
+          "prompt": "Igonre the arched branch that goes into the water at the right side of the image, it is not an hippopotamus."
+        },
+        "Woodland Kingfisher": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
+        }
       }
     },
     "https://www.youtube.com/watch?v=gdrNUUf-cQw": {
@@ -21425,6 +21649,10 @@
         "Goby": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        },
+        "Red Lionfish": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -21441,6 +21669,14 @@
         },
         "Parrotfish": {
           "min_frame_single": "Large",
+          "min_depth_single": "Near"
+        },
+        "Marine Fish": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
+        },
+        "Spotted Eagle Ray": {
+          "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
       },
@@ -21475,6 +21711,10 @@
         "Reef Fish": {
           "min_frame_flock": "Tiny",
           "min_depth_flock": "Deep Background"
+        },
+        "Marine Fish": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       },
       "night_species_rules": {
@@ -21490,6 +21730,10 @@
         "Reef Fish": {
           "min_frame_single": "Medium",
           "min_depth_single": "Near"
+        },
+        "Red Lionfish": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -21503,10 +21747,18 @@
         "Banded Butterflyfish": {
           "min_frame_single": "Huge",
           "min_depth_single": "Very Near"
+        },
+        "Snapper": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       },
       "night_species_rules": {
         "Reef Fish": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        },
+        "Spotted Eagle Ray": {
           "min_frame_single": "Small",
           "min_depth_single": "Background"
         }
@@ -21524,14 +21776,18 @@
           "min_depth_single": "Mid-ground"
         },
         "Bicolor Damselfish": {
-          "min_frame_single": "Small",
-          "min_depth_single": "Mid-ground"
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
         }
       },
       "night_species_rules": {
         "Schooling Fish": {
           "min_frame_flock": "Large",
           "min_depth_flock": "Mid-ground"
+        },
+        "Yellowtail Snapper": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -21580,6 +21836,10 @@
         "Blue Tilapia": {
           "min_frame_single": "Large",
           "min_depth_single": "Near"
+        },
+        "Sheepshead": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -21638,6 +21898,12 @@
         "Downy Woodpecker": {
           "min_frame_single": "Small",
           "min_depth_single": "Near"
+        }
+      },
+      "night_species_rules": {
+        "Blue Jay": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
         }
       }
     },
@@ -21723,6 +21989,10 @@
       "night_species_rules": {
         "Great Egret": {
           "min_frame_single": "Medium",
+          "min_depth_single": "Very Near"
+        },
+        "African Lion": {
+          "min_frame_single": "Small",
           "min_depth_single": "Very Near"
         }
       },
@@ -21817,7 +22087,7 @@
           "min_depth_flock": "Near"
         },
         "Kelp Bass": {
-          "min_frame_single": "Medium",
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         },
         "Garibaldi": {
@@ -21827,6 +22097,14 @@
         "Fish": {
           "min_frame_flock": "Large",
           "min_depth_flock": "Mid-ground"
+        },
+        "Marine Fish": {
+          "min_frame_flock": "Tiny",
+          "min_depth_flock": "Mid-ground"
+        },
+        "Blacksmith Damselfish": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
         }
       },
       "night_species_rules": {
@@ -21858,6 +22136,12 @@
       "species_rules": {
         "Jellyfish": {
           "min_frame_single": "Large",
+          "min_depth_single": "Near"
+        }
+      },
+      "night_species_rules": {
+        "Kelp Bass": {
+          "min_frame_single": "Small",
           "min_depth_single": "Near"
         }
       }
@@ -21895,6 +22179,20 @@
         },
         "Greater Flamingo": {
           "min_frame_flock": "Tiny",
+          "min_depth_flock": "Deep Background"
+        },
+        "Grey Heron": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        },
+        "Waterbird": {
+          "min_frame_flock": "Tiny",
+          "min_depth_flock": "Mid-ground"
+        }
+      },
+      "night_species_rules": {
+        "Water Bird": {
+          "min_frame_flock": "Speck",
           "min_depth_flock": "Deep Background"
         }
       }
@@ -22048,6 +22346,12 @@
           "min_frame_single": "Large",
           "min_depth_single": "Mid-ground"
         }
+      },
+      "species_rules": {
+        "Bald Eagle": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
       }
     },
     "https://www.youtube.com/watch?v=t_uCyilSDTo": {
@@ -22092,6 +22396,10 @@
         "Tree Frog": {
           "min_frame_single": "Medium",
           "min_depth_single": "Mid-ground"
+        },
+        "Crowned Woodnymph": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       },
       "species_rules": {
@@ -22149,6 +22457,12 @@
         "Roe Deer": {
           "min_frame_single": "Medium",
           "min_depth_single": "Background"
+        }
+      },
+      "night_species_rules": {
+        "European Roe Deer": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Deep Background"
         }
       }
     },
@@ -22238,7 +22552,7 @@
       "night_species_rules": {
         "Peregrine Falcon": {
           "min_frame_single": "Large",
-          "min_depth_single": "Near"
+          "min_depth_single": "Very Near"
         }
       }
     },
@@ -22276,6 +22590,14 @@
       "night_species_rules": {
         "Shorebird": {
           "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        },
+        "Waterbird": {
+          "min_frame_single": "Speck",
+          "min_depth_single": "Deep Background"
+        },
+        "Kingfisher": {
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         }
       },
@@ -22413,7 +22735,7 @@
     "https://www.youtube.com/watch?v=w842nOO0w_M": {
       "species_rules": {
         "Mute Swan": {
-          "min_frame_single": "Large",
+          "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
         }
       }
@@ -22421,8 +22743,8 @@
     "https://www.youtube.com/watch?v=IVmL3diwJuw": {
       "night_species_rules": {
         "Bald Eagle": {
-          "min_frame_single": "Large",
-          "min_depth_single": "Mid-ground"
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
         }
       }
     },
@@ -22473,6 +22795,12 @@
         "Dairy Cattle": {
           "min_frame_flock": "Large",
           "min_depth_flock": "Very Near"
+        }
+      },
+      "species_rules": {
+        "Holstein Friesian Cattle": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
         }
       }
     },
@@ -22547,6 +22875,14 @@
         "Striped Skunk": {
           "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
+        },
+        "White-Tailed Deer": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        },
+        "Red Fox": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
         }
       }
     },
@@ -22592,6 +22928,462 @@
         "Peregrine Falcon": {
           "min_frame_single": "Tiny",
           "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=Cf6FO2MiTvc": {
+      "night_species_rules": {
+        "Cinereous Vulture": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=OPR_vDx6dTY": {
+      "night_species_rules": {
+        "Western Osprey": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=Kv2DBj7RJGo": {
+      "species_rules": {
+        "Mediterranean House Gecko": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=daFe_ygulPY": {
+      "night_species_rules": {
+        "Common Murre": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Seagull": {
+          "min_frame_single": "Speck",
+          "min_depth_single": "Deep Background"
+        }
+      },
+      "species_rules": {
+        "Herring Gull": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        },
+        "Atlantic Puffin": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=jH3e5w4BWGA": {
+      "night_species_rules": {
+        "Large-Spotted Genet": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      },
+      "species_rules": {
+        "Hippopotamus": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=JMMoRwYo5kE": {
+      "night_species_rules": {
+        "Black Rhinoceros": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
+        },
+        "Blacksmith Lapwing": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=QQdF-8CVSC0": {
+      "night_species_rules": {
+        "California Condor": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=fAS2TFePbQk": {
+      "night_species_rules": {
+        "Seabird": {
+          "min_frame_flock": "Speck",
+          "min_depth_flock": "Background"
+        }
+      },
+      "species_rules": {
+        "Seabird": {
+          "min_frame_flock": "Small",
+          "min_depth_flock": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=mquay4ouPHU": {
+      "night_species_rules": {
+        "Bonobo": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=mV8zVsX_o_0": {
+      "species_rules": {
+        "Marine Fish": {
+          "min_frame_flock": "Large",
+          "min_depth_flock": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=jOp_aAXsYmE": {
+      "species_rules": {
+        "Yellow Tang": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      },
+      "night_species_rules": {
+        "Hawaiian Sergeant": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=XiEHlD9viro": {
+      "night_species_rules": {
+        "Griffon Vulture": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        },
+        "Eurasian Griffon Vulture": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=tgmrC0rDrc4": {
+      "species_rules": {
+        "Yellow-Throated Toucan": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=ZWhvO6R37ck": {
+      "species_rules": {
+        "Impala": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=vmyC3J4V33U": {
+      "night_species_rules": {
+        "Eastern Grey Squirrel": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=2sFs4U7F2-E": {
+      "night_species_rules": {
+        "Steller's Jay": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Very Near"
+        }
+      },
+      "species_rules": {
+        "Common Raven": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=EXSoa7sQTzQ": {
+      "night_species_rules": {
+        "Flying Fox": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=BsZEOvS3qTM": {
+      "species_rules": {
+        "Giant Panda": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=DsNtwGJXTTs": {
+      "night_species_rules": {
+        "Brown Hyena": {
+          "min_frame_single": "Medium",
+          "min_depth_single": "Mid-ground"
+        },
+        "Common Moorhen": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=2t3hVTdetkA": {
+      "species_rules": {
+        "Muskox": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      },
+      "night_species_rules": {
+        "Raccoon": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=BrZ3HMNN90w": {
+      "night_species_rules": {
+        "Gray Wolf": {
+          "min_frame_single": "Medium",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=JE2CGFclrRg": {
+      "night_species_rules": {
+        "Violet-Bellied Hummingbird": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "White-Vented Plumeleteer": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      },
+      "species_rules": {
+        "Crowned Woodnymph": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=JE2CGFclrRg&variant=1778697701": {
+      "night_species_rules": {
+        "Violet-Bellied Hummingbird": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "White-Vented Plumeleteer": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      },
+      "species_rules": {
+        "Crowned Woodnymph": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=7i8ARjIeM2k": {
+      "species_rules": {
+        "Schoolmaster Snapper": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        },
+        "Parrotfish": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        },
+        "Blue Tang": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        },
+        "Sergeant Major": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=zsQaKey1rm4": {
+      "species_rules": {
+        "Marine Fish": {
+          "min_frame_flock": "Small",
+          "min_depth_flock": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=CYl_uPm7yto": {
+      "species_rules": {
+        "Blue Jay": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=GeirFnWpquU": {
+      "species_rules": {
+        "Scarlet Macaw": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=Vyh0NdAygyY": {
+      "species_rules": {
+        "Peregrine Falcon": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=8DRsVKLC2co": {
+      "species_rules": {
+        "Scarlet Macaw": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=2yx7RKxpyzQ": {
+      "night_species_rules": {
+        "Bald Eagle": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=WjxG5mHc3kg": {
+      "species_rules": {
+        "Pronghorn": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=_NXaovxB-Bk": {
+      "night_species_rules": {
+        "Hippopotamus": {
+          "min_frame_single": "Large",
+          "min_depth_single": "Mid-ground"
+        },
+        "African Bush Elephant": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=54Y7xlLrkuo": {
+      "night_species_rules": {
+        "African Bush Elephant": {
+          "min_frame_flock": "Small",
+          "min_depth_flock": "Background"
+        },
+        "Scrub Hare": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=FefBhyyUo60": {
+      "species_rules": {
+        "Rock Dove": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=zPqPFZMGTF8": {
+      "night_species_rules": {
+        "Florida Manatee": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=inDzgZjCxmQ": {
+      "night_species_rules": {
+        "Domestic Cow": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=q5MAc6DGSQc": {
+      "species_rules": {
+        "Brown-Headed Cowbird": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        },
+        "Mourning Dove": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Very Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=rnTsOesC6hE": {
+      "night_species_rules": {
+        "Island Scrub-Jay": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=vEEGzyCvL8Q": {
+      "night_species_rules": {
+        "African Wildcat": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=EqVCjIa5brY": {
+      "night_species_rules": {
+        "Atlantic Puffin": {
+          "min_frame_single": "Tiny",
+          "min_depth_single": "Mid-ground"
+        },
+        "Herring Gull": {
+          "min_frame_flock": "Tiny",
+          "min_depth_flock": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=hTOmWcmr2Tc": {
+      "night_species_rules": {
+        "Killer Whale": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=-7GOA9KIWcs": {
+      "species_rules": {
+        "African Lion": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=7x5kRo1B84Y": {
+      "species_rules": {
+        "Reticulated Giraffe": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Background"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=5bkDe6LryCo": {
+      "species_rules": {
+        "Seabird": {
+          "min_frame_single": "Speck",
+          "min_depth_single": "Deep Background"
         }
       }
     }
