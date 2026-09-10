@@ -237,9 +237,9 @@
       "mute_audio": false,
       "name": "Bald Eagles Nest Cam, Hanover, Pennsylvania, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/204942/hanover-eagles-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=smjM5ci8Fd8YUCPTQEL2NA&e=1789076805",
+      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=Ree6LwXKY_P-QhBfe9gXNA&e=1789079819",
       "stream_type": "hls",
-      "updated_at": 1789033525.040023
+      "updated_at": 1789036567.6483083
     },
     {
       "channel_name": "Somerset Wildlife Trust",
@@ -5075,7 +5075,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1503
+        "usage_count": 1504
       },
       {
         "exhausted_until": 0,
@@ -5096,7 +5096,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1522
+        "usage_count": 1524
       },
       {
         "exhausted_until": 0,
@@ -5117,7 +5117,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1521
+        "usage_count": 1522
       },
       {
         "exhausted_until": 0,
@@ -5152,7 +5152,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1486
+        "usage_count": 1490
       },
       {
         "exhausted_until": 0,
@@ -5166,14 +5166,14 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1484
+        "usage_count": 1487
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1501
+        "usage_count": 1502
       },
       {
         "exhausted_until": 0,
@@ -5187,14 +5187,14 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1520
+        "usage_count": 1523
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1522
+        "usage_count": 1523
       },
       {
         "exhausted_until": 0,
@@ -5208,7 +5208,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Paid",
-        "usage_count": 37109
+        "usage_count": 37158
       }
     ],
     "cycle_interval_seconds": 3600,
@@ -6184,7 +6184,7 @@
     "custom_ai_model": "",
     "cost_per_1000_images_credits": 0.75,
     "tuning_interval_mins": 15,
-    "last_calculated_hit_rate": 0.01234567901234568,
+    "last_calculated_hit_rate": 0.01146384479717813,
     "last_calculated_cycle_s": 3600,
     "last_throttle_reason": "Budget Cap Active"
   },

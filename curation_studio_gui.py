@@ -1,7 +1,7 @@
 # FILE: curation_studio_gui.py
-# VERSION: 40.19 - "The Apostrophe Curation Patch"
+# VERSION: 40.20 - "The Wizard Power-Tools Patch"
 # RESPONSIBILITY: Side-by-side review, AI correction, ML exports, and batch processing.
-# UPDATED: Fixed a bug where manually typing animal names with apostrophes (e.g. Grauer's Gorilla) into the "Teach AI" box would get wrongly capitalized by .title() into "Grauer'S Gorilla".
+# UPDATED: Implemented bulk exclusion buttons in the Batch Wizard, fixed the Carousel Focus memory bug upon closing the viewer, and added inline audio playback directly inside the wizard cells.
 
 import sys
 import os
@@ -228,11 +228,29 @@ class BatchReviewDialog(QDialog):
 
         self.populate_grid()
 
+        # --- NEW BULK ACTION BUTTONS ---
         btn_layout = QHBoxLayout()
+        
+        self.btn_cancel = QPushButton("Cancel Review")
+        self.btn_cancel.setStyleSheet("background-color: #555; font-weight: bold; padding: 10px; font-size: 14px;")
+        self.btn_cancel.clicked.connect(self.reject)
+        
+        self.btn_exc_purged = QPushButton("Exclude All Purged")
+        self.btn_exc_purged.setStyleSheet("background-color: #F57C00; font-weight: bold; padding: 10px; font-size: 14px;")
+        self.btn_exc_purged.clicked.connect(self.exclude_purged)
+        
+        self.btn_exc_all = QPushButton("Exclude All")
+        self.btn_exc_all.setStyleSheet("background-color: #D32F2F; font-weight: bold; padding: 10px; font-size: 14px;")
+        self.btn_exc_all.clicked.connect(self.exclude_all)
+        
         self.btn_done = QPushButton("Done Reviewing")
         self.btn_done.setStyleSheet("background-color: #0078d7; font-weight: bold; padding: 10px; font-size: 14px;")
         self.btn_done.clicked.connect(self.accept)
+        
+        btn_layout.addWidget(self.btn_cancel)
         btn_layout.addStretch()
+        btn_layout.addWidget(self.btn_exc_purged)
+        btn_layout.addWidget(self.btn_exc_all)
         btn_layout.addWidget(self.btn_done)
         self.layout.addLayout(btn_layout)
 
@@ -240,6 +258,28 @@ class BatchReviewDialog(QDialog):
         self.setFocus()
         if self.items_data:
             self.set_focus(0)
+
+    def exclude_all(self):
+        for item in self.items_data:
+            if item['row_data'] in self.accepted_rows:
+                self.toggle_exclude(item['row_data'], item['btn'], item['img_lbl'], item['time_lbl'])
+
+    def exclude_purged(self):
+        for item in self.items_data:
+            if item['row_data'] in self.accepted_rows:
+                v_path = item['row_data'].get('vision_path')
+                if not v_path or not os.path.exists(v_path):
+                    self.toggle_exclude(item['row_data'], item['btn'], item['img_lbl'], item['time_lbl'])
+
+    def reject(self):
+        # Override to completely clear the batch memory if X or ESC is pressed
+        self.exclude_all()
+        super().reject()
+
+    def play_cell_audio(self, did):
+        main_win = self.parent().parent() # SmartTuningDialog -> CurationStudio
+        if hasattr(main_win, 'play_audio_by_id'):
+            main_win.play_audio_by_id(did)
 
     def populate_grid(self):
         for i, row_data in enumerate(self.similar_rows):
@@ -275,14 +315,32 @@ class BatchReviewDialog(QDialog):
             lbl_time = QLabel(time_str)
             lbl_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
             
+            # --- IN-CELL AUDIO & ACTION WIDGETS ---
+            action_lay = QHBoxLayout()
+            action_lay.setContentsMargins(0, 0, 0, 0)
+            action_lay.setSpacing(4)
+            
             btn_exc = QPushButton("Exclude")
             btn_exc.setFocusPolicy(Qt.FocusPolicy.NoFocus) # Prevents spacebar from sticking to button
             btn_exc.setStyleSheet("background-color: #D32F2F;")
             btn_exc.clicked.connect(lambda chk, r=row_data, b=btn_exc, i_lbl=img_lbl, t_lbl=lbl_time: self.toggle_exclude(r, b, i_lbl, t_lbl))
+            action_lay.addWidget(btn_exc)
+            
+            # Check for actual audio file
+            did = row_data['id']
+            p_mp3 = BASELINE_CLIPS_DIR / f"detection_{did}.mp3"
+            p_wav = BASELINE_CLIPS_DIR / f"detection_{did}.wav"
+            if p_mp3.exists() or p_wav.exists():
+                btn_play = QPushButton("▶")
+                btn_play.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                btn_play.setFixedWidth(30)
+                btn_play.setStyleSheet("background-color: #0078d7; font-weight: bold;")
+                btn_play.clicked.connect(lambda chk, d=did: self.play_cell_audio(d))
+                action_lay.addWidget(btn_play)
             
             cell_lay.addWidget(img_lbl)
             cell_lay.addWidget(lbl_time)
-            cell_lay.addWidget(btn_exc)
+            cell_lay.addLayout(action_lay)
             
             row = i // self.col_count
             col = i % self.col_count
@@ -340,14 +398,14 @@ class BatchReviewDialog(QDialog):
         elif key == Qt.Key.Key_Up:
             self.set_focus(max(0, idx - self.col_count))
         elif key == Qt.Key.Key_Space:
-            if not self.btn_done.hasFocus():
+            if not self.btn_done.hasFocus() and not self.btn_cancel.hasFocus() and not self.btn_exc_all.hasFocus() and not self.btn_exc_purged.hasFocus():
                 item = self.items_data[idx]
                 self.toggle_exclude(item['row_data'], item['btn'], item['img_lbl'], item['time_lbl'])
                 event.accept()
             else:
                 super().keyPressEvent(event)
         elif key in (Qt.Key.Key_Enter, Qt.Key.Key_Return):
-            if not self.btn_done.hasFocus():
+            if not self.btn_done.hasFocus() and not self.btn_cancel.hasFocus() and not self.btn_exc_all.hasFocus() and not self.btn_exc_purged.hasFocus():
                 item = self.items_data[idx]
                 self.open_large(item['pixmap'], idx)
                 event.accept()
@@ -362,9 +420,12 @@ class BatchReviewDialog(QDialog):
             viewer = ImageViewerDialog(items_data=self.items_data, initial_index=index, parent=self)
             viewer.index_changed.connect(self.set_focus)
             viewer.exclusion_toggled.connect(self.handle_viewer_exclusion)
+            viewer.exec()
+            # AFTER DIALOG CLOSES, RE-ASSERT FOCUS ON THE LAST VIEWED ITEM
+            self.set_focus(viewer.current_index)
         else:
             viewer = ImageViewerDialog(pixmap=pixmap, parent=self)
-        viewer.exec()
+            viewer.exec()
 
     def toggle_exclude(self, row_data, btn, img_lbl, t_lbl):
         if row_data in self.accepted_rows:
@@ -763,7 +824,7 @@ class SmartTuningDialog(QDialog):
 class CurationStudio(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.19)")
+        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.20)")
         self.resize(1400, 850)
         self.setStyleSheet("""
             QMainWindow, QWidget { background-color: #1e1e1e; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
@@ -1442,13 +1503,7 @@ class CurationStudio(QMainWindow):
         if do_cloud_sync: msg += f"\nCloud Sync Fails: {cloud_fails}"
         QMessageBox.information(self, "Batch Complete", msg)
 
-    def play_audio(self):
-        selected_items = self.table.selectedItems()
-        if not selected_items: return
-        row = list(set(item.row() for item in selected_items))[0]
-        data = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
-        
-        did = data['id']
+    def play_audio_by_id(self, did):
         p_mp3 = BASELINE_CLIPS_DIR / f"detection_{did}.mp3"
         p_wav = BASELINE_CLIPS_DIR / f"detection_{did}.wav"
         
@@ -1463,6 +1518,13 @@ class CurationStudio(QMainWindow):
         else:
             try: os.startfile(str(target))
             except Exception as e: QMessageBox.warning(self, "Audio Error", f"Could not play: {e}")
+
+    def play_audio(self):
+        selected_items = self.table.selectedItems()
+        if not selected_items: return
+        row = list(set(item.row() for item in selected_items))[0]
+        data = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+        self.play_audio_by_id(data['id'])
 
     def curate_detection(self, status):
         selected_items = self.table.selectedItems()
