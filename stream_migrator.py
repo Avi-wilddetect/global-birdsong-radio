@@ -1,7 +1,9 @@
 # FILE: stream_migrator.py
-# VERSION: 2.0 - "The URL Tag-Along Patch"
+# VERSION: 2.1 - "The Calibration Amnesia Patch"
 # PURPOSE: Logic for safely moving history from an Old URL to a New URL.
-# UPDATED: Added JSON patching logic. When a URL is migrated, it now explicitly checks the vision_ai 'enabled_streams' list in birdnet_config.json and updates the old URL to the new URL, preventing the Vision Engine from going blind to auto-healed streams.
+# CHANGELOG:
+# [2026-09-10 12:43] - v2.1: Fixed Calibration Amnesia by actively merging and preserving Golden Anchor max_snr_observed and noise baseline profiles during URL migrations instead of discarding them on conflict.
+# [2026-09-02 20:00] - v2.0: Added JSON patching logic. When a URL is migrated, it now explicitly checks the vision_ai 'enabled_streams' list in birdnet_config.json and updates the old URL to the new URL, preventing the Vision Engine from going blind to auto-healed streams.
 
 import sqlite3
 import logging
@@ -60,15 +62,34 @@ def migrate_stream_data(old_url, new_url):
         cur.execute("DELETE FROM audio_hashes WHERE stream_url = ?", (old_url,)) # Cleanup leftovers
 
         # 4. MIGRATE NOISE PROFILES (PK is stream_url)
-        # If New URL already has a profile, keep it. Discard Old.
-        cur.execute("UPDATE OR IGNORE stream_noise_profiles SET stream_url = ? WHERE stream_url = ?", (new_url, old_url))
+        # THE CALIBRATION AMNESIA FIX: Properly merge the old baseline into the new URL
+        cur.execute("SELECT sample_count, average_noise_dbfs, last_updated FROM stream_noise_profiles WHERE stream_url = ?", (old_url,))
+        row = cur.fetchone()
+        if row:
+            cur.execute("""
+                INSERT INTO stream_noise_profiles (stream_url, sample_count, average_noise_dbfs, last_updated)
+                VALUES (?, ?, ?, ?)
+                ON CONFLICT(stream_url) DO UPDATE SET
+                sample_count = MAX(stream_noise_profiles.sample_count, excluded.sample_count),
+                average_noise_dbfs = CASE WHEN excluded.average_noise_dbfs != -90.0 THEN excluded.average_noise_dbfs ELSE stream_noise_profiles.average_noise_dbfs END,
+                last_updated = excluded.last_updated
+            """, (new_url, row[0], row[1], row[2]))
         cur.execute("DELETE FROM stream_noise_profiles WHERE stream_url = ?", (old_url,))
 
-        # 5. MIGRATE SPECIES PROFILES (Calibration Data)
-        # Constraint: UNIQUE(stream_url, species_name)
-        # Logic: If New URL already has a calibration for 'Robin', keep it. Discard Old 'Robin' data.
-        #        If New URL has no 'Robin', move Old 'Robin' to New.
-        cur.execute("UPDATE OR IGNORE species_stream_profiles SET stream_url = ? WHERE stream_url = ?", (new_url, old_url))
+        # 5. MIGRATE SPECIES PROFILES (Calibration Data / Golden Anchors)
+        # THE CALIBRATION AMNESIA FIX: Preserve max_snr_observed to prevent distance calculation blowouts
+        cur.execute("SELECT species_name, max_snr_observed, sample_count, last_updated, baseline_detection_id FROM species_stream_profiles WHERE stream_url = ?", (old_url,))
+        rows = cur.fetchall()
+        for r in rows:
+            cur.execute("""
+                INSERT INTO species_stream_profiles (stream_url, species_name, max_snr_observed, sample_count, last_updated, baseline_detection_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+                ON CONFLICT(stream_url, species_name) DO UPDATE SET
+                max_snr_observed = MAX(species_stream_profiles.max_snr_observed, excluded.max_snr_observed),
+                sample_count = species_stream_profiles.sample_count + excluded.sample_count,
+                last_updated = excluded.last_updated,
+                baseline_detection_id = COALESCE(excluded.baseline_detection_id, species_stream_profiles.baseline_detection_id)
+            """, (new_url, r[0], r[1], r[2], r[3], r[4]))
         cur.execute("DELETE FROM species_stream_profiles WHERE stream_url = ?", (old_url,))
 
         con.commit()
@@ -101,7 +122,7 @@ def migrate_stream_data(old_url, new_url):
             json_msg = f" | Warning: Vision config update failed: {e}"
         # ----------------------------------------
 
-        msg = f"Successfully migrated {det_count} detections and associated data.{json_msg}"
+        msg = f"Successfully migrated {det_count} detections and preserved calibration data.{json_msg}"
         logging.info(f"MIGRATION SUCCESS: {old_url} -> {new_url}")
         return True, msg
 

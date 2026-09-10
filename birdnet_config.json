@@ -90,9 +90,9 @@
       "lon": -3.68104,
       "mute_audio": false,
       "name": "Osprey Nest Cam 2, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=MQEzNhReZBQ",
+      "page_url": "https://www.youtube.com/watch?v=iJuPrpCb-7s",
       "stream_type": "youtube",
-      "updated_at": 1788972190.4105186
+      "updated_at": 1789032412.1522646
     },
     {
       "channel_name": "CarnyxWild",
@@ -102,9 +102,9 @@
       "lon": -3.68104,
       "mute_audio": false,
       "name": "Osprey Nest Cam 1, Hafren Forest, Llyn Clywedog Reservoir, Wales, UK (YouTube)",
-      "page_url": "https://www.youtube.com/watch?v=LicH5hpaoFE",
+      "page_url": "https://www.youtube.com/watch?v=sXl-X8y5LGU",
       "stream_type": "youtube",
-      "updated_at": 1788972197.7722614
+      "updated_at": 1789032335.6491427
     },
     {
       "channel_name": "PixCams",
@@ -237,9 +237,9 @@
       "mute_audio": false,
       "name": "Bald Eagles Nest Cam, Hanover, Pennsylvania, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/204942/hanover-eagles-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=U__G4QtCNuuNm7aJJWMmog&e=1789038072",
+      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=smjM5ci8Fd8YUCPTQEL2NA&e=1789076805",
       "stream_type": "hls",
-      "updated_at": 1788994802.687213
+      "updated_at": 1789033525.040023
     },
     {
       "channel_name": "Somerset Wildlife Trust",
@@ -804,9 +804,9 @@
       "mute_audio": false,
       "name": "Elk Cam, Morley, Tennessee, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/359514/tennessee-elk-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb3/tennessee-elk-cam_twra.stream/playlist.m3u8?t=j9H1jFPkdYmIHQtJhREzYA&e=1789036510",
+      "page_url": "https://live.hdontap.com/hls/hosb3/tennessee-elk-cam_twra.stream/playlist.m3u8?t=FtH2YS7wrqrFf7sIEJ0zBg&e=1789076155",
       "stream_type": "hls",
-      "updated_at": 1788993246.2948675
+      "updated_at": 1789032944.5410326
     },
     {
       "channel_name": "Explore Gorilla & Bonobo Cams: Great Apes",
@@ -990,9 +990,9 @@
       "mute_audio": false,
       "name": "Great Horned Owl Nest Cam, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/603901/eagle-country-great-horned-owl-nest-live-cam/",
-      "page_url": "http://live.hdontap.com/hls/hosb2/eaglecountry_nest-cam.stream/playlist.m3u8?t=QNzmI6mj2P_wt5EKlhRjlA&e=1789023411",
+      "page_url": "http://live.hdontap.com/hls/hosb2/eaglecountry_nest-cam.stream/playlist.m3u8?t=mWEMZqdn1o7K5ae7hjxxfQ&e=1789076677",
       "stream_type": "hls",
-      "updated_at": 1788980197.5951388
+      "updated_at": 1789033415.423819
     },
     {
       "channel_name": "NatureTec",
@@ -1649,9 +1649,9 @@
       "mute_audio": false,
       "name": "Osprey Nest Cam, Pleasant Hill Lake, Perrysville, Ohio, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/237842/pleasant-hill-lake-ospreys-live-nest-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb2/muskingum_osprey-cam2.stream/playlist.m3u8?t=jQ6NEF33HtIYGPx5fAydGw&e=1789024298",
+      "page_url": "https://live.hdontap.com/hls/hosb2/muskingum_osprey-cam2.stream/playlist.m3u8?t=YZ9s4JeP4e8Hi80cavU3Og&e=1789076229",
       "stream_type": "hls",
-      "updated_at": 1788981089.4057255
+      "updated_at": 1789032990.789008
     },
     {
       "channel_name": "hdontap",
@@ -1662,9 +1662,9 @@
       "mute_audio": false,
       "name": "Osprey Nest Cam, San Francisco Bay, Richmond, California, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/202376/san-francisco-bay-osprey-nest-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=7Me1p3uVM6-WGH3bhRoM7g&e=1789038552",
+      "page_url": "https://live.hdontap.com/hls/hosb1/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=FR4jY5YrWz5Yf4PKfMU1OQ&e=1789076596",
       "stream_type": "hls",
-      "updated_at": 1788995270.9721746
+      "updated_at": 1789033396.714257
     },
     {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
@@ -2293,9 +2293,9 @@
       "mute_audio": false,
       "name": "Waterfowl Cam, Blackwater Wildlife Refuge, Chesapeake Bay, Maryland, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/205526/blackwater-wildlife-refuge-waterfowl-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb3/waterfowl_fobwr.stream/playlist.m3u8?t=D8HyqUd5E5w10Cvn8BjObQ&e=1789031315",
+      "page_url": "https://live.hdontap.com/hls/hosb3/waterfowl_fobwr.stream/playlist.m3u8?t=7RcffGAlSZY1g941I9d14w&e=1789076565",
       "stream_type": "hls",
-      "updated_at": 1788988042.089185
+      "updated_at": 1789033314.3222454
     },
     {
       "channel_name": "Africam",
@@ -2585,9 +2585,9 @@
       "mute_audio": false,
       "name": "WildLife Cam, South West Florida River, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/473717/southwest-florida-river-wildlife-live-cams/",
-      "page_url": "https://live.hdontap.com/hls/hosb2/eaglecountry_river1-cam.stream/playlist.m3u8?t=89o7yj-Hr3df5dD62lYdXw&e=1789033152",
+      "page_url": "https://live.hdontap.com/hls/hosb2/eaglecountry_river1-cam.stream/playlist.m3u8?t=13otmtRmUisVOTuuE-NMQg&e=1789076704",
       "stream_type": "hls",
-      "updated_at": 1788989953.0914407
+      "updated_at": 1789033511.417042
     },
     {
       "channel_name": "Africam",
@@ -3428,11 +3428,11 @@
       "lat": 14.7486,
       "lon": -91.56313,
       "mute_audio": false,
-      "name": " Santa Maria Volcano (Santiaguito), Guatamala (YouTube)",
+      "name": "Santa Maria Volcano (Santiaguito), Guatamala (YouTube)",
       "original_yt_title": "\ud83d\udd34 Live Now: 24/7 Santa Maria (Santiaguito) Volcano in 4K Ultra HD (Cam A)",
-      "page_url": "https://www.youtube.com/watch?v=a6AmmqAX6DA",
+      "page_url": "https://www.youtube.com/watch?v=u18ezOdBMGs",
       "stream_type": "youtube",
-      "updated_at": 1787099707.9648888
+      "updated_at": 1789032936.6760306
     },
     {
       "channel_name": "CritterVision",
@@ -5075,42 +5075,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1495
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1507
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1530
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1515
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1469
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1511
+        "usage_count": 1503
       },
       {
         "exhausted_until": 0,
@@ -5124,77 +5089,21 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1536
+        "usage_count": 1535
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1499
+        "usage_count": 1522
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1533
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1499
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1480
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1490
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1479
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1497
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1493
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1513
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1515
+        "usage_count": 1474
       },
       {
         "exhausted_until": 0,
@@ -5207,8 +5116,99 @@
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
+        "tier": "Free",
+        "usage_count": 1521
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1545
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1506
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1540
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1510
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1486
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1499
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1484
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1501
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1499
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1520
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1522
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1525
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
         "tier": "Paid",
-        "usage_count": 36815
+        "usage_count": 37109
       }
     ],
     "cycle_interval_seconds": 3600,
@@ -5970,7 +5970,10 @@
       "https://www.youtube.com/watch?v=iUdDKf9aDUU",
       "https://www.youtube.com/watch?v=eTZ6ZgI8oG0",
       "https://www.youtube.com/watch?v=LLjf-XKYYwM",
-      "https://www.youtube.com/watch?v=wSBgj42cshc"
+      "https://www.youtube.com/watch?v=wSBgj42cshc",
+      "https://www.youtube.com/watch?v=iJuPrpCb-7s",
+      "https://www.youtube.com/watch?v=bakLbacO7nA",
+      "https://www.youtube.com/watch?v=u18ezOdBMGs"
     ],
     "auto_sweep_vault_hours": 24,
     "ai_temperature": 0.15,
@@ -6181,7 +6184,7 @@
     "custom_ai_model": "",
     "cost_per_1000_images_credits": 0.75,
     "tuning_interval_mins": 15,
-    "last_calculated_hit_rate": 0.012173528109783088,
+    "last_calculated_hit_rate": 0.01234567901234568,
     "last_calculated_cycle_s": 3600,
     "last_throttle_reason": "Budget Cap Active"
   },

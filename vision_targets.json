@@ -18973,6 +18973,35 @@
       "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
+    },
+    "Nectar-Feeding Bat": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Boga": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Sockeye Salmon": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
     }
   },
   "assignments": {
