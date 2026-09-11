@@ -5208,7 +5208,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Paid",
-        "usage_count": 37777
+        "usage_count": 37785
       }
     ],
     "cycle_interval_seconds": 3600,
@@ -6186,7 +6186,7 @@
     "custom_ai_model": "",
     "cost_per_1000_images_credits": 0.75,
     "tuning_interval_mins": 15,
-    "last_calculated_hit_rate": 0.013999118165784833,
+    "last_calculated_hit_rate": 0.013778659611992945,
     "last_calculated_cycle_s": 3600,
     "last_throttle_reason": "Budget Cap Active"
   },
