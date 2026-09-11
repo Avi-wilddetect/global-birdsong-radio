@@ -1,7 +1,9 @@
 ﻿# FILE: config_editor_gui.py
-# VERSION: 13.10 - "The Duplicate Eradication & Cruise Control Integration Patch"
+# VERSION: 13.11 - "The Graveyard Router Patch"
 # RESPONSIBILITY: Configuration GUI.
-# UPDATED: Removed massive chunks of duplicated code (NetworkTelemetryDialog, etc.) to force reliance on config_editor_sys_dialogs.py. Added Economic Cruise Control to fallback defaults.
+# CHANGELOG:
+# [2026-09-11 03:20] - v13.11: Added "Send to Graveyard" button, moved and shrunk "Reset Overrides" button, and hardcoded the stream list to hide streams tagged with [DEAD].
+# [2026-09-10 13:00] - v13.10: Removed duplicated code (NetworkTelemetryDialog, etc.) to force reliance on config_editor_sys_dialogs.py. Added Economic Cruise Control to fallback defaults.
 
 import sys
 
@@ -1004,16 +1006,17 @@ class ConfigEditor(QWidget):
         stream_buttons_layout = QHBoxLayout()
         self.check_all_button = QPushButton("Check All")
         self.uncheck_all_button = QPushButton("Uncheck All")
-        self.reset_overrides_button = QPushButton("Reset Selected Overrides")
+        self.btn_send_graveyard = QPushButton("🪦 Send to Graveyard")
+        self.btn_send_graveyard.setStyleSheet("background-color: #B71C1C; color: white;")
         self.remove_stream_button = QPushButton("Remove Selected Stream")
         stream_buttons_layout.addWidget(self.check_all_button)
         stream_buttons_layout.addWidget(self.uncheck_all_button)
         stream_buttons_layout.addStretch()
-        stream_buttons_layout.addWidget(self.reset_overrides_button)
+        stream_buttons_layout.addWidget(self.btn_send_graveyard)
         stream_buttons_layout.addWidget(self.remove_stream_button)
         self.check_all_button.clicked.connect(lambda: self.set_all_streams_enabled(True))
         self.uncheck_all_button.clicked.connect(lambda: self.set_all_streams_enabled(False))
-        self.reset_overrides_button.clicked.connect(self.reset_all_overrides)
+        self.btn_send_graveyard.clicked.connect(self.send_to_graveyard)
         self.remove_stream_button.clicked.connect(self.remove_stream)
         stream_list_layout.addLayout(stream_buttons_layout)
         
@@ -1100,12 +1103,18 @@ class ConfigEditor(QWidget):
         self.clear_form_button = QPushButton("Clear Form / New")
         self.open_url_button = QPushButton("Open URL")
         self.check_stream_button = QPushButton("Check URL")
+        self.reset_overrides_button = QPushButton("Reset Overrides")
+        self.reset_overrides_button.setMaximumWidth(110)
+        
         add_button_layout.addWidget(self.clear_form_button)
         add_button_layout.addWidget(self.open_url_button)
         add_button_layout.addWidget(self.check_stream_button)
+        add_button_layout.addWidget(self.reset_overrides_button)
+        
         self.clear_form_button.clicked.connect(self.clear_form)
         self.open_url_button.clicked.connect(self.open_stream_url)
         self.check_stream_button.clicked.connect(self.check_stream)
+        self.reset_overrides_button.clicked.connect(self.reset_all_overrides)
         add_stream_layout.addLayout(add_button_layout)
         
         self.check_status_label = QLabel("<i>Status: Ready</i>")
@@ -2500,6 +2509,27 @@ class ConfigEditor(QWidget):
         d["mute_audio"] = self.chk_mute_audio.isChecked()
         
         return d
+
+    def send_to_graveyard(self):
+        it = self.stream_list_widget.currentItem()
+        if not it: return
+        d = it.data(Qt.ItemDataRole.UserRole)
+        name = d.get('name', 'Unknown')
+        msg = f"Are you sure you want to disable '{name}' and send it to the Graveyard?\n\nIt will be hidden from this list."
+        if QMessageBox.warning(self, "Send to Graveyard", msg, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
+            self._loading = True
+            d['enabled'] = False
+            it.setCheckState(Qt.CheckState.Unchecked)
+            if not d['name'].upper().startswith("[DEAD]"):
+                d['name'] = f"[DEAD] {d['name']}"
+            d['updated_at'] = time.time()
+            it.setData(Qt.ItemDataRole.UserRole, d)
+            it.setText(d['name'])
+            self._loading = False
+            
+            self.clear_form()
+            self._sort_stream_list()
+            self._check_and_update_dirty_state()
         
     def remove_stream(self):
         it = self.stream_list_widget.currentItem()
@@ -2567,6 +2597,7 @@ class ConfigEditor(QWidget):
     def _filter_stream_list(self):
         search_text = self.stream_search_box.text().strip().lower()
         visible_count = 0
+        total_active = 0
         total_count = self.stream_list_widget.count()
         
         self.stream_list_widget.blockSignals(True)
@@ -2581,6 +2612,12 @@ class ConfigEditor(QWidget):
             lat = str(data.get('lat', ''))
             lon = str(data.get('lon', ''))
             c_name = data.get('channel_name', '').lower()
+            
+            if "[DEAD]" in name.upper():
+                item.setHidden(True)
+                continue
+                
+            total_active += 1
             
             is_match = (
                 search_text in name_lower or
@@ -2597,7 +2634,7 @@ class ConfigEditor(QWidget):
                 item.setText(f"{visible_count}. {name}")
                 
         self.stream_list_widget.blockSignals(False)
-        self.lbl_stream_count.setText(f"({visible_count}/{total_count})")
+        self.lbl_stream_count.setText(f"({visible_count}/{total_active})")
 
     def _focus_on_stream(self, target_name):
         for i in range(self.stream_list_widget.count()):

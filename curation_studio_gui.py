@@ -1,7 +1,7 @@
 # FILE: curation_studio_gui.py
-# VERSION: 40.20 - "The Wizard Power-Tools Patch"
+# VERSION: 40.21 - "The Workflow & Tooltips Patch"
 # RESPONSIBILITY: Side-by-side review, AI correction, ML exports, and batch processing.
-# UPDATED: Implemented bulk exclusion buttons in the Batch Wizard, fixed the Carousel Focus memory bug upon closing the viewer, and added inline audio playback directly inside the wizard cells.
+# UPDATED: Implemented "Proceed to Confirm/Reject & Next" button to wizard for faster workflow. Added AI reasoning hover tooltips to batch review image thumbnails.
 
 import sys
 import os
@@ -14,6 +14,7 @@ import requests
 import time
 import re
 import webbrowser
+import html
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import unicodedata
@@ -299,6 +300,11 @@ class BatchReviewDialog(QDialog):
             if v_path and os.path.exists(v_path):
                 pixmap = QPixmap(v_path)
                 img_lbl.setPixmap(pixmap.scaled(180, 180, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+                
+                sp_safe = html.escape(str(row_data.get('species') or 'Unknown'))
+                notes_safe = html.escape(str(row_data.get('ai_notes') or 'None'))
+                tt_html = f"<div style='background-color: #1e1e1e; color: #eee; padding: 4px; max-width: 300px; word-wrap: break-word;'><b>Target:</b> {sp_safe}<br><b>AI Reasoning:</b> {notes_safe}</div>"
+                img_lbl.setToolTip(tt_html)
             else:
                 img_lbl.setTextFormat(Qt.TextFormat.RichText)
                 det_method = str(row_data.get('detection_method') or '').lower()
@@ -452,6 +458,7 @@ class SmartTuningDialog(QDialog):
         self.unique_combos = context_dict.get('unique_combos',[])
         self.extra_batch_items =[]
         self.context_dict = context_dict
+        self.go_next = False
         
         # --- DETERMINE NIGHT MODE PRESENCE ---
         self.is_night_mode = False
@@ -684,12 +691,21 @@ class SmartTuningDialog(QDialog):
         self.btn_save.setStyleSheet(f"background-color: {action_color}; color: white; font-weight: bold; padding: 8px 15px;")
         self.btn_save.clicked.connect(self.accept)
         
+        self.btn_save_next = QPushButton(f"Proceed to {action_name} & Next")
+        self.btn_save_next.setStyleSheet(f"background-color: {action_color}; color: white; font-weight: bold; padding: 8px 15px;")
+        self.btn_save_next.clicked.connect(self._accept_and_next)
+        
         btn_layout.addWidget(self.btn_cancel)
         btn_layout.addStretch()
         btn_layout.addWidget(self.btn_save)
+        btn_layout.addWidget(self.btn_save_next)
         
         self.layout.addSpacing(10)
         self.layout.addLayout(btn_layout)
+
+    def _accept_and_next(self):
+        self.go_next = True
+        self.accept()
 
     # --- AUTO TUNING METHODS ---
     def _get_observed_metrics(self):
@@ -824,7 +840,7 @@ class SmartTuningDialog(QDialog):
 class CurationStudio(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.20)")
+        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.21)")
         self.resize(1400, 850)
         self.setStyleSheet("""
             QMainWindow, QWidget { background-color: #1e1e1e; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
@@ -1553,6 +1569,8 @@ class CurationStudio(QMainWindow):
             
         fs, ds, ff, df, prompt_rule, is_night_mode = dialog.get_tuning()
         group_correction = dialog.get_group_correction()
+        go_next = getattr(dialog, 'go_next', False)
+        next_row_to_select = unique_rows[-1]
         
         extra_batch = dialog.get_extra_batch()
         if extra_batch:
@@ -1700,19 +1718,27 @@ class CurationStudio(QMainWindow):
             rule_type = "NIGHT/LOW-VIS RULES" if is_night_mode else "DAYTIME RULES"
             msg += f"\n\n{rule_type} applied to {len(unique_combos)} specific Stream/Species pairs."
         
-        if total > 1:
-            msg += "\n\nDo you want to open the destination folder to view the ML dataset?"
-            if QMessageBox.question(self, "Batch Export Complete", msg, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
-                if sys.platform == "win32":
-                    os.startfile(str(export_folder))
-                elif sys.platform == "darwin":
-                    import subprocess
-                    subprocess.call(["open", str(export_folder)])
-                else:
-                    import subprocess
-                    subprocess.call(["xdg-open", str(export_folder)])
+        if go_next:
+            if self.table.rowCount() > 0:
+                target_row = min(next_row_to_select, self.table.rowCount() - 1)
+                self.table.selectRow(target_row)
+                item = self.table.item(target_row, 0)
+                if item:
+                    self.table.scrollToItem(item)
         else:
-            QMessageBox.information(self, "Export Complete", msg)
+            if total > 1:
+                msg += "\n\nDo you want to open the destination folder to view the ML dataset?"
+                if QMessageBox.question(self, "Batch Export Complete", msg, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
+                    if sys.platform == "win32":
+                        os.startfile(str(export_folder))
+                    elif sys.platform == "darwin":
+                        import subprocess
+                        subprocess.call(["open", str(export_folder)])
+                    else:
+                        import subprocess
+                        subprocess.call(["xdg-open", str(export_folder)])
+            else:
+                QMessageBox.information(self, "Export Complete", msg)
 
     def save_settings(self):
         try:

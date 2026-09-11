@@ -19009,6 +19009,31 @@
       "behavior": "Alert",
       "cooldown_minutes": 60,
       "show_on_map": true
+    },
+    "Pacific Trumpetfish": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true,
+      "min_frame_single": "Default (Auto)",
+      "min_depth_single": "Default (Auto)",
+      "min_frame_flock": "Default (Auto)",
+      "min_depth_flock": "Default (Auto)"
+    },
+    "Suni": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
+    },
+    "Florida Red-Bellied Cooter": {
+      "type": "Specific",
+      "synonyms": [],
+      "behavior": "Alert",
+      "cooldown_minutes": 60,
+      "show_on_map": true
     }
   },
   "assignments": {
@@ -19917,7 +19942,7 @@
       "species_rules": {
         "Philippine Eagle": {
           "min_depth_single": "Near",
-          "min_frame_single": "Large"
+          "min_frame_single": "Medium"
         }
       }
     },
@@ -23465,12 +23490,18 @@
           "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
         }
+      },
+      "night_species_rules": {
+        "Plains Bison": {
+          "min_frame_flock": "Small",
+          "min_depth_flock": "Background"
+        }
       }
     },
     "https://www.youtube.com/watch?v=_NXaovxB-Bk": {
       "night_species_rules": {
         "Hippopotamus": {
-          "min_frame_single": "Large",
+          "min_frame_single": "Small",
           "min_depth_single": "Mid-ground"
         },
         "African Bush Elephant": {
@@ -23570,7 +23601,7 @@
     "https://www.youtube.com/watch?v=hTOmWcmr2Tc": {
       "night_species_rules": {
         "Killer Whale": {
-          "min_frame_single": "Small",
+          "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
         }
       }
@@ -23715,6 +23746,12 @@
           "min_frame_flock": "Large",
           "min_depth_flock": "Near"
         }
+      },
+      "night_species_rules": {
+        "Freshwater Fish": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Mid-ground"
+        }
       }
     },
     "https://www.youtube.com/watch?v=0Uk2YNT602M": {
@@ -23762,6 +23799,10 @@
         "Northern Cardinal": {
           "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
+        },
+        "Brown Thrasher": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       }
     },
@@ -23770,6 +23811,14 @@
         "Burrowing Owl": {
           "min_frame_single": "Tiny",
           "min_depth_single": "Mid-ground"
+        }
+      }
+    },
+    "https://www.youtube.com/watch?v=YNqth5HIr00": {
+      "night_species_rules": {
+        "Fox Squirrel": {
+          "min_frame_single": "Small",
+          "min_depth_single": "Near"
         }
       }
     }

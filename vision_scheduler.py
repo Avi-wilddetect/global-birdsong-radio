@@ -1,7 +1,8 @@
 # FILE: vision_scheduler.py
-# VERSION: 10.19 - "The Apostrophe Capitalization Patch"
+# VERSION: 10.20 - "The Dynamic Blindspot Patch"
 # RESPONSIBILITY: Exclusively handles AI Inference (Gemini), Multi-Modal Bridge Logic, Telegram Reporting, and Dormancy Backoff constraints.
 # CHANGELOG:
+# [2026-09-10 21:01] - v10.20: Implemented Dynamic Conditional Blindspot. Vision engine now injects active cooldowns into Gemini's prompt, instructing it to ignore recently detected animals and search for secondary subjects to allow Visual Biodiversity Bursts without hallucinations.
 # [2026-09-06 14:34] - v10.19: Fixed the Apostrophe Capitalization Bug where Python's .title() function created invalid names like "Grauer'S Gorilla", breaking the Wikipedia Image Curator.
 # [2026-09-04 01:25] - v10.18: Decoupled Vision Engine from Audio Engine network failures. Vision now only skips explicitly DEAD streams (FATAL/SUSPENDED) and ignores UNRESPONSIVE/FAILURE flags.
 # [2026-09-03 02:55] - v10.17: Fixed Drip-Feed Turnstile math to properly pace streams without starving the worker pool.
@@ -941,6 +942,36 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
                 if forbidden_words:
                     f_words_str = ", ".join(f"'{w}'" for w in forbidden_words)
                     custom_instruction_block += f"\nCRITICAL TAXONOMY GUARDRAIL: You are STRICTLY FORBIDDEN from using any of these words in your 'common_endemic_name' or 'general_animal' output:[{f_words_str}]. If you are unsure, make your best specific guess, or output 'NONE'.\n"
+
+                # --- THE DYNAMIC BLINDSPOT PATCH (OPTION C) ---
+                cooldown_animals = []
+                now_ts = time.time()
+                try:
+                    if COOLDOWN_STATE_PATH.exists():
+                        with cooldown_lock:
+                            state_dict = json.loads(COOLDOWN_STATE_PATH.read_text(encoding='utf-8'))
+                        
+                        default_mute = targets_data.get("global_defaults", {}).get("default_taxonomy_mute", 60)
+                        prefix = f"vision||{url}||".lower()
+                        
+                        reg_lower_map = {k.lower(): k for k in targets_data.get("registry", {}).keys()}
+                        
+                        for k, last_seen in state_dict.items():
+                            if k.startswith(prefix):
+                                sp_lower = k.split("||")[2]
+                                proper_sp = reg_lower_map.get(sp_lower, sp_lower.title())
+                                
+                                cd_mins = targets_data.get("registry", {}).get(proper_sp, {}).get("cooldown_minutes", default_mute)
+                                if (now_ts - last_seen) < (cd_mins * 60):
+                                    cooldown_animals.append(proper_sp)
+                                    
+                        if cooldown_animals:
+                            cd_animals_str = ", ".join([f"'{a}'" for a in cooldown_animals])
+                            blindspot_prompt = f"\nCRITICAL RULE: IF the most prominent animal you see in this image is one of these: [{cd_animals_str}], you must ignore it. Instead, report the next most prominent DIFFERENT animal. IF there are no other animals besides those on this list, or if the frame is empty, you MUST output 'NONE'."
+                            custom_instruction_block += blindspot_prompt + "\n"
+                except Exception as e:
+                    v_logger.error(f"Failed to read cooldowns for blindspot logic: {e}")
+                # -----------------------------------------------
                 
                 if bounty_species:
                     bounty_prompt = f"🚨 ACOUSTIC CUE ACTIVE: A high-confidence audio detection of a '{bounty_species}' was recorded at this location just seconds ago. Scan the environment carefully for this specific animal. HOWEVER, you MUST NOT hallucinate it out of rocks, shadows, or branches. If the animal is off-camera, hidden, or you are not 100% certain, you MUST output 'NONE'."

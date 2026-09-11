@@ -1,7 +1,9 @@
 # FILE: stream_discovery_gui.py
-# VERSION: 14.18 - "The Dynamic AI Model Patch"
+# VERSION: 14.19 - "The Auto-Bury Graveyard Patch"
 # RESPONSIBILITY: Triage Ward, Graveyard, Discovery Radar, and the Unified Lifecycle & Sync Engine.
-# UPDATED: Replaced hardcoded 'gemini-2.5-flash' with dynamic model extraction from the Economic Cruise Control configuration.
+# CHANGELOG:
+# [2026-09-11 05:13] - v14.19: Added UI settings to the SyncSettingsDialog to configure "Auto-Bury Dead Streams" threshold and toggle. Fixed file bloat issue.
+# [2026-09-03 13:30] - v14.18: Replaced hardcoded 'gemini-2.5-flash' with dynamic model extraction from the Economic Cruise Control configuration.
 
 import sys
 import json
@@ -340,7 +342,7 @@ class SyncSettingsDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Lifecycle & Sync Automation Settings")
-        self.resize(450, 250)
+        self.resize(450, 300)
         self.layout = QVBoxLayout(self)
         
         info = QLabel("Configure how the Sync Engine operates in the background.")
@@ -350,6 +352,10 @@ class SyncSettingsDialog(QDialog):
         self.chk_auto_heal = QCheckBox("Automatically apply 'Auto-Heal Eligible' (⚡) proposals during background scans.")
         self.chk_auto_heal.setStyleSheet("font-weight: bold; color: #00E676;")
         self.chk_auto_heal.setToolTip("Cases like simple Title updates, same-channel URL migrations, and high-confidence Graveyard Resurrections will be applied seamlessly without manual review.")
+        
+        self.chk_auto_bury = QCheckBox("Enable Auto-Bury for Dead Streams")
+        self.chk_auto_bury.setStyleSheet("font-weight: bold; color: #EF5350;")
+        self.chk_auto_bury.setToolTip("If enabled, streams that have been dead for longer than the threshold will be automatically disabled and sent to the Graveyard.")
         
         form = QFormLayout()
         
@@ -364,7 +370,16 @@ class SyncSettingsDialog(QDialog):
         self.spin_max_streams.setToolTip("If a channel has more than this number of live streams, the Sync Engine will Auto-Ignore it to prevent API spam and UI flooding.")
         form.addRow("Auto-Ignore Channel Threshold:", self.spin_max_streams)
         
+        self.spin_auto_bury_days = QSpinBox()
+        self.spin_auto_bury_days.setRange(1, 365)
+        self.spin_auto_bury_days.setSuffix(" days")
+        self.spin_auto_bury_days.setToolTip("The number of days a stream must be continuously dead (no database activity) before it is Auto-Buried.")
+        form.addRow("Days Dead Threshold (Auto-Bury):", self.spin_auto_bury_days)
+        
+        self.chk_auto_bury.toggled.connect(self.spin_auto_bury_days.setEnabled)
+        
         self.layout.addWidget(self.chk_auto_heal)
+        self.layout.addWidget(self.chk_auto_bury)
         self.layout.addLayout(form)
         
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
@@ -379,16 +394,24 @@ class SyncSettingsDialog(QDialog):
             try:
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
                 s_cfg = cfg.get("sync_engine_settings", {})
+                
                 self.chk_auto_heal.setChecked(s_cfg.get("auto_heal_enabled", False))
                 self.spin_interval.setValue(s_cfg.get("scan_interval_hours", 24))
                 self.spin_max_streams.setValue(s_cfg.get("max_channel_streams", 15))
+                
+                auto_bury = s_cfg.get("auto_bury_enabled", False)
+                self.chk_auto_bury.setChecked(auto_bury)
+                self.spin_auto_bury_days.setValue(s_cfg.get("auto_bury_days", 14))
+                self.spin_auto_bury_days.setEnabled(auto_bury)
             except: pass
             
     def get_values(self):
         return {
             "auto_heal_enabled": self.chk_auto_heal.isChecked(),
             "scan_interval_hours": self.spin_interval.value(),
-            "max_channel_streams": self.spin_max_streams.value()
+            "max_channel_streams": self.spin_max_streams.value(),
+            "auto_bury_enabled": self.chk_auto_bury.isChecked(),
+            "auto_bury_days": self.spin_auto_bury_days.value()
         }
 
 
@@ -1770,7 +1793,9 @@ class StreamDiscoveryHub(QDialog):
             vals = d.get_values()
             try:
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
-                cfg["sync_engine_settings"] = vals
+                if "sync_engine_settings" not in cfg:
+                    cfg["sync_engine_settings"] = {}
+                cfg["sync_engine_settings"].update(vals)
                 self.safe_config_write(cfg)
                 QMessageBox.information(self, "Saved", "Sync settings updated.")
                 self.populate_roster_table()

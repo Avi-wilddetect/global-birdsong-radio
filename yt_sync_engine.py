@@ -1,7 +1,8 @@
 # FILE: yt_sync_engine.py
-# VERSION: 6.14 - "The Scheduled Stream Blockade Patch"
+# VERSION: 6.15 - "The Auto-Bury Graveyard Patch"
 # PURPOSE: Compares local YouTube stream metadata against live channel data to detect URL changes, Title/Description changes, new streams, and resurrect dead streams.
 # CHANGELOG:
+# [2026-09-11 05:20] - v6.15: Implemented "Auto-Bury Dead Streams". The engine now queries the database for the last proof-of-life and autonomously disables/tags streams that exceed the configured 'days dead' threshold, bypassing the manual review queue.
 # [2026-09-10 00:55] - v6.14: Bulletproofed scheduled stream rejection by filtering out all non-'is_live' states in Tier 1 and hooking directly into the language-agnostic 'UPCOMING' and 'PREMIERE' style badges in Tier 2.
 # [2026-09-10 00:04] - v6.13: Patched channel scraper to explicitly reject 'is_upcoming' / 'UPCOMING' scheduled streams in both yt-dlp and HTML tiers, preventing future broadcasts from inflating live counts and clogging the queue.
 # [2026-09-09 23:25] - v6.12: Added _get_safe_cname helper to aggressively preserve existing channel names if YouTube scraping temporarily returns 'Unknown Channel'.
@@ -21,6 +22,8 @@ try:
 except ImportError:
     pass
 
+import db_connector
+
 # --- CONFIGURATION ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -[SYNC ENGINE] - %(message)s')
 
@@ -30,6 +33,7 @@ METADATA_CACHE_FILE = ROOT / "youtube_metadata_cache.json"
 SYNC_PROPOSALS_FILE = ROOT / "sync_proposals.json"
 TRACEBACK_LOG_FILE = ROOT / "sync_engine_tracebacks.log"
 DEBUG_DUMP_FILE = ROOT / "sync_debug_dump.txt"
+DATABASE_PATH = ROOT / "detections.db"
 
 class YouTubeSyncEngine:
     def __init__(self, cookies_path=None):
@@ -61,6 +65,45 @@ class YouTubeSyncEngine:
             with open(METADATA_CACHE_FILE, 'w', encoding='utf-8') as f: json.dump(self.cache, f, indent=2)
         except Exception as e:
             self._dump_traceback(f"Failed to save metadata cache: {e}")
+
+    def _get_last_alive_timestamp(self, url):
+        try:
+            with db_connector.get_db_connection(force_local=True) as con:
+                cur = con.cursor()
+                
+                cur.execute("SELECT MAX(timestamp) FROM detections WHERE channel_url = ?", (url,))
+                det_res = cur.fetchone()
+                max_det = det_res[0] if det_res and det_res[0] else 0.0
+                
+                cur.execute("SELECT MAX(timestamp) FROM stream_health_events WHERE stream_url = ? AND status = 'SUCCESS'", (url,))
+                health_res = cur.fetchone()
+                max_health = health_res[0] if health_res and health_res[0] else 0.0
+                
+                return max(max_det, max_health)
+        except Exception as e:
+            self._dump_traceback(f"Error querying last alive timestamp for {url}: {e}")
+            return 0.0
+
+    def _auto_bury_stream(self, url, name):
+        try:
+            with open(CONFIG_FILE, 'r', encoding='utf-8') as f: cfg = json.load(f)
+            updated = False
+            for s in cfg.get("streams", []):
+                if s.get("page_url") == url or s.get("name") == name:
+                    s["enabled"] = False
+                    if "[DEAD]" not in s["name"].upper():
+                        s["name"] = f"[DEAD] {s['name']}"
+                    s["updated_at"] = time.time()
+                    updated = True
+                    break
+            
+            if updated:
+                tmp_file = CONFIG_FILE.with_suffix('.tmp')
+                with open(tmp_file, 'w', encoding='utf-8') as f: json.dump(cfg, f, indent=2)
+                tmp_file.replace(CONFIG_FILE)
+                self.config = cfg 
+        except Exception as e:
+            self._dump_traceback(f"Failed to auto-bury stream {name}: {e}")
 
     def _add_to_ignored_channels(self, channel_url):
         try:
@@ -744,6 +787,22 @@ class YouTubeSyncEngine:
             if not is_enabled:
                 self._debug_log("SKIPPING CASE A: Stream is already disabled in the config.")
                 continue
+                
+            # --- AUTO-BURY LOGIC ---
+            auto_bury_enabled = sync_settings.get("auto_bury_enabled", False)
+            auto_bury_days = sync_settings.get("auto_bury_days", 14)
+            
+            if auto_bury_enabled:
+                last_alive_ts = self._get_last_alive_timestamp(db_url)
+                if last_alive_ts == 0.0:
+                    last_alive_ts = config_stream.get('created_at', time.time())
+                
+                days_dead = (time.time() - last_alive_ts) / 86400.0
+                if days_dead >= auto_bury_days:
+                    self._auto_bury_stream(db_url, friendly_name)
+                    self._debug_log(f"AUTO-BURY ENGAGED: Stream dead for {days_dead:.1f} days (Threshold: {auto_bury_days}). Sent to Graveyard.")
+                    continue
+            # -----------------------
                 
             self.proposals.append({
                 "case": "A", "case_desc": "Stream Dead / Not Found", "friendly_name": friendly_name,
