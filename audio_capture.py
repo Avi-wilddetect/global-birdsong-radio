@@ -1,7 +1,8 @@
 # FILE: audio_capture.py
-# VERSION: 8.15 - "The Cookie Restoration Hotfix"
+# VERSION: 8.16 - "The Header Sanitization Patch"
 #
 # CHANGELOG:
+# [2026-09-15 11:30] - v8.16: Fixed FFmpeg EINVAL (4294967274) crashes on IP Cameras by isolating the User-Agent into its own FFmpeg argument (-user_agent) and strictly sanitizing trailing CRLF characters in the HTTP Headers block.
 # [2026-09-10 00:45] - v8.15: CRITICAL HOTFIX. Reverted the accidental stripping of yt-dlp authentication cookies in _execute_ffmpeg. Stripping these cookies caused YouTube to stall the FFmpeg connection, resulting in endless 32-second timeouts that completely paralyzed the Audio Engine. Also sanitized header injection to fix FFmpeg returncode 4294967274 (EINVAL) crashes on IP Cameras.
 # [2026-09-09 23:53] - v8.14: Implemented URL Tag-Along Patch for vision streams and separated DEAD_STREAM markers from YOUTUBE_BLOCK to prevent dead/scheduled streams from triggering the heavy Selenium Auto-Healer.
 # [2026-09-04 20:34] - v8.13: Reverted the Web Client Restoration Patch to allow yt-dlp to use 'tv', 'ios', and 'mweb' clients, bypassing YouTube's strict blocking of the 'web' client.
@@ -464,6 +465,7 @@ class AudioCaptureEngine:
             raise e
 
     def _execute_ffmpeg(self, url, capture_seconds, headers_list, stream_type, use_proxy, proxy_url, interface_name):
+        url = url.strip()
         ffmpeg_exe = str(ROOT / "ffmpeg" / "bin" / "ffmpeg.exe")
         
         ff_cmd =[
@@ -479,23 +481,27 @@ class AudioCaptureEngine:
         ext_strat = self.g_cfg.get('extraction_strategy', {})
         ua = ext_strat.get('ffmpeg_user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
         
-        header_str = f"User-Agent: {ua}\r\n"
+        ff_cmd.extend(["-user_agent", ua])
         
-        # --- THE COOKIE RESTORATION HOTFIX ---
-        # Ensure we do not accidentally strip the cookies passed by yt-dlp, 
-        # and safely inject our fallback consent cookies only if necessary.
-        has_cookie = any(h.lower().startswith("cookie:") for h in headers_list) if headers_list else False
-        if not has_cookie and ("youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url):
-            header_str += "Cookie: CONSENT=YES+cb; SOCS=CAI;\r\n"
+        header_str = ""
+        has_cookie = False
         
+        # Safely construct the headers without crashing FFmpeg with malformed line breaks
         if headers_list:
             for h in headers_list:
-                # Sanitize to prevent trailing newlines from causing EINVAL (-22) crashes
                 clean_h = h.strip()
-                if clean_h and not clean_h.lower().startswith("user-agent:"): 
-                    header_str += f"{clean_h}\r\n"
+                if clean_h:
+                    if clean_h.lower().startswith("cookie:"):
+                        has_cookie = True
+                    if not clean_h.lower().startswith("user-agent:"):
+                        header_str += f"{clean_h}\r\n"
+        
+        if not has_cookie and ("youtube.com" in url or "youtu.be" in url or "googlevideo.com" in url):
+            header_str += "Cookie: CONSENT=YES+cb; SOCS=CAI;\r\n"
+            
+        if header_str:
+            ff_cmd.extend(["-headers", header_str])
 
-        ff_cmd.extend(["-headers", header_str])
         ff_cmd.extend(["-i", url])
         ff_cmd.extend(["-t", str(capture_seconds)])
 

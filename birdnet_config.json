@@ -698,9 +698,9 @@
       "mute_audio": false,
       "name": "Bald Eagles Nest Cam, Hanover, Pennsylvania, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/204942/hanover-eagles-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=5dt6YU3g2smoI6gVG6qB_g&e=1789431070",
+      "page_url": "https://live.hdontap.com/hls/hosb7/ngrp:hdontap_hanover-eagles_pov_avmix_all/playlist.m3u8?t=kqN5j0BY1T_Gk-7rTubS4A&e=1789466816",
       "stream_type": "hls",
-      "updated_at": 1789387928.3201582
+      "updated_at": 1789423620.9758453
     },
     {
       "channel_name": "Charter Group Birdcams",
@@ -1154,9 +1154,9 @@
       "mute_audio": false,
       "name": "Eagles Cam, Botanic Gardens, Dagsboro, Delaware USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/852616/delaware-botanic-gardens-eagles-live-cams/",
-      "page_url": "https://live.hdontap.com/hls/hosb2/dbg-eagles_small_ptz.stream/playlist.m3u8?t=FQedlHT6KufixAU_COiZRg&e=1789419872",
+      "page_url": "https://live.hdontap.com/hls/hosb2/dbg-eagles_small_ptz.stream/playlist.m3u8?t=2mwt7AcbXwlIzFFUduN8gw&e=1789466682",
       "stream_type": "hls",
-      "updated_at": 1789376674.9584582
+      "updated_at": 1789423532.8533287
     },
     {
       "channel_name": "hdontap",
@@ -1228,9 +1228,9 @@
       "mute_audio": false,
       "name": "Elk Cam, Morley, Tennessee, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/359514/tennessee-elk-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/tennessee-elk-cam_twra.stream/playlist.m3u8?t=2A1DnznxfLxXyePQmQst3g&e=1789391828",
+      "page_url": "https://live.hdontap.com/hls/hosb1/tennessee-elk-cam_twra.stream/playlist.m3u8?t=5Meu9TfgH9ZbMRemb2BR3Q&e=1789466594",
       "stream_type": "hls",
-      "updated_at": 1789348658.7320337
+      "updated_at": 1789423455.831729
     },
     {
       "channel_name": "Explore Gorilla & Bonobo Cams: Great Apes",
@@ -1402,9 +1402,9 @@
       "mute_audio": false,
       "name": "Great Horned Owl Nest Cam, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/603901/eagle-country-great-horned-owl-nest-live-cam/",
-      "page_url": "http://live.hdontap.com/hls/hosb2/eaglecountry_nest-cam.stream/playlist.m3u8?t=UJqtwGMGYNh3rgn4AHzwKw&e=1789410525",
+      "page_url": "http://live.hdontap.com/hls/hosb2/eaglecountry_nest-cam.stream/playlist.m3u8?t=xkmgF4Q_xfmmjccZileGKw&e=1789466565",
       "stream_type": "hls",
-      "updated_at": 1789367353.5585148
+      "updated_at": 1789423483.8279703
     },
     {
       "channel_name": "NatureTec",
@@ -1767,19 +1767,19 @@
       "updated_at": 1777668586.4216056
     },
     {
-      "channel_name": "Live Sloth and Macaws: Rainforest Wildlife",
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
       "created_at": 1768251908.4433002,
       "enabled": true,
       "lat": 9.86212,
       "lon": -85.40403,
       "mute_audio": false,
-      "name": "Macaw Feeder High Cam, Macaw Recovery Network, Punta Islita, Costa Rica (YouTube)",
+      "name": "Macaw High Canopy Feeder Cam, Macaw Recovery Network, Punta Islita, Costa Rica (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=8DRsVKLC2co",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4216294
+      "updated_at": 1789422344.2021003
     },
     {
-      "channel_name": "Live Sloth and Macaws: Rainforest Wildlife",
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
       "created_at": 1768245854.9022691,
       "enabled": true,
       "lat": 9.86212,
@@ -1788,7 +1788,7 @@
       "name": "Macaw Feeder Low Cam, Macaw Recovery Network, Punta Islita, Costa Rica (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=4V5rtm9Nrfo",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4216528
+      "updated_at": 1789422026.767296
     },
     {
       "channel_name": "Explore African Wildlife",
@@ -2073,9 +2073,9 @@
       "mute_audio": false,
       "name": "Osprey Nest Cam, San Francisco Bay, Richmond, California, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/202376/san-francisco-bay-osprey-nest-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb6/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=w5GS7motTJtqQ-9542DTHA&e=1789391105",
+      "page_url": "https://live.hdontap.com/hls/hosb6/Osprey-Nest-Cam_gga.stream/playlist.m3u8?t=CJaGti90wd9X-HavuhbFkA&e=1789470312",
       "stream_type": "hls",
-      "updated_at": 1789347945.7197194
+      "updated_at": 1789427185.5152922
     },
     {
       "channel_name": "Explore Osprey & Peregrine Falcon Cams",
@@ -2261,9 +2261,9 @@
       "mute_audio": false,
       "name": "Raptor Nest Cam, Blackwater Wildlife Refuge, Church Creek, Maryland, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/477623/blackwaterwildlife-refuge-raptor-nest-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/fobwr_eagles-ptz.stream/playlist.m3u8?t=Wl18HXxrwfddf3eD96mRRg&e=1789382915",
+      "page_url": "https://live.hdontap.com/hls/hosb1/fobwr_eagles-ptz.stream/playlist.m3u8?t=EmxPQTwOvpGQPf-1KCqjpQ&e=1789470278",
       "stream_type": "hls",
-      "updated_at": 1789339784.5316436
+      "updated_at": 1789427106.5392036
     },
     {
       "channel_name": "RSPB",
@@ -2439,7 +2439,7 @@
       "updated_at": 1777668586.4237936
     },
     {
-      "channel_name": "Explore Live Nature Cams",
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
       "created_at": 1773530427.9671888,
       "enabled": true,
       "lat": 10.02574,
@@ -2448,19 +2448,19 @@
       "name": "Sloth Cam 1, Toucan Rescue Ranch, San Josecito, Heredia, San Josecito, Costa Rica (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=HSYxKV7NWKM",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4238176
+      "updated_at": 1789421824.8105943
     },
     {
-      "channel_name": "Explore Zen Den",
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
       "created_at": 1774550710.054447,
       "enabled": true,
       "lat": 10.02574,
       "lon": -84.03554,
       "mute_audio": false,
-      "name": "Sloth Cam 2, Toucan Rescue Ranch, San Josecito, Heredia, San Josecito, Costa Rica (YouTube)",
+      "name": "Sloth Playground, Toucan Rescue Ranch, San Josecito, Heredia, San Josecito, Costa Rica (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=GeirFnWpquU",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4238358
+      "updated_at": 1789421495.6680417
     },
     {
       "channel_name": "Locus",
@@ -2549,7 +2549,7 @@
       "updated_at": 1777668586.424079
     },
     {
-      "channel_name": "Live Sloth and Macaws: Rainforest Wildlife",
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
       "created_at": 1773434092.8030996,
       "enabled": true,
       "lat": 10.02574,
@@ -2558,7 +2558,7 @@
       "name": "Toucan Rescue Ranch, Heredia, San Josecito, Costa Rica (YouTube)",
       "page_url": "https://www.youtube.com/watch?v=tgmrC0rDrc4",
       "stream_type": "youtube",
-      "updated_at": 1777668586.4240937
+      "updated_at": 1789422844.518691
     },
     {
       "channel_name": "Africam",
@@ -2668,9 +2668,9 @@
       "mute_audio": false,
       "name": "Waterfowl Cam, Blackwater Wildlife Refuge, Chesapeake Bay, Maryland, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/205526/blackwater-wildlife-refuge-waterfowl-live-webcam/",
-      "page_url": "https://live.hdontap.com/hls/hosb1/waterfowl_fobwr.stream/playlist.m3u8?t=4amA06_AzhCxsqlR52aW-Q&e=1789420964",
+      "page_url": "https://live.hdontap.com/hls/hosb1/waterfowl_fobwr.stream/playlist.m3u8?t=gWnhmHAyOJlvM-AyA58Wzg&e=1789470408",
       "stream_type": "hls",
-      "updated_at": 1789377762.937823
+      "updated_at": 1789427287.4266174
     },
     {
       "channel_name": "Africam",
@@ -2839,9 +2839,9 @@
       "mute_audio": false,
       "name": "Wildlife Cam, Hog Island, Surry, Virginia, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/351035/hog-island-wildlife-management-area-live-cam/",
-      "page_url": "https://live.hdontap.com/hls/hosb6/vdgif_hog-island_night.stream/playlist.m3u8?t=Pa7Zj9zutqIwGCX5OyYVHQ&e=1789382689",
+      "page_url": "https://live.hdontap.com/hls/hosb6/vdgif_hog-island_night.stream/playlist.m3u8?t=KUtAVJbi3XS5yXe9m6j1_w&e=1789466689",
       "stream_type": "hls",
-      "updated_at": 1789339546.1161509
+      "updated_at": 1789423510.074848
     },
     {
       "channel_name": "Africam",
@@ -2948,9 +2948,9 @@
       "mute_audio": false,
       "name": "WildLife Cam, South West Florida River, Florida, USA (IP Cam)",
       "original_url": "https://hdontap.com/stream/473717/southwest-florida-river-wildlife-live-cams/",
-      "page_url": "https://live.hdontap.com/hls/hosb2/eaglecountry_river1-cam.stream/playlist.m3u8?t=Hz2rtsGha8oh6TNeoVbGsw&e=1789401548",
+      "page_url": "https://live.hdontap.com/hls/hosb2/eaglecountry_river1-cam.stream/playlist.m3u8?t=cZUWuLorqwdrlQ2-6mY9CA&e=1789470445",
       "stream_type": "hls",
-      "updated_at": 1789358397.7681248
+      "updated_at": 1789427321.398746
     },
     {
       "channel_name": "Africam",
@@ -4954,6 +4954,30 @@
       "page_url": "https://www.youtube.com/watch?v=F5yLGZp5nsA",
       "stream_type": "youtube",
       "updated_at": 1789341480.0296197
+    },
+    {
+      "channel_name": "Explore Sloth and Macaws: Rainforest Wildlife",
+      "created_at": 1789422666.8464038,
+      "enabled": true,
+      "lat": 10.44961,
+      "lon": -84.01939,
+      "mute_audio": false,
+      "name": "Great Green Macaw Nest Cam, Macaw Recovery Network, Sarapiqui Rainforest, Costa Rica (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=OUc-R6Mtg0E",
+      "stream_type": "youtube",
+      "updated_at": 1789422666.8464046
+    },
+    {
+      "channel_name": "FL Birds Live Cam",
+      "created_at": 1789423351.4051116,
+      "enabled": true,
+      "lat": 28.39983,
+      "lon": -81.85137,
+      "mute_audio": false,
+      "name": "Bird Feeder Cam, Backyard in Central Florida, USA (YouTube)",
+      "page_url": "https://www.youtube.com/watch?v=z4GQzqZba-0",
+      "stream_type": "youtube",
+      "updated_at": 1789423351.405112
     }
   ],
   "tiered_cooldowns": {
@@ -5112,7 +5136,6 @@
     "afarTV": "https://www.youtube.com/channel/UCaG0IHN1RMOZ4-U3wDXAkwA",
     "Indiana Department of Natural Resources": "https://www.youtube.com/channel/UCSIcyI6c9I57XehZ6Y5124Q",
     "Gracegorillas": "https://www.youtube.com/channel/UCK2iQu8NDbxtkxEd4xqaMag",
-    "Explore Zen Den": "https://www.youtube.com/channel/UCUtGnX65osNPQ98Y3-SSgpg",
     "American Eagle Foundation": "https://www.youtube.com/channel/UCWl9BI3rn0-YVCuWS_g2FUw",
     "Monterey Bay Aquarium": "https://www.youtube.com/channel/UCnM5iMGiKsZg-iOlIO2ZkdQ",
     "LIVE Stream Maine": "https://www.youtube.com/channel/UCskO9qw7iM4Cgu5wAUbaX5g",
@@ -5187,7 +5210,8 @@
     "Coral Morphologic": "https://youtube.com/@coralmorphologic",
     "Djuma Cam": "https://youtube.com/@djumacam",
     "Explore Bat Cams: Bat Caves & Flying Foxes": "https://youtube.com/@explorebats",
-    "Explore Penguin & Puffin Cams": "https://youtube.com/@explorepenguinsandpuffins"
+    "Explore Penguin & Puffin Cams": "https://youtube.com/@explorepenguinsandpuffins",
+    "Explore Sloth and Macaws: Rainforest Wildlife": "https://youtube.com/@exploreslothandmacaws"
   },
   "database_cloud": {
     "enabled": true,
@@ -5206,63 +5230,14 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1536
+        "usage_count": 1537
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1544
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1568
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1555
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1513
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1547
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1558
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1583
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1529
+        "usage_count": 1545
       },
       {
         "exhausted_until": 0,
@@ -5276,6 +5251,83 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
+        "usage_count": 1558
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1515
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1547
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1559
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1584
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1531
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1573
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1545
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1529
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1527
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
+        "usage_count": 1522
+      },
+      {
+        "exhausted_until": 0,
+        "key": "YOUR_GEMINI_API_KEY",
+        "status": "Active",
+        "tier": "Free",
         "usage_count": 1540
       },
       {
@@ -5283,42 +5335,14 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1523
+        "usage_count": 1544
       },
       {
         "exhausted_until": 0,
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1526
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1520
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1538
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1539
-      },
-      {
-        "exhausted_until": 0,
-        "key": "YOUR_GEMINI_API_KEY",
-        "status": "Active",
-        "tier": "Free",
-        "usage_count": 1556
+        "usage_count": 1558
       },
       {
         "exhausted_until": 0,
@@ -5332,7 +5356,7 @@
         "key": "YOUR_GEMINI_API_KEY",
         "status": "Active",
         "tier": "Free",
-        "usage_count": 1561
+        "usage_count": 1564
       },
       {
         "exhausted_until": 0,
@@ -5849,7 +5873,7 @@
       "https://www.youtube.com/watch?v=rnTsOesC6hE",
       "https://www.youtube.com/watch?v=IBj3Tlu8OUo",
       "https://www.youtube.com/watch?v=-hRO9693geM",
-      "https://www.youtube.com/watch?v=HSYxKV7NWKM",
+      "https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1789447147/ei/i3eoat7zEtHmxN8P79ae2QY/ip/188.64.206.242/id/HSYxKV7NWKM.1/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/bui/AR3QkAlqSFXH8ILHbegWTcC5h-SfPo3l9iXYWGYBDnZR_zxpwVoVin9D34vxQ4JCamMTu2jZbPtgRg3l/spc/I-rgIeHk69xC6hnVyhQw-UE-IF17EpL5SxmzZQa6gvBONwuiwe9XQYz1Pz14W2oCRq9Zr70l/vprv/1/go/1/ns/90L6Vpqoc5JKUellnoDerD8Y/rqh/5/reg/0/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51565115%2C52135441%2C52178455/dover/11/n/1ZuFBmsFIdjHvtGP/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Cbui%2Cspc%2Cvprv%2Cgo%2Cns%2Crqh%2Creg%2Citag%2Cplaylist_type/sig/AE0s2JYwRQIhAILCLFmGWvws0zxhd9HmYrux36ISLmdQR0UTlHUHw9OpAiAh3KFI2CWxu70OhaX-A65URP0sdIc8wTE7clHZi4bs3A%3D%3D/file/index.m3u8",
       "https://www.youtube.com/watch?v=GeirFnWpquU",
       "https://www.youtube.com/watch?v=xcJ3hiYlJMI",
       "https://www.youtube.com/watch?v=CYl_uPm7yto",
@@ -5967,7 +5991,7 @@
       "https://www.youtube.com/watch?v=Jsjs3M0I6UM",
       "https://www.youtube.com/watch?v=CHd1G_WWb3I",
       "https://www.youtube.com/watch?v=LA0eX1GXnx0",
-      "https://www.youtube.com/watch?v=yCzgcbCxg8s",
+      "https://www.youtube.com/watch?v=mRRrJJlO0vg",
       "https://www.youtube.com/watch?v=-1iFHDbscSI",
       "https://www.youtube.com/watch?v=FdUQg5504tY",
       "https://www.youtube.com/watch?v=JuBKDmfYVk8",
@@ -6023,7 +6047,7 @@
       "https://www.youtube.com/watch?v=YaqRZtYAcGQ",
       "https://www.youtube.com/watch?v=KKjQBAehYzk",
       "https://www.youtube.com/watch?v=XeeGsmWZW7g",
-      "https://www.youtube.com/watch?v=O6uaw8TV19U",
+      "https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1789448131/ei/Y3uoaqTIKov5xN8PqNWzuQw/ip/188.64.206.242/id/O6uaw8TV19U.1/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/bui/AR3QkAlYwdiGQIxVt8x5_zmg2wcK-wg8GJMMNDbOGVcBifQXMuqOZ7NxPSWJkTgPMzSxtc4QcAo1cwne/spc/I-rgIf5GFNhFknWhDpkWAixU1Ctai37Sv51V79G_OGAsnA0yNwE_8zzUf8Yt2UpkEc-wkM4B/vprv/1/go/1/ns/aE4UOrYErsWH9-_CWE5esLIY/rqh/5/reg/0/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51565115/dover/11/n/OLJHDdUxFsVT5qsD/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Cbui%2Cspc%2Cvprv%2Cgo%2Cns%2Crqh%2Creg%2Citag%2Cplaylist_type/sig/AE0s2JYwRgIhALblX8v9pcmUe9MwMF4DSKuDLW2GmOF64fawiIIUCdQVAiEA93fpxQWPhDVQgPwHrqa-EuvgqY41Dkx-gn2KuYM1EXo%3D/file/index.m3u8",
       "https://www.youtube.com/watch?v=Iu6kH-Dd2Vc",
       "https://www.youtube.com/watch?v=m4cAV-_7YpY",
       "https://www.youtube.com/watch?v=Njur5IV7icE",
@@ -6069,7 +6093,7 @@
       "https://www.youtube.com/watch?v=Q2W9LTGR-U0",
       "https://www.youtube.com/watch?v=LssZis7XjEA",
       "https://www.youtube.com/watch?v=ATUUIk3pSLw",
-      "https://www.youtube.com/watch?v=3GRuBzzZN7w",
+      "https://www.youtube.com/watch?v=d_t8yx_CCoM",
       "https://www.youtube.com/watch?v=n0J2BPFzLPQ",
       "https://www.youtube.com/watch?v=TMHrXstD5pI",
       "https://www.youtube.com/watch?v=0cn-Y3Mfx3g",
@@ -6080,7 +6104,7 @@
       "https://www.youtube.com/watch?v=7e7kIUPjt6s",
       "https://www.youtube.com/watch?v=EYYgrzyqgZM",
       "https://www.youtube.com/watch?v=bnQloTGd3OY",
-      "https://www.youtube.com/watch?v=GSU9RGotHPE",
+      "https://www.youtube.com/watch?v=xLH0rpbSzGk",
       "https://www.youtube.com/watch?v=wDgZkzkOP-s",
       "https://www.youtube.com/watch?v=RXP7Puo6GWU",
       "https://www.youtube.com/watch?v=OspeW5N_KQI",
@@ -6100,7 +6124,7 @@
       "https://www.youtube.com/watch?v=CbXGBg_kINQ",
       "https://www.youtube.com/watch?v=iUdDKf9aDUU",
       "https://www.youtube.com/watch?v=eTZ6ZgI8oG0",
-      "https://www.youtube.com/watch?v=LLjf-XKYYwM",
+      "https://www.youtube.com/watch?v=wCFd6BL5Iw4",
       "https://www.youtube.com/watch?v=wSBgj42cshc",
       "https://www.youtube.com/watch?v=iJuPrpCb-7s",
       "https://www.youtube.com/watch?v=bakLbacO7nA",
@@ -6108,8 +6132,8 @@
       "https://www.youtube.com/watch?v=UGh2rceT5V0",
       "https://www.youtube.com/watch?v=m5wPypT_do4",
       "https://www.youtube.com/watch?v=_Gi8UC_HPKM",
-      "https://www.youtube.com/watch?v=eUNVUcIb-Hg",
-      "https://www.youtube.com/watch?v=2c5fvmNJBSg",
+      "https://www.youtube.com/watch?v=d_t8yx_CCoM",
+      "https://www.youtube.com/watch?v=xLH0rpbSzGk",
       "https://www.youtube.com/watch?v=CvhjgMSzKWI",
       "https://www.youtube.com/watch?v=-_Xto6A2akM",
       "https://www.youtube.com/watch?v=tIVNTcnYSHw",
@@ -6126,7 +6150,7 @@
       "https://www.youtube.com/watch?v=feR0k8-nkWE",
       "https://www.youtube.com/watch?v=RhP-_jX8-Zs",
       "https://www.youtube.com/watch?v=uLgdUiT9WZQ",
-      "https://www.youtube.com/watch?v=wczr6E_Mpog"
+      "https://www.youtube.com/watch?v=d_t8yx_CCoM"
     ],
     "auto_sweep_vault_hours": 24,
     "ai_temperature": 0.15,
@@ -6341,7 +6365,7 @@
     "custom_ai_model": "",
     "cost_per_1000_images_credits": 0.75,
     "tuning_interval_mins": 15,
-    "last_calculated_hit_rate": 0.008676092544987147,
+    "last_calculated_hit_rate": 0.001392459297343616,
     "last_calculated_cycle_s": 3600,
     "last_throttle_reason": "Budget Cap Active"
   },
