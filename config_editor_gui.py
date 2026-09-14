@@ -1,7 +1,8 @@
 ﻿# FILE: config_editor_gui.py
-# VERSION: 13.11 - "The Graveyard Router Patch"
+# VERSION: 13.12 - "The In-Memory Tag-Along Patch"
 # RESPONSIBILITY: Configuration GUI.
 # CHANGELOG:
+# [2026-09-14 14:15] - v13.12: Injected the URL Tag-Along patch directly into the on_auto_sync_complete method to prevent the Vision Engine from dropping streams when auto-healing URLs.
 # [2026-09-11 03:20] - v13.11: Added "Send to Graveyard" button, moved and shrunk "Reset Overrides" button, and hardcoded the stream list to hide streams tagged with [DEAD].
 # [2026-09-10 13:00] - v13.10: Removed duplicated code (NetworkTelemetryDialog, etc.) to force reliance on config_editor_sys_dialogs.py. Added Economic Cruise Control to fallback defaults.
 
@@ -804,6 +805,16 @@ class ConfigEditor(QWidget):
                         else:
                             target_stream['channel_name'] = "Unknown Channel"
                         # ----------------------------------------------
+                        
+                        # --- THE URL TAG-ALONG PATCH (IN-MEMORY) ---
+                        if "vision_ai" in cfg and "enabled_streams" in cfg["vision_ai"]:
+                            vision_enabled = cfg["vision_ai"]["enabled_streams"]
+                            for i, u in enumerate(vision_enabled):
+                                if u == old_url:
+                                    vision_enabled[i] = new_url
+                                    logging.info(f"Auto-Healer successfully transferred Vision Checkbox state to new URL: {new_url}")
+                                    break
+                        # -------------------------------------------
                                 
                         updated = True
                         

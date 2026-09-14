@@ -1,19 +1,18 @@
 # FILE: stream_migrator.py
-# VERSION: 2.1 - "The Calibration Amnesia Patch"
+# VERSION: 3.0 - "The Race Condition Fix"
 # PURPOSE: Logic for safely moving history from an Old URL to a New URL.
 # CHANGELOG:
+# [2026-09-14 11:09] - v3.0: Removed JSON parsing and disk writing to eliminate race conditions with the Sync Engine. URL Tag-Along logic moved to memory-level orchestrators.
 # [2026-09-10 12:43] - v2.1: Fixed Calibration Amnesia by actively merging and preserving Golden Anchor max_snr_observed and noise baseline profiles during URL migrations instead of discarding them on conflict.
 # [2026-09-02 20:00] - v2.0: Added JSON patching logic. When a URL is migrated, it now explicitly checks the vision_ai 'enabled_streams' list in birdnet_config.json and updates the old URL to the new URL, preventing the Vision Engine from going blind to auto-healed streams.
 
 import sqlite3
 import logging
-import json
 import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATABASE_PATH = ROOT / "detections.db"
-CONFIG_FILE = ROOT / "birdnet_config.json"
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 
@@ -38,7 +37,6 @@ def migrate_stream_data(old_url, new_url):
     """
     Moves all data (Detections, Health, Profiles) from Old URL to New URL.
     Handles conflicts (if New URL already has data) by prioritizing the New URL.
-    Also patches birdnet_config.json to ensure Vision Engine doesn't lose the stream.
     """
     if not DATABASE_PATH.exists(): return False, "Database not found."
     
@@ -94,35 +92,7 @@ def migrate_stream_data(old_url, new_url):
 
         con.commit()
         
-        # --- THE URL TAG-ALONG PATCH (JSON) ---
-        json_msg = ""
-        try:
-            if CONFIG_FILE.exists():
-                with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                    cfg = json.load(f)
-                
-                vision_enabled = cfg.get("vision_ai", {}).get("enabled_streams", [])
-                updated_json = False
-                
-                for i, u in enumerate(vision_enabled):
-                    if u == old_url:
-                        vision_enabled[i] = new_url
-                        updated_json = True
-                        break # Found and replaced
-                
-                if updated_json:
-                    cfg["vision_ai"]["enabled_streams"] = vision_enabled
-                    tmp_file = CONFIG_FILE.with_suffix('.tmp')
-                    with open(tmp_file, 'w', encoding='utf-8') as f:
-                        json.dump(cfg, f, indent=2)
-                    os.replace(tmp_file, CONFIG_FILE)
-                    json_msg = " | Vision Engine checkbox list successfully updated."
-        except Exception as e:
-            logging.error(f"Failed to update vision config during migration: {e}")
-            json_msg = f" | Warning: Vision config update failed: {e}"
-        # ----------------------------------------
-
-        msg = f"Successfully migrated {det_count} detections and preserved calibration data.{json_msg}"
+        msg = f"Successfully migrated {det_count} detections and preserved calibration data."
         logging.info(f"MIGRATION SUCCESS: {old_url} -> {new_url}")
         return True, msg
 

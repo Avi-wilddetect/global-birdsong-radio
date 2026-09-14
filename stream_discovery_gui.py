@@ -1,7 +1,9 @@
 # FILE: stream_discovery_gui.py
-# VERSION: 14.19 - "The Auto-Bury Graveyard Patch"
+# VERSION: 14.21 - "The In-Memory Tag-Along Patch"
 # RESPONSIBILITY: Triage Ward, Graveyard, Discovery Radar, and the Unified Lifecycle & Sync Engine.
 # CHANGELOG:
+# [2026-09-14 14:28] - v14.21: Injected URL Tag-Along patch directly into manual wizard approvals (execute_sync_proposal) and auto-enabled Vision AI for brand new streams from the Discovery Radar.
+# [2026-09-12 04:12] - v14.20: Added right-click context menu to the Graveyard tab allowing users to quickly open the Stream URL and Channel URL.
 # [2026-09-11 05:13] - v14.19: Added UI settings to the SyncSettingsDialog to configure "Auto-Bury Dead Streams" threshold and toggle. Fixed file bloat issue.
 # [2026-09-03 13:30] - v14.18: Replaced hardcoded 'gemini-2.5-flash' with dynamic model extraction from the Economic Cruise Control configuration.
 
@@ -1558,6 +1560,11 @@ class StreamDiscoveryHub(QDialog):
         self.grave_table.setHorizontalHeaderLabels(["Stream Name (Tagged)", "Original Reason", "Select"])
         self.grave_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.grave_table.setSortingEnabled(True)
+        
+        # --- GRAVEYARD CONTEXT MENU BINDING ---
+        self.grave_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.grave_table.customContextMenuRequested.connect(self.grave_context_menu)
+        
         grave_layout.addWidget(self.grave_table)
         
         grave_btn_layout = QHBoxLayout()
@@ -1630,6 +1637,37 @@ class StreamDiscoveryHub(QDialog):
             self.populate_sync_tree(self.state['sync_proposals'])
 
         self.populate_roster_table()
+
+    # --- GRAVEYARD CONTEXT MENU ---
+    def grave_context_menu(self, pos):
+        item = self.grave_table.itemAt(pos)
+        if not item: return
+        row = item.row()
+        name_item = self.grave_table.item(row, 0)
+        if name_item:
+            stream_dict = name_item.data(Qt.ItemDataRole.UserRole)
+            if stream_dict:
+                menu = QMenu()
+                
+                url = stream_dict.get('page_url', '')
+                if url:
+                    act_url = QAction("🎬 Open Stream URL", self)
+                    act_url.triggered.connect(lambda: webbrowser.open(url))
+                    menu.addAction(act_url)
+                    
+                channel_name = stream_dict.get('channel_name', '')
+                if channel_name:
+                    try:
+                        cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+                        c_url = cfg.get("channels", {}).get(channel_name, "")
+                        if c_url:
+                            act_chan = QAction("🏠 Open Channel URL", self)
+                            act_chan.triggered.connect(lambda: webbrowser.open(c_url))
+                            menu.addAction(act_chan)
+                    except: pass
+                    
+                if menu.actions():
+                    menu.exec(self.grave_table.viewport().mapToGlobal(pos))
 
     # --- TRIAGE CONTEXT MENU ---
     def triage_context_menu(self, pos):
@@ -2051,7 +2089,11 @@ class StreamDiscoveryHub(QDialog):
                 
         self.grave_table.setRowCount(len(grave_rows))
         for i, (s, reason) in enumerate(grave_rows):
-            self.grave_table.setItem(i, 0, QTableWidgetItem(s['name']))
+            # --- THE GRAVEYARD EMBED PATCH ---
+            item_name = QTableWidgetItem(s['name'])
+            item_name.setData(Qt.ItemDataRole.UserRole, s) # Embed the raw stream dictionary
+            self.grave_table.setItem(i, 0, item_name)
+            
             self.grave_table.setItem(i, 1, QTableWidgetItem(reason))
             
             chk = QCheckBox()
@@ -2495,6 +2537,16 @@ class StreamDiscoveryHub(QDialog):
                         cfg['channels'][proposal['new_channel_name']] = proposal['new_channel']
                 updated = True
                 
+                # --- THE URL TAG-ALONG PATCH (IN-MEMORY) ---
+                if "vision_ai" in cfg and "enabled_streams" in cfg["vision_ai"]:
+                    vision_enabled = cfg["vision_ai"]["enabled_streams"]
+                    for i, u in enumerate(vision_enabled):
+                        if u == old_url:
+                            vision_enabled[i] = new_url
+                            logging.info(f"Wizard successfully transferred Vision Checkbox state to new URL: {new_url}")
+                            break
+                # -------------------------------------------
+                
                 success, log_msg = stream_migrator.migrate_stream_data(old_url, new_url)
                 if not success:
                     logging.warning(f"DB migration warning: {log_msg}")
@@ -2528,6 +2580,14 @@ class StreamDiscoveryHub(QDialog):
                         
                 if "streams" not in cfg: cfg["streams"] = []
                 cfg["streams"].append(new_stream)
+                
+                # --- AUTO-ENABLE VISION AI ---
+                if "vision_ai" not in cfg: cfg["vision_ai"] = {}
+                if "enabled_streams" not in cfg["vision_ai"]: cfg["vision_ai"]["enabled_streams"] = []
+                if new_stream['page_url'] not in cfg["vision_ai"]["enabled_streams"]:
+                    cfg["vision_ai"]["enabled_streams"].append(new_stream['page_url'])
+                # -----------------------------
+                
                 updated = True
                 
             if updated:
@@ -2750,6 +2810,13 @@ class StreamDiscoveryHub(QDialog):
                 cfg = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
                 if "streams" not in cfg: cfg["streams"] = []
                 cfg["streams"].append(new_stream_data)
+                
+                # --- AUTO-ENABLE VISION AI ---
+                if "vision_ai" not in cfg: cfg["vision_ai"] = {}
+                if "enabled_streams" not in cfg["vision_ai"]: cfg["vision_ai"]["enabled_streams"] = []
+                if new_stream_data['page_url'] not in cfg["vision_ai"]["enabled_streams"]:
+                    cfg["vision_ai"]["enabled_streams"].append(new_stream_data['page_url'])
+                # -----------------------------
                 
                 self.safe_config_write(cfg)
                 self.state['added_urls'].add(res_dict['url'])

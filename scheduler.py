@@ -1,7 +1,9 @@
 ﻿# FILE: scheduler.py
-# VERSION: 14.2 - "The Economic Cruise Control Variable Frequency Patch"
+# VERSION: 14.3 - "The In-Memory Tag-Along Patch"
 # RESPONSIBILITY: Manages Proxies, Launches Workers, Sends Reports, Syncs Config, Cleans Logs, Enforces SIM Data Limits, Auto-Heals Dead Links, and Manages the Financial/Hit-Rate Cruise Control.
-# UPDATED: EconomicCruiseControlThread now dynamically reads 'tuning_interval_mins' from the config to control its sleep cycle, rather than being hardcoded to 1 hour.
+# CHANGELOG:
+# [2026-09-14 11:15] - v14.3: Injected the URL Tag-Along patch directly into the AutoSyncThread's memory dictionary to prevent race conditions with stream_migrator.
+# [2026-09-12 02:45] - v14.2: EconomicCruiseControlThread now dynamically reads 'tuning_interval_mins' from the config to control its sleep cycle.
 
 import sys
 import json
@@ -283,6 +285,16 @@ class AutoSyncThread(threading.Thread):
                                 target_stream['channel_name'] = "Unknown Channel"
                             # ----------------------------------------------
                                     
+                            # --- THE URL TAG-ALONG PATCH (IN-MEMORY) ---
+                            if "vision_ai" in cfg_to_update and "enabled_streams" in cfg_to_update["vision_ai"]:
+                                vision_enabled = cfg_to_update["vision_ai"]["enabled_streams"]
+                                for i, u in enumerate(vision_enabled):
+                                    if u == old_url:
+                                        vision_enabled[i] = new_url
+                                        logging.info(f"Auto-Healer successfully transferred Vision Checkbox state to new URL: {new_url}")
+                                        break
+                            # -------------------------------------------
+                            
                             config_updated = True
                             if stream_migrator:
                                 try:

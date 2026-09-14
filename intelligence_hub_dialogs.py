@@ -1,7 +1,10 @@
 # FILE: intelligence_hub_dialogs.py
-# VERSION: 15.15 (The Atomic Reset Patch)
+# VERSION: 15.17 - "The Maintenance Layout Patch"
 # RESPONSIBILITY: Stores all pop-up dialogs for the Intelligence Hub.
-# UPDATED: The "Reset Exhausted" button now performs an immediate, atomic write directly to birdnet_config.json on the hard drive, bypassing all GUI save buffers. This permanently prevents background engine threads from overwriting the reset with stale memory.
+# CHANGELOG:
+# [2026-09-12 02:55] - v15.17: Redesigned the Engine & Maintenance tab into a two-column layout to prevent UI clipping and fully utilize horizontal space.
+# [2026-09-12 01:45] - v15.16: Added Multimodal Integration UI controls (Audio Memory Window & Bypass Filters) to the Engine & Maintenance tab.
+# [2026-09-11 12:00] - v15.15: The "Reset Exhausted" button now performs an immediate, atomic write directly to birdnet_config.json on the hard drive, bypassing all GUI save buffers.
 
 import json
 import time
@@ -389,8 +392,15 @@ class GlobalVisionSettingsDialog(QDialog):
         # TAB 2: ENGINE & MAINTENANCE
         # ==========================================
         tab2 = QWidget()
-        tab2_layout = QVBoxLayout(tab2)
+        tab2_main_layout = QHBoxLayout(tab2) 
+        
+        left_col = QWidget()
+        left_layout = QVBoxLayout(left_col)
+        
+        right_col = QWidget()
+        right_layout = QVBoxLayout(right_col)
 
+        # --- ENGINE PARAMETERS ---
         params_group = QGroupBox("Engine Parameters")
         form = QFormLayout()
         
@@ -438,7 +448,28 @@ class GlobalVisionSettingsDialog(QDialog):
         form.addRow("Motion Sensitivity:", self.spin_motion_sens)
         form.addRow("Vault Retention Limit:", self.spin_vision_retention)
         form.addRow("", self.chk_hide_console)
-        params_group.setLayout(form); tab2_layout.addWidget(params_group)
+        params_group.setLayout(form)
+        left_layout.addWidget(params_group)
+
+        # --- MULTIMODAL INTEGRATION ---
+        multimodal_group = QGroupBox("Multimodal Integration (Audio + Vision)")
+        multimodal_group.setStyleSheet("QGroupBox { border: 1px solid #FF9800; margin-top: 15px; color: #FF9800; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }")
+        multimodal_form = QFormLayout(multimodal_group)
+
+        self.spin_multi_memory = QSpinBox()
+        self.spin_multi_memory.setRange(1, 1440)
+        self.spin_multi_memory.setValue(current_globals.get("multimodal_audio_memory_mins", 30))
+        self.spin_multi_memory.setSuffix(" mins")
+        self.spin_multi_memory.setToolTip("How far back in time the Vision Engine should look for a matching Audio detection to trigger a Multimodal merge.")
+
+        self.chk_multi_bypass = QCheckBox("Bypass Size/Depth Filters on Multimodal Match")
+        self.chk_multi_bypass.setChecked(current_globals.get("multimodal_bypass_filters", True))
+        self.chk_multi_bypass.setToolTip("If Audio confirmed the bird publicly, ignore the 2D/3D visual size rules and force the image to the Web Map anyway.")
+
+        multimodal_form.addRow("Audio Memory Window:", self.spin_multi_memory)
+        multimodal_form.addRow("", self.chk_multi_bypass)
+        left_layout.addWidget(multimodal_group)
+        left_layout.addStretch()
 
         # --- THE NEW TELEGRAM ALERT PREFERENCES ---
         telegram_group = QGroupBox("Telegram Alert Preferences (Visual AI & Multimodal)")
@@ -485,8 +516,7 @@ class GlobalVisionSettingsDialog(QDialog):
         telegram_layout.addWidget(QLabel("<hr>"))
         telegram_layout.addWidget(self.chk_tg_image)
         telegram_layout.addWidget(self.chk_tg_reasoning)
-        
-        tab2_layout.addWidget(telegram_group)
+        right_layout.addWidget(telegram_group)
 
         cleaning_group = QGroupBox("Maintenance & Automated Cleaning")
         cleaning_layout = QFormLayout()
@@ -498,9 +528,13 @@ class GlobalVisionSettingsDialog(QDialog):
         btn_clear_vision_log = QPushButton("📄 Clear Vision Log Now"); btn_clear_vision_log.clicked.connect(self.main_window.clear_vision_log)
         manual_clean_layout = QHBoxLayout(); manual_clean_layout.addWidget(btn_sweep_vault); manual_clean_layout.addWidget(btn_clear_vision_log)
         cleaning_layout.addRow(manual_clean_layout)
-        cleaning_group.setLayout(cleaning_layout); tab2_layout.addWidget(cleaning_group)
+        cleaning_group.setLayout(cleaning_layout)
+        right_layout.addWidget(cleaning_group)
+        right_layout.addStretch()
         
-        tab2_layout.addStretch()
+        tab2_main_layout.addWidget(left_col)
+        tab2_main_layout.addWidget(right_col)
+        
         self.tabs.addTab(tab2, "Engine & Maintenance")
 
 
@@ -735,7 +769,6 @@ class GlobalVisionSettingsDialog(QDialog):
             "use_motion_detector": self.chk_use_motion.isChecked(),
             "motion_sensitivity_percent": self.spin_motion_sens.value(), 
             
-            # --- THE DORMANCY CONTROLS ---
             "vision_dormancy_threshold_mins": self.spin_dormancy_threshold.value(),
             "vision_dormant_interval_mins": self.spin_dormant_interval.value(),
             
@@ -752,7 +785,9 @@ class GlobalVisionSettingsDialog(QDialog):
             "min_depth_flock": self.combo_min_d_f.currentData(),
             "vision_resolution": self.combo_resolution.currentText().split(" ")[0],
             "strict_proxy": self.chk_strict_proxy.isChecked(),
-            "telegram_alerts": telegram_alerts_data
+            "telegram_alerts": telegram_alerts_data,
+            "multimodal_audio_memory_mins": self.spin_multi_memory.value(),
+            "multimodal_bypass_filters": self.chk_multi_bypass.isChecked()
         }, { 
             "ignore_general_animals": self.chk_ignore_general.isChecked(),
             "default_taxonomy_mute": self.spin_default_mute.value(),

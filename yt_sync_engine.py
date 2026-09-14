@@ -1,7 +1,8 @@
 # FILE: yt_sync_engine.py
-# VERSION: 6.15 - "The Auto-Bury Graveyard Patch"
+# VERSION: 6.16 - "The Auto-Bury Failsafe Patch"
 # PURPOSE: Compares local YouTube stream metadata against live channel data to detect URL changes, Title/Description changes, new streams, and resurrect dead streams.
 # CHANGELOG:
+# [2026-09-12 03:27] - v6.16: Patched Auto-Bury logic to check stream 'updated_at' and the HTML metadata cache to prevent premature graveyard dumping after database bloat clears.
 # [2026-09-11 05:20] - v6.15: Implemented "Auto-Bury Dead Streams". The engine now queries the database for the last proof-of-life and autonomously disables/tags streams that exceed the configured 'days dead' threshold, bypassing the manual review queue.
 # [2026-09-10 00:55] - v6.14: Bulletproofed scheduled stream rejection by filtering out all non-'is_live' states in Tier 1 and hooking directly into the language-agnostic 'UPCOMING' and 'PREMIERE' style badges in Tier 2.
 # [2026-09-10 00:04] - v6.13: Patched channel scraper to explicitly reject 'is_upcoming' / 'UPCOMING' scheduled streams in both yt-dlp and HTML tiers, preventing future broadcasts from inflating live counts and clogging the queue.
@@ -66,7 +67,7 @@ class YouTubeSyncEngine:
         except Exception as e:
             self._dump_traceback(f"Failed to save metadata cache: {e}")
 
-    def _get_last_alive_timestamp(self, url):
+    def _get_last_alive_timestamp(self, url, config_stream=None):
         try:
             with db_connector.get_db_connection(force_local=True) as con:
                 cur = con.cursor()
@@ -79,7 +80,14 @@ class YouTubeSyncEngine:
                 health_res = cur.fetchone()
                 max_health = health_res[0] if health_res and health_res[0] else 0.0
                 
-                return max(max_det, max_health)
+            cache_ts = 0.0
+            clean_url = re.sub(r'[\?&]variant=\d+', '', url).strip()
+            if "streams" in self.cache and clean_url in self.cache["streams"]:
+                cache_ts = self.cache["streams"][clean_url].get("last_checked", 0.0)
+                
+            updated_at = config_stream.get("updated_at", 0.0) if config_stream else 0.0
+            
+            return max(max_det, max_health, cache_ts, updated_at)
         except Exception as e:
             self._dump_traceback(f"Error querying last alive timestamp for {url}: {e}")
             return 0.0
@@ -793,7 +801,7 @@ class YouTubeSyncEngine:
             auto_bury_days = sync_settings.get("auto_bury_days", 14)
             
             if auto_bury_enabled:
-                last_alive_ts = self._get_last_alive_timestamp(db_url)
+                last_alive_ts = self._get_last_alive_timestamp(db_url, config_stream)
                 if last_alive_ts == 0.0:
                     last_alive_ts = config_stream.get('created_at', time.time())
                 

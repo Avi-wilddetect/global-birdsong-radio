@@ -1,7 +1,9 @@
 # FILE: curation_studio_gui.py
-# VERSION: 40.21 - "The Workflow & Tooltips Patch"
+# VERSION: 40.22 - "The Wizard Image Numbering Patch"
 # RESPONSIBILITY: Side-by-side review, AI correction, ML exports, and batch processing.
-# UPDATED: Implemented "Proceed to Confirm/Reject & Next" button to wizard for faster workflow. Added AI reasoning hover tooltips to batch review image thumbnails.
+# CHANGELOG:
+# [2026-09-12 02:31] - v40.22: Added sequential image numbering to the date/time labels in the Batch Review wizard.
+# [2026-09-11 12:00] - v40.21: Implemented "Proceed to Confirm/Reject & Next" button to wizard for faster workflow. Added AI reasoning hover tooltips to batch review image thumbnails.
 
 import sys
 import os
@@ -318,7 +320,7 @@ class BatchReviewDialog(QDialog):
             img_lbl.doubleClicked.connect(lambda p=pixmap, idx=i: self.open_large(p, idx))
             
             time_str = datetime.fromtimestamp(row_data['timestamp']).strftime('%m-%d %H:%M')
-            lbl_time = QLabel(time_str)
+            lbl_time = QLabel(f"#{i + 1} - {time_str}")
             lbl_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
             
             # --- IN-CELL AUDIO & ACTION WIDGETS ---
@@ -840,7 +842,7 @@ class SmartTuningDialog(QDialog):
 class CurationStudio(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.21)")
+        self.setWindowTitle("Multimodal Curation & AI Retraining Studio (V40.22)")
         self.resize(1400, 850)
         self.setStyleSheet("""
             QMainWindow, QWidget { background-color: #1e1e1e; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }

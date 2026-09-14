@@ -1,6 +1,7 @@
 # FILE: intelligence_hub_gui.py
-# VERSION: 16.11 - "The Dynamic AI Model Patch"
+# VERSION: 16.12 - "The Multimodal Override Patch"
 # CHANGES: 
+# [2026-09-12 01:53] - v16.12: Added Multimodal Integration settings (Audio Memory Window & Bypass Filters) saving and loading logic.
 # [2026-09-03 13:30] - v16.11: Applied dynamic AI model selection to the Taxonomy Auditor tool, removing the hardcoded 2.5-flash fallback.
 # [2026-09-02 18:00] - v16.10: Injected padding-top into all QGroupBox stylesheets to prevent the invisible title box from blocking spinbox Up-Arrows. Fixed open_global_vision_settings to fully sync all keys from birdnet_config.json.
 
@@ -396,6 +397,8 @@ class BioacousticConfigurator(QMainWindow):
             "min_frame_single": "Large", "min_depth_single": "Near",
             "min_frame_flock": "Small", "min_depth_flock": "Background",
             "vision_resolution": "720p", "strict_proxy": False,
+            "multimodal_audio_memory_mins": 30,
+            "multimodal_bypass_filters": True,
             "telegram_alerts": {
                 "enabled": True,
                 "alert_multimodal": True,
@@ -1795,6 +1798,10 @@ class BioacousticConfigurator(QMainWindow):
             self.vision_settings["vision_resolution"] = vision_cfg.get("vision_resolution", "720p")
             self.vision_settings["strict_proxy"] = vision_cfg.get("strict_proxy", False)
             
+            # --- MULTIMODAL OVERRIDES ---
+            self.vision_settings["multimodal_audio_memory_mins"] = vision_cfg.get("multimodal_audio_memory_mins", 30)
+            self.vision_settings["multimodal_bypass_filters"] = vision_cfg.get("multimodal_bypass_filters", True)
+            
             # --- TELEGRAM ALERTS PREFS ---
             self.vision_settings["telegram_alerts"] = vision_cfg.get("telegram_alerts", {
                 "enabled": True,
@@ -2587,6 +2594,10 @@ class BioacousticConfigurator(QMainWindow):
                 
                 gbr_data["vision_ai"]["vision_resolution"] = self.vision_settings.get("vision_resolution", "720p")
                 gbr_data["vision_ai"]["strict_proxy"] = self.vision_settings.get("strict_proxy", False)
+                
+                # --- NEW MULTIMODAL OVERRIDES ---
+                gbr_data["vision_ai"]["multimodal_audio_memory_mins"] = self.vision_settings.get("multimodal_audio_memory_mins", 30)
+                gbr_data["vision_ai"]["multimodal_bypass_filters"] = self.vision_settings.get("multimodal_bypass_filters", True)
                 
                 # --- NEW TELEGRAM ALERTS PREFS ---
                 gbr_data["vision_ai"]["telegram_alerts"] = self.vision_settings.get("telegram_alerts", {

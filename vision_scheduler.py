@@ -1,7 +1,8 @@
 # FILE: vision_scheduler.py
-# VERSION: 10.20 - "The Dynamic Blindspot Patch"
+# VERSION: 10.21 - "The Multimodal Override Patch"
 # RESPONSIBILITY: Exclusively handles AI Inference (Gemini), Multi-Modal Bridge Logic, Telegram Reporting, and Dormancy Backoff constraints.
 # CHANGELOG:
+# [2026-09-12 02:11] - v10.21: Implemented Multimodal Audio Override logic allowing Audio-confirmed detections to bypass Vision size filters.
 # [2026-09-10 21:01] - v10.20: Implemented Dynamic Conditional Blindspot. Vision engine now injects active cooldowns into Gemini's prompt, instructing it to ignore recently detected animals and search for secondary subjects to allow Visual Biodiversity Bursts without hallucinations.
 # [2026-09-06 14:34] - v10.19: Fixed the Apostrophe Capitalization Bug where Python's .title() function created invalid names like "Grauer'S Gorilla", breaking the Wikipedia Image Curator.
 # [2026-09-04 01:25] - v10.18: Decoupled Vision Engine from Audio Engine network failures. Vision now only skips explicitly DEAD streams (FATAL/SUSPENDED) and ignores UNRESPONSIVE/FAILURE flags.
@@ -122,13 +123,13 @@ v_logger.addHandler(stream_handler)
 # ==============================================================================
 # THE SEMANTIC BRIDGE
 # ==============================================================================
-def check_taxonomy_bridge(stream_url, visual_species):
+def check_taxonomy_bridge(stream_url, visual_species, memory_mins=30):
     try:
-        cutoff = time.time() - 1800  # 30 minutes
+        cutoff = time.time() - (memory_mins * 60)
         with db_connector.get_db_connection(force_local=True) as con:
             cur = con.cursor()
             cur.execute(
-                "SELECT id, timestamp, species FROM detections "
+                "SELECT id, timestamp, species, alert_sent FROM detections "
                 "WHERE channel_url = ? AND timestamp > ? AND detection_method = 'audio' "
                 "ORDER BY timestamp DESC LIMIT 20",
                 (stream_url, cutoff)
@@ -136,7 +137,7 @@ def check_taxonomy_bridge(stream_url, visual_species):
             recent_audio_detections = cur.fetchall()
 
         if not recent_audio_detections:
-            return False, None, None, None
+            return False, None, None, None, False
 
         vis_clean = visual_species.lower().replace('-', ' ').replace('(', '').replace(')', '').strip()
         vis_words = set(vis_clean.split())
@@ -156,33 +157,35 @@ def check_taxonomy_bridge(stream_url, visual_species):
             {"cricket", "cicada", "grasshopper", "katydid", "insect", "mammal"}
         ]
 
-        for det_id, det_ts, aud_sp in recent_audio_detections:
+        for det_id, det_ts, aud_sp, alert_sent in recent_audio_detections:
             if not aud_sp:
                 continue
             audio_clean = aud_sp.lower().replace('-', ' ').replace('(', '').replace(')', '').strip()
             audio_words = set(audio_clean.split())
 
+            is_alert = bool(alert_sent)
+
             if vis_clean == audio_clean or vis_clean in audio_clean or audio_clean in vis_clean:
-                return True, det_id, det_ts, aud_sp
+                return True, det_id, det_ts, aud_sp, is_alert
 
             for group in THESAURUS:
                 aud_match = any(syn in audio_words for syn in group) or any(syn == audio_clean for syn in group)
                 vis_match = any(syn in vis_words for syn in group) or any(syn == vis_clean for syn in group)
                 if aud_match and vis_match:
-                    return True, det_id, det_ts, aud_sp
+                    return True, det_id, det_ts, aud_sp, is_alert
 
             if "mammal" in vis_words and any(w in audio_words for w in [
                 "lion", "tiger", "bear", "elephant", "wolf", "coyote", "hyena",
                 "monkey", "baboon", "warthog", "hippo", "badger", "seal", "sea", "otter"
             ]):
-                return True, det_id, det_ts, aud_sp
+                return True, det_id, det_ts, aud_sp, is_alert
             if "rumble" in audio_words and ("elephant" in vis_words or "hippo" in vis_words):
-                return True, det_id, det_ts, aud_sp
+                return True, det_id, det_ts, aud_sp, is_alert
 
-        return False, None, None, None
+        return False, None, None, None, False
     except Exception as e:
-        logging.error(f"Vision bridge error: {e}")
-        return False, None, None, None
+        v_logger.error(f"Vision bridge error: {e}")
+        return False, None, None, None, False
 
 
 # ==============================================================================
@@ -760,12 +763,16 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
     tid = threading.get_ident()
     temp_img = VAULT_DIR / f"temp_vision_grab_{tid}_{int(time.time()*1000)}.jpg"
     
+    vision_cfg = cfg.get("vision_ai", {})
     eco_cfg = cfg.get("economic_control", {})
     ai_model = eco_cfg.get("ai_model", "gemini-3.7-flash")
     if ai_model == "custom":
         ai_model = eco_cfg.get("custom_ai_model", "gemini-3.7-flash")
     if not ai_model.strip():
         ai_model = "gemini-3.7-flash"
+        
+    multi_memory_mins = vision_cfg.get("multimodal_audio_memory_mins", 30)
+    multi_bypass = vision_cfg.get("multimodal_bypass_filters", True)
         
     try:
         targets_data = load_vision_targets()
@@ -1204,8 +1211,16 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
                 if is_group:
                     dist_category += " (Flock/Herd)"
 
-                is_multimodal, audio_det_id, audio_timestamp, audio_species = check_taxonomy_bridge(url, final_species)
+                is_multimodal, audio_det_id, audio_timestamp, audio_species, audio_alert_sent = check_taxonomy_bridge(url, final_species, multi_memory_mins)
                 det_method = "multimodal" if is_multimodal else "vision"
+                
+                if is_multimodal and multi_bypass and audio_alert_sent:
+                    if not is_public and not (pass_frame and pass_depth):
+                        is_public = True
+                        if filter_reason_str:
+                            filter_reason_str += " (Bypassed via Audio Override)"
+                        else:
+                            filter_reason_str = "Bypassed via Audio Override"
 
                 cd_key = f"vision||{url}||{final_species}".lower()
                 now = time.time()
@@ -1367,7 +1382,10 @@ def process_vision_stream(url, bounty_species, bounty_det_id, active_proxies, st
                     safe_net = html.escape(chosen_interface)
                     
                     if is_public:
-                        header = "<b>[ 🌍 PUBLIC: SENT TO WEB MAP ]</b>\n"
+                        if is_multimodal and multi_bypass and audio_alert_sent and "(Bypassed" in filter_reason_str:
+                            header = "<b>[ 🌍 PUBLIC: SENT TO WEB MAP (Audio Override) ]</b>\n"
+                        else:
+                            header = "<b>[ 🌍 PUBLIC: SENT TO WEB MAP ]</b>\n"
                     else:
                         safe_reason = html.escape(filter_reason_str)
                         header = f"<b>[ 🛑 FILTERED: Not sent to Web Map ]</b>\n<b>Reason(s):</b> {safe_reason}\n\n"
